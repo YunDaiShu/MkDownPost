@@ -193,3 +193,16 @@
 .theme-card.is-on { border-color: var(--c-primary); box-shadow: inset 0 0 0 1px var(--c-primary); background: var(--c-primary-bg); }
 .theme-card__name { font-size: var(--fs-14); }
 .theme-card__note { margin-left: auto; font-size: var(--fs-12); color: var(--c-text-muted); }
+
+/* THEME_ANIM：主题卡错峰进入 + 分类切换过渡 */
+.theme-groups .tsw__chip { transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.theme-groups .tsw__chip:active { transform: scale(.96); }
+.theme-groups .tsw__chip.is-on { animation: chipPop 220ms var(--ease); }
+@keyframes chipPop { 0% { transform: scale(.94); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
+
+.theme-grid { transition: opacity var(--dur-base) var(--ease); }
+.theme-grid.is-switching { opacity: .25; }
+.theme-card { animation: cardIn 320ms var(--ease) both; animation-delay: var(--d, 0ms); }
+.theme-card:hover { transform: translateY(-2px); }
+@keyframes cardIn { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .theme-card, .theme-card:hover, .theme-groups .tsw__chip.is-on { animation: none; transform: none; } }

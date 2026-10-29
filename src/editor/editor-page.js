@@ -145,6 +145,14 @@ export default function render(root) {
       </div>
     </div>`;
 
+  /* ---------- 偏好持久化（字号 / 行宽 / 同步滚动） ---------- */
+  const PREFS_KEY = 'mdp:v1:prefs';
+  const readPrefs = () => { try { return JSON.parse(localStorage.getItem(PREFS_KEY) || '{}'); } catch { return {}; } };
+  const savePrefs = (patch) => {
+    try { localStorage.setItem(PREFS_KEY, JSON.stringify({ ...readPrefs(), ...patch })); } catch { /* 忽略 */ }
+  };
+  const prefs = readPrefs();
+
   const ta = root.querySelector('#ta');
   const gutter = root.querySelector('#gutter');
   const preview = root.querySelector('#preview');
@@ -290,11 +298,17 @@ export default function render(root) {
   ta.addEventListener('input', () => { persist(); });
 
   ta.addEventListener('input', update);
+  let syncing = false;
   ta.addEventListener('scroll', () => {
     gutter.scrollTop = ta.scrollTop;
-    if (!root.querySelector('#syncScroll').checked) return;
-    const p = ta.scrollTop / Math.max(1, ta.scrollHeight - ta.clientHeight);
-    preview.scrollTop = p * (preview.scrollHeight - preview.clientHeight);
+    const chk = root.querySelector('#syncScroll');
+    if (!chk || !chk.checked || syncing) return;
+    const max = ta.scrollHeight - ta.clientHeight;
+    if (max <= 0) return;
+    const p = ta.scrollTop / max;
+    syncing = true;
+    preview.scrollTop = p * Math.max(0, preview.scrollHeight - preview.clientHeight);
+    requestAnimationFrame(() => { syncing = false; });
   });
   ta.addEventListener('keyup', () => {
     const upto = ta.value.slice(0, ta.selectionStart);
@@ -404,14 +418,20 @@ export default function render(root) {
   });
 
   // 字号 / 行宽
-  root.querySelector('#fontSize').addEventListener('change', (e) => {
-    ta.style.fontSize = e.target.value + 'px';
-    preview.style.fontSize = e.target.value + 'px';
-  });
-  root.querySelector('#lineWidth').addEventListener('change', (e) => {
-    preview.style.maxWidth = e.target.value + 'px';
-    preview.style.margin = '0 auto';
-  });
+  const fsSel = root.querySelector('#fontSize');
+  const lwSel = root.querySelector('#lineWidth');
+  const syncChk = root.querySelector('#syncScroll');
+
+  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; };
+  const applyLineWidth = (v) => { preview.style.maxWidth = v + 'px'; preview.style.margin = '0 auto'; };
+
+  if (prefs.fontSize) { fsSel.value = String(prefs.fontSize); applyFontSize(prefs.fontSize); }
+  if (prefs.lineWidth) { lwSel.value = String(prefs.lineWidth); applyLineWidth(prefs.lineWidth); }
+  if (typeof prefs.syncScroll === 'boolean') syncChk.checked = prefs.syncScroll;
+
+  fsSel.addEventListener('change', (e) => { applyFontSize(e.target.value); savePrefs({ fontSize: Number(e.target.value) }); });
+  lwSel.addEventListener('change', (e) => { applyLineWidth(e.target.value); savePrefs({ lineWidth: Number(e.target.value) }); });
+  syncChk.addEventListener('change', (e) => savePrefs({ syncScroll: e.target.checked }));
 
   // 移动端标签切换
   root.querySelectorAll('.editor__tab').forEach((tab) => {

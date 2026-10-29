@@ -43,8 +43,19 @@ export default function render(root, params) {
     return THEMES.filter((t) => state.group === 'all' || (t.group || 'misc') === state.group);
   }
 
-  function paint() {
+  function paint(animate) {
     const list = visible();
+    if (animate) {
+      grid.classList.add('is-switching');
+      setTimeout(() => {
+        grid.classList.remove('is-switching');
+        [...grid.children].forEach((c, i) => c.style.setProperty('--d', Math.min(i, 24) * 18 + 'ms'));
+      }, 120);
+    }
+    root.querySelectorAll('.theme-card').forEach((c) => {
+      const n = c.querySelector('.theme-card__note');
+      if (n && !n.dataset.group) n.dataset.group = n.textContent;
+    });
     count.textContent = '显示 ' + list.length + ' / ' + THEMES.length + ' 套';
     const dark = document.documentElement.getAttribute('data-mode') === 'dark';
     grid.innerHTML = list.map((t) => {
@@ -72,10 +83,25 @@ export default function render(root, params) {
   }
 
   root.addEventListener('input', (e) => {
-    if (e.target.id === 'themeSearch') { state.q = e.target.value; paint(); }
+    if (e.target.id === 'themeSearch') { state.q = e.target.value; paint(true); }
   });
 
   root.addEventListener('click', async (e) => {
+    // 整卡可点：点任意位置即应用（不再必须点「应用」）
+    const cardEl = e.target.closest('.theme-card');
+    if (cardEl && !e.target.closest('[data-copy]')) {
+      const k = cardEl.dataset.key;
+      apply(k);
+      toast('已应用 ' + k);
+      root.querySelectorAll('.theme-card').forEach((c) => {
+        const on = c.dataset.key === get();
+        c.classList.toggle('is-on', on);
+        c.setAttribute('aria-current', String(on));
+        const note = c.querySelector('.theme-card__note');
+        if (note) note.textContent = on ? '正在使用' : (note.dataset.group || note.textContent);
+      });
+      return;
+    }
     const chip = e.target.closest('[data-g]');
     if (chip) {
       state.group = chip.getAttribute('data-g');
@@ -84,7 +110,7 @@ export default function render(root, params) {
         c.classList.toggle('is-on', on);
         c.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-      paint();
+      paint(true);
       return;
     }
     const a = e.target.closest('[data-apply]');
@@ -108,5 +134,6 @@ export default function render(root, params) {
     }
   });
 
-  paint();
+  paint(false);
+  [...grid.children].forEach((c, i) => c.style.setProperty('--d', Math.min(i, 24) * 18 + 'ms'));
 }
