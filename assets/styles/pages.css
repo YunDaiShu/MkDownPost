@@ -153,3 +153,10 @@
   .theme-strip { grid-template-columns: 1fr 1fr; }
   .theme-strip .theme-chip:nth-child(n+7) { display: none; }
 }
+
+/* CTA_FIT：移动端按钮文案不折行；≤400px 各占一行 */
+.hero__cta .btn { white-space: nowrap; }
+@media (max-width: 400px) {
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta .btn { width: 100%; }
+}
