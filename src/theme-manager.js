@@ -2,8 +2,8 @@
    优先级：?theme= → localStorage → 系统偏好；切换 200ms 过渡、不刷新、不闪屏。
    暴露 window.themes 便于控制台调试。 */
 
-import { THEMES, themeMeta } from '../data/themes.js?v=vmvtm7iqv';
-import { clearCustom, reapplyCustomIfActive } from './theme-custom.js?v=vmvtm7iqv';
+import { THEMES, themeMeta } from '../data/themes.js?v=vmvtm9v92';
+import { clearCustom, reapplyCustomIfActive } from './theme-custom.js?v=vmvtm9v92';
 
 const KEY_THEME = 'mdp:v1:theme';
 const KEY_MODE = 'mdp:v1:mode';

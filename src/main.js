@@ -1,10 +1,10 @@
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
 import { defineRoute, setNotFound, startRouter , prefetchRoute } from './router.js';
-import * as Themes from './theme-manager.js?v=vmvtm7iqv';
-import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvtm7iqv';
-import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvtm7iqv';
-import { cycle as cycleTheme } from './theme-manager.js?v=vmvtm7iqv';
+import * as Themes from './theme-manager.js?v=vmvtm9v92';
+import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvtm9v92';
+import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvtm9v92';
+import { cycle as cycleTheme } from './theme-manager.js?v=vmvtm9v92';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -25,13 +25,13 @@ function applyMode(pref) {
 }
 
 /* ---------- 路由表（页面模块在 M6 补全，当前为占位） ---------- */
-defineRoute('/', () => import('./pages/home.js?v=vmvtm7iqv'), () => 'MkDownPost · 码稿');
-defineRoute('/editor', () => import('./pages/editor.js?v=vmvtm7iqv'), () => '编辑器 · MkDownPost');
-defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvtm7iqv'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
-defineRoute('/themes', () => import('./pages/themes.js?v=vmvtm7iqv'), () => '主题库 · MkDownPost');
-defineRoute('/articles', () => import('./pages/articles.js?v=vmvtm7iqv'), () => '全部内容 · MkDownPost');
-defineRoute('/about', () => import('./pages/about.js?v=vmvtm7iqv'), () => '关于 · MkDownPost');
-setNotFound(() => import('./pages/notfound.js?v=vmvtm7iqv'), '页面不存在 · MkDownPost');
+defineRoute('/', () => import('./pages/home.js?v=vmvtm9v92'), () => 'MkDownPost · 码稿');
+defineRoute('/editor', () => import('./pages/editor.js?v=vmvtm9v92'), () => '编辑器 · MkDownPost');
+defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvtm9v92'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+defineRoute('/themes', () => import('./pages/themes.js?v=vmvtm9v92'), () => '主题库 · MkDownPost');
+defineRoute('/articles', () => import('./pages/articles.js?v=vmvtm9v92'), () => '全部内容 · MkDownPost');
+defineRoute('/about', () => import('./pages/about.js?v=vmvtm9v92'), () => '关于 · MkDownPost');
+setNotFound(() => import('./pages/notfound.js?v=vmvtm9v92'), '页面不存在 · MkDownPost');
 
 /* ---------- 启动 ---------- */
 function boot() {
@@ -97,6 +97,11 @@ document.addEventListener('pointerenter', (e) => {
 
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
 idle(() => {
-  // 文章与编辑器都要用到渲染器：空闲时提前把渲染器与 Markdown 引擎装好
-  import('./markdown/renderer.js').then(() => true).catch(() => {});
+  const href = location.hash || '#/';
+  // 只在首页/全部内容/主题库这类"浏览型"页面预热，避免编辑器首帧抢带宽
+  if (!/^#\/(articles|themes)?(\?|$)/.test(href)) return;
+  Promise.all([
+    import('./markdown/renderer.js').catch(() => null),
+    import('./markdown/vendor-loader.js').then((m) => m.ensureRenderers()).catch(() => null)
+  ]);
 });
