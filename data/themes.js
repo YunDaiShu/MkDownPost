@@ -4,7 +4,7 @@ import { GENERATED } from './themes.generated.js';
 
 /** 手调 8 套（品牌色人工校对） */
 const HAND = [
-  { key: 'deepseek',    name: 'DeepSeek 蓝鲸', group: 'ai',      brand: { light: '#4A7CF7', dark: '#7AA2FF' }, note: '科技、亲和、克制' },
+  { key: 'deepseek',    name: 'DeepSeek', group: 'ai',      brand: { light: '#4A7CF7', dark: '#7AA2FF' }, note: '科技、亲和、克制' },
   { key: 'wechat',      name: '微信',          group: 'social',  brand: { light: '#07C160', dark: '#3DDC84' }, note: '清爽、工具感' },
   { key: 'taptap',      name: 'TapTap',        group: 'game',    brand: { light: '#15C5CE', dark: '#3FD8DF' }, note: '活泼、游戏向' },
   { key: 'heybox',      name: '小黑盒',        group: 'game',    brand: { light: '#22262B', dark: '#E7E9EC' }, note: '暗黑、硬核（官方近黑）' },

@@ -70,5 +70,41 @@
     "excerpt": "草稿只存在浏览器：断网能写、没有账号，也不会被上传。",
     "date": "2026-10-25",
     "readingTime": 2
+  },
+  {
+    "slug": "markdown-what-is",
+    "title": "Markdown 是什么：定义、起源与设计哲学",
+    "tags": [
+      "入门",
+      "概念"
+    ],
+    "featured": true,
+    "date": "2026-10-26",
+    "readingTime": 8,
+    "excerpt": "从 John Gruber 2004 年的设计初衷讲起：为什么它可读、为什么它活下来、它适合与不适合什么。"
+  },
+  {
+    "slug": "markdown-syntax-guide",
+    "title": "Markdown 语法全解（含示例与坑）",
+    "tags": [
+      "语法",
+      "速查"
+    ],
+    "featured": true,
+    "date": "2026-10-27",
+    "readingTime": 12,
+    "excerpt": "标题到公式的 14 类语法示例，附 6 条常见坑与处理方式，可直接抄。"
+  },
+  {
+    "slug": "markdown-ecosystem",
+    "title": "Markdown 生态：标准、方言与发布路径",
+    "tags": [
+      "生态",
+      "平台"
+    ],
+    "featured": true,
+    "date": "2026-10-28",
+    "readingTime": 9,
+    "excerpt": "CommonMark 与 GFM 的区别、一份 Markdown 的五条发布路径、六大平台的实务差异。"
   }
 ]

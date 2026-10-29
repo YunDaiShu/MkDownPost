@@ -145,6 +145,14 @@ const SEEDS = [
   ['xiaomi', '小米', 'system', '#FF6900', '#FF9A4D']
 ];
 
+const GROUP_NOTE = {
+  dev: '开发者、克制', system: '系统感、干净', browser: '轻快、工具感',
+  design: '设计、明亮', social: '社交、活泼', cn: '国内、实用',
+  game: '游戏、硬核', media: '媒体、强烈', lang: '语言、技术',
+  framework: '框架、工程', tool: '工具、效率', cms: '建站、内容',
+  infra: '基建、冷静', misc: '中性、通用'
+};
+
 const hex2rgb = (h) => { const s = h.replace('#', ''); return [0, 2, 4].map((i) => parseInt(s.slice(i, i + 2), 16)); };
 const rgb2hex = (r, g, b) => '#' + [r, g, b].map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('').toUpperCase();
 const mix = (a, b, t) => { const A = hex2rgb(a), B = hex2rgb(b); return rgb2hex(A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, A[2] + (B[2] - A[2]) * t); };
@@ -193,7 +201,7 @@ for (const [key, name, group, l, d] of SEEDS.slice(0, 92)) {
     const r = Math.min(ratio(v['--c-text'], v['--c-bg']), ratio(v['--c-primary-text'], v['--c-bg']));
     worst = Math.min(worst, r);
   }
-  meta.push({ key, name, group, brand: { light: l, dark: d }, note: name + ' 品牌色（近似取色）' });
+  meta.push({ key, name, group, brand: { light: l, dark: d }, note: GROUP_NOTE[group] || '品牌色（近似取色）' });
 }
 
 fs.writeFileSync(path.join(ROOT, 'assets/styles/themes.generated.css'), css.join('\n') + '\n');

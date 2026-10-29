@@ -8,7 +8,7 @@ export const GENERATED = [
       "light": "#007ACC",
       "dark": "#4DA6FF"
     },
-    "note": "VS Code 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "notion",
@@ -18,7 +18,7 @@ export const GENERATED = [
       "light": "#37352F",
       "dark": "#E8E8E6"
     },
-    "note": "Notion 品牌色（近似取色）"
+    "note": "工具、效率"
   },
   {
     "key": "figma",
@@ -28,7 +28,7 @@ export const GENERATED = [
       "light": "#F24E1E",
       "dark": "#FF7A5C"
     },
-    "note": "Figma 品牌色（近似取色）"
+    "note": "工具、效率"
   },
   {
     "key": "linear",
@@ -38,7 +38,7 @@ export const GENERATED = [
       "light": "#5E6AD2",
       "dark": "#8B96FF"
     },
-    "note": "Linear 品牌色（近似取色）"
+    "note": "工具、效率"
   },
   {
     "key": "vercel",
@@ -48,7 +48,7 @@ export const GENERATED = [
       "light": "#000000",
       "dark": "#FFFFFF"
     },
-    "note": "Vercel 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "nextjs",
@@ -58,7 +58,7 @@ export const GENERATED = [
       "light": "#000000",
       "dark": "#FFFFFF"
     },
-    "note": "Next.js 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "tailwind",
@@ -68,7 +68,7 @@ export const GENERATED = [
       "light": "#38BDF8",
       "dark": "#7DD3FC"
     },
-    "note": "Tailwind 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "vite",
@@ -78,7 +78,7 @@ export const GENERATED = [
       "light": "#646CFF",
       "dark": "#9AA0FF"
     },
-    "note": "Vite 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "rust",
@@ -88,7 +88,7 @@ export const GENERATED = [
       "light": "#B7410E",
       "dark": "#E07A50"
     },
-    "note": "Rust 品牌色（近似取色）"
+    "note": "语言、技术"
   },
   {
     "key": "go",
@@ -98,7 +98,7 @@ export const GENERATED = [
       "light": "#00ADD8",
       "dark": "#5CD5F0"
     },
-    "note": "Go 品牌色（近似取色）"
+    "note": "语言、技术"
   },
   {
     "key": "python",
@@ -108,7 +108,7 @@ export const GENERATED = [
       "light": "#3776AB",
       "dark": "#6FA8DC"
     },
-    "note": "Python 品牌色（近似取色）"
+    "note": "语言、技术"
   },
   {
     "key": "typescript",
@@ -118,7 +118,7 @@ export const GENERATED = [
       "light": "#3178C6",
       "dark": "#69A8E8"
     },
-    "note": "TypeScript 品牌色（近似取色）"
+    "note": "语言、技术"
   },
   {
     "key": "apple",
@@ -128,7 +128,7 @@ export const GENERATED = [
       "light": "#0071E3",
       "dark": "#5AA6F0"
     },
-    "note": "Apple 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "material",
@@ -138,7 +138,7 @@ export const GENERATED = [
       "light": "#6750A4",
       "dark": "#9B86D9"
     },
-    "note": "Material 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "bootstrap",
@@ -148,7 +148,7 @@ export const GENERATED = [
       "light": "#7952B3",
       "dark": "#A98EDB"
     },
-    "note": "Bootstrap 品牌色（近似取色）"
+    "note": "框架、工程"
   },
   {
     "key": "discord",
@@ -158,7 +158,7 @@ export const GENERATED = [
       "light": "#5865F2",
       "dark": "#8B94FF"
     },
-    "note": "Discord 品牌色（近似取色）"
+    "note": "社交、活泼"
   },
   {
     "key": "slack",
@@ -168,7 +168,7 @@ export const GENERATED = [
       "light": "#4A154B",
       "dark": "#C77DD1"
     },
-    "note": "Slack 品牌色（近似取色）"
+    "note": "社交、活泼"
   },
   {
     "key": "telegram",
@@ -178,7 +178,7 @@ export const GENERATED = [
       "light": "#0088CC",
       "dark": "#4FB6E8"
     },
-    "note": "Telegram 品牌色（近似取色）"
+    "note": "社交、活泼"
   },
   {
     "key": "youtube",
@@ -188,7 +188,7 @@ export const GENERATED = [
       "light": "#FF0000",
       "dark": "#FF6B6B"
     },
-    "note": "YouTube 品牌色（近似取色）"
+    "note": "媒体、强烈"
   },
   {
     "key": "netflix",
@@ -198,7 +198,7 @@ export const GENERATED = [
       "light": "#E50914",
       "dark": "#FF5A63"
     },
-    "note": "Netflix 品牌色（近似取色）"
+    "note": "媒体、强烈"
   },
   {
     "key": "spotify",
@@ -208,7 +208,7 @@ export const GENERATED = [
       "light": "#1DB954",
       "dark": "#5BE58C"
     },
-    "note": "Spotify 品牌色（近似取色）"
+    "note": "媒体、强烈"
   },
   {
     "key": "steam",
@@ -218,7 +218,7 @@ export const GENERATED = [
       "light": "#171A21",
       "dark": "#7BA7D7"
     },
-    "note": "Steam 品牌色（近似取色）"
+    "note": "游戏、硬核"
   },
   {
     "key": "playstation",
@@ -228,7 +228,7 @@ export const GENERATED = [
       "light": "#003791",
       "dark": "#4A7FD4"
     },
-    "note": "PlayStation 品牌色（近似取色）"
+    "note": "游戏、硬核"
   },
   {
     "key": "xbox",
@@ -238,7 +238,7 @@ export const GENERATED = [
       "light": "#107C10",
       "dark": "#5BC15B"
     },
-    "note": "Xbox 品牌色（近似取色）"
+    "note": "游戏、硬核"
   },
   {
     "key": "nintendo",
@@ -248,7 +248,7 @@ export const GENERATED = [
       "light": "#E60012",
       "dark": "#FF5B66"
     },
-    "note": "Nintendo 品牌色（近似取色）"
+    "note": "游戏、硬核"
   },
   {
     "key": "miui",
@@ -258,7 +258,7 @@ export const GENERATED = [
       "light": "#FF6900",
       "dark": "#FF9A4D"
     },
-    "note": "MIUI 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "harmonyos",
@@ -268,7 +268,7 @@ export const GENERATED = [
       "light": "#007DFF",
       "dark": "#5FAEFF"
     },
-    "note": "HarmonyOS 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "windows",
@@ -278,7 +278,7 @@ export const GENERATED = [
       "light": "#0078D4",
       "dark": "#4FA3E8"
     },
-    "note": "Windows 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "chrome",
@@ -288,7 +288,7 @@ export const GENERATED = [
       "light": "#4285F4",
       "dark": "#7AAAF8"
     },
-    "note": "Chrome 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "firefox",
@@ -298,7 +298,7 @@ export const GENERATED = [
       "light": "#FF7139",
       "dark": "#FFA07A"
     },
-    "note": "Firefox 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "safari",
@@ -308,7 +308,7 @@ export const GENERATED = [
       "light": "#006CFF",
       "dark": "#5AA0FF"
     },
-    "note": "Safari 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "dribbble",
@@ -318,7 +318,7 @@ export const GENERATED = [
       "light": "#EA4C89",
       "dark": "#FF80B0"
     },
-    "note": "Dribbble 品牌色（近似取色）"
+    "note": "设计、明亮"
   },
   {
     "key": "behance",
@@ -328,7 +328,7 @@ export const GENERATED = [
       "light": "#1769FF",
       "dark": "#5A96FF"
     },
-    "note": "Behance 品牌色（近似取色）"
+    "note": "设计、明亮"
   },
   {
     "key": "medium",
@@ -338,7 +338,7 @@ export const GENERATED = [
       "light": "#000000",
       "dark": "#FFFFFF"
     },
-    "note": "Medium 品牌色（近似取色）"
+    "note": "媒体、强烈"
   },
   {
     "key": "substack",
@@ -348,7 +348,7 @@ export const GENERATED = [
       "light": "#FF6719",
       "dark": "#FF9A63"
     },
-    "note": "Substack 品牌色（近似取色）"
+    "note": "媒体、强烈"
   },
   {
     "key": "wordpress",
@@ -358,7 +358,7 @@ export const GENERATED = [
       "light": "#21759B",
       "dark": "#5AA3C4"
     },
-    "note": "WordPress 品牌色（近似取色）"
+    "note": "建站、内容"
   },
   {
     "key": "ghost",
@@ -368,7 +368,7 @@ export const GENERATED = [
       "light": "#15171A",
       "dark": "#9CA3AF"
     },
-    "note": "Ghost 品牌色（近似取色）"
+    "note": "建站、内容"
   },
   {
     "key": "juejin",
@@ -378,7 +378,7 @@ export const GENERATED = [
       "light": "#1E80FF",
       "dark": "#5CA6FF"
     },
-    "note": "掘金 品牌色（近似取色）"
+    "note": "国内、实用"
   },
   {
     "key": "csdn",
@@ -388,7 +388,7 @@ export const GENERATED = [
       "light": "#FC5531",
       "dark": "#FF8A70"
     },
-    "note": "CSDN 品牌色（近似取色）"
+    "note": "国内、实用"
   },
   {
     "key": "oschina",
@@ -398,7 +398,7 @@ export const GENERATED = [
       "light": "#1E9E49",
       "dark": "#57C97C"
     },
-    "note": "开源中国 品牌色（近似取色）"
+    "note": "国内、实用"
   },
   {
     "key": "gitee",
@@ -408,7 +408,7 @@ export const GENERATED = [
       "light": "#C71D23",
       "dark": "#F05A5F"
     },
-    "note": "Gitee 品牌色（近似取色）"
+    "note": "国内、实用"
   },
   {
     "key": "cloudflare",
@@ -418,7 +418,7 @@ export const GENERATED = [
       "light": "#F38020",
       "dark": "#FFA866"
     },
-    "note": "Cloudflare 品牌色（近似取色）"
+    "note": "基建、冷静"
   },
   {
     "key": "arc",
@@ -428,7 +428,7 @@ export const GENERATED = [
       "light": "#FCBF00",
       "dark": "#FFD84D"
     },
-    "note": "Arc 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "brave",
@@ -438,7 +438,7 @@ export const GENERATED = [
       "light": "#FB542B",
       "dark": "#FF8763"
     },
-    "note": "Brave 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "opera",
@@ -448,7 +448,7 @@ export const GENERATED = [
       "light": "#FF1B2D",
       "dark": "#FF5A66"
     },
-    "note": "Opera 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "vivaldi",
@@ -458,7 +458,7 @@ export const GENERATED = [
       "light": "#EF3939",
       "dark": "#FF6B6B"
     },
-    "note": "Vivaldi 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "edge",
@@ -468,7 +468,7 @@ export const GENERATED = [
       "light": "#0F6CBD",
       "dark": "#4F9BE0"
     },
-    "note": "Edge 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "torbrowser",
@@ -478,7 +478,7 @@ export const GENERATED = [
       "light": "#7D4698",
       "dark": "#A87CC0"
     },
-    "note": "Tor 品牌色（近似取色）"
+    "note": "轻快、工具感"
   },
   {
     "key": "ubuntu",
@@ -488,7 +488,7 @@ export const GENERATED = [
       "light": "#E95420",
       "dark": "#FF8B5C"
     },
-    "note": "Ubuntu 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "fedora",
@@ -498,7 +498,7 @@ export const GENERATED = [
       "light": "#51A2DA",
       "dark": "#7FBEEA"
     },
-    "note": "Fedora 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "debian",
@@ -508,7 +508,7 @@ export const GENERATED = [
       "light": "#A80030",
       "dark": "#D63B5F"
     },
-    "note": "Debian 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "archlinux",
@@ -518,7 +518,7 @@ export const GENERATED = [
       "light": "#1793D1",
       "dark": "#4FB4E3"
     },
-    "note": "Arch Linux 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "linuxmint",
@@ -528,7 +528,7 @@ export const GENERATED = [
       "light": "#86BE43",
       "dark": "#A9D46F"
     },
-    "note": "Linux Mint 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "redhat",
@@ -538,7 +538,7 @@ export const GENERATED = [
       "light": "#EE0000",
       "dark": "#FF5252"
     },
-    "note": "Red Hat 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "android",
@@ -548,7 +548,7 @@ export const GENERATED = [
       "light": "#3DDC84",
       "dark": "#6EE7A5"
     },
-    "note": "Android 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "ios",
@@ -558,7 +558,7 @@ export const GENERATED = [
       "light": "#007AFF",
       "dark": "#4FA8FF"
     },
-    "note": "iOS 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "macos",
@@ -568,7 +568,7 @@ export const GENERATED = [
       "light": "#1D1D1F",
       "dark": "#A1A1A6"
     },
-    "note": "macOS 品牌色（近似取色）"
+    "note": "系统感、干净"
   },
   {
     "key": "electron",
@@ -578,7 +578,7 @@ export const GENERATED = [
       "light": "#47848F",
       "dark": "#6FA9B2"
     },
-    "note": "Electron 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "tauri",
@@ -588,7 +588,7 @@ export const GENERATED = [
       "light": "#FFC131",
       "dark": "#FFD766"
     },
-    "note": "Tauri 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "svelte",
@@ -598,7 +598,7 @@ export const GENERATED = [
       "light": "#FF3E00",
       "dark": "#FF7043"
     },
-    "note": "Svelte 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "vue",
@@ -608,7 +608,7 @@ export const GENERATED = [
       "light": "#41B883",
       "dark": "#6ED0A2"
     },
-    "note": "Vue 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "reactjs",
@@ -618,7 +618,7 @@ export const GENERATED = [
       "light": "#61DAFB",
       "dark": "#9BE7FC"
     },
-    "note": "React 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "angular",
@@ -628,7 +628,7 @@ export const GENERATED = [
       "light": "#DD0031",
       "dark": "#FF5A78"
     },
-    "note": "Angular 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "nuxt",
@@ -638,7 +638,7 @@ export const GENERATED = [
       "light": "#00DC82",
       "dark": "#57E8A6"
     },
-    "note": "Nuxt 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "remix",
@@ -648,7 +648,7 @@ export const GENERATED = [
       "light": "#3992FF",
       "dark": "#78B4FF"
     },
-    "note": "Remix 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "astro",
@@ -658,7 +658,7 @@ export const GENERATED = [
       "light": "#BC52EE",
       "dark": "#D186F5"
     },
-    "note": "Astro 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "deno",
@@ -668,7 +668,7 @@ export const GENERATED = [
       "light": "#70FFAF",
       "dark": "#A6FFCA"
     },
-    "note": "Deno 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "bun",
@@ -678,7 +678,7 @@ export const GENERATED = [
       "light": "#FBF0DF",
       "dark": "#FFFFFF"
     },
-    "note": "Bun 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "webpack",
@@ -688,7 +688,7 @@ export const GENERATED = [
       "light": "#8DD6F9",
       "dark": "#B3E5FB"
     },
-    "note": "webpack 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "rollup",
@@ -698,7 +698,7 @@ export const GENERATED = [
       "light": "#EC4A3F",
       "dark": "#FF7C73"
     },
-    "note": "Rollup 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "esbuild",
@@ -708,7 +708,7 @@ export const GENERATED = [
       "light": "#FFCF00",
       "dark": "#FFE04D"
     },
-    "note": "esbuild 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "swc",
@@ -718,7 +718,7 @@ export const GENERATED = [
       "light": "#22C55E",
       "dark": "#5CE58C"
     },
-    "note": "SWC 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "jest",
@@ -728,7 +728,7 @@ export const GENERATED = [
       "light": "#C21325",
       "dark": "#E8576A"
     },
-    "note": "Jest 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "vitest",
@@ -738,7 +738,7 @@ export const GENERATED = [
       "light": "#729B1B",
       "dark": "#9BC44B"
     },
-    "note": "Vitest 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "playwright",
@@ -748,7 +748,7 @@ export const GENERATED = [
       "light": "#2EAD33",
       "dark": "#5FCB63"
     },
-    "note": "Playwright 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "cypress",
@@ -758,7 +758,7 @@ export const GENERATED = [
       "light": "#17202C",
       "dark": "#4A5866"
     },
-    "note": "Cypress 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "storybook",
@@ -768,7 +768,7 @@ export const GENERATED = [
       "light": "#FF4785",
       "dark": "#FF7BA6"
     },
-    "note": "Storybook 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "chromatic",
@@ -778,7 +778,7 @@ export const GENERATED = [
       "light": "#FF4400",
       "dark": "#FF7A4D"
     },
-    "note": "Chromatic 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "sass",
@@ -788,7 +788,7 @@ export const GENERATED = [
       "light": "#CC6699",
       "dark": "#E595B8"
     },
-    "note": "Sass 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "less",
@@ -798,7 +798,7 @@ export const GENERATED = [
       "light": "#1D365D",
       "dark": "#4C6B8F"
     },
-    "note": "Less 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "postcss",
@@ -808,7 +808,7 @@ export const GENERATED = [
       "light": "#DD3A0A",
       "dark": "#FF6B3D"
     },
-    "note": "PostCSS 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "prisma",
@@ -818,7 +818,7 @@ export const GENERATED = [
       "light": "#2D3748",
       "dark": "#5A6B82"
     },
-    "note": "Prisma 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "drizzle",
@@ -828,7 +828,7 @@ export const GENERATED = [
       "light": "#C5F74F",
       "dark": "#D9FA8A"
     },
-    "note": "Drizzle 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "supabase",
@@ -838,7 +838,7 @@ export const GENERATED = [
       "light": "#3ECF8E",
       "dark": "#74E5B3"
     },
-    "note": "Supabase 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "firebase",
@@ -848,7 +848,7 @@ export const GENERATED = [
       "light": "#FFCA28",
       "dark": "#FFDA6B"
     },
-    "note": "Firebase 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "mongodb",
@@ -858,7 +858,7 @@ export const GENERATED = [
       "light": "#47A248",
       "dark": "#77C878"
     },
-    "note": "MongoDB 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "postgresql",
@@ -868,7 +868,7 @@ export const GENERATED = [
       "light": "#4169E1",
       "dark": "#7A98F0"
     },
-    "note": "PostgreSQL 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "redis",
@@ -878,7 +878,7 @@ export const GENERATED = [
       "light": "#DC382D",
       "dark": "#FF6B62"
     },
-    "note": "Redis 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "mysql",
@@ -888,7 +888,7 @@ export const GENERATED = [
       "light": "#00758F",
       "dark": "#3FA5BF"
     },
-    "note": "MySQL 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "sqlite",
@@ -898,7 +898,7 @@ export const GENERATED = [
       "light": "#003B57",
       "dark": "#3A7590"
     },
-    "note": "SQLite 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "docker",
@@ -908,7 +908,7 @@ export const GENERATED = [
       "light": "#2496ED",
       "dark": "#62B6F5"
     },
-    "note": "Docker 品牌色（近似取色）"
+    "note": "开发者、克制"
   },
   {
     "key": "kubernetes",
@@ -918,6 +918,6 @@ export const GENERATED = [
       "light": "#326CE5",
       "dark": "#6D9BF0"
     },
-    "note": "Kubernetes 品牌色（近似取色）"
+    "note": "开发者、克制"
   }
 ];
