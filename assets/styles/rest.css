@@ -314,8 +314,13 @@
 
 /* game 组：标题带前缀方块 + 引用右侧色块 */
 [data-theme-group="game"] .markdown-body h2 { border-left: 0; padding-left: var(--sp-5); position: relative; }
+[data-theme-group="game"] .markdown-body h2 {
+  position: relative;
+  border-left: 0;
+  padding-left: 20px;          /* 给菱形留位置，避免压住第一个字 */
+}
 [data-theme-group="game"] .markdown-body h2::before {
-  content: ''; position: absolute; left: 0; top: .28em; width: 10px; height: 10px;
+  content: ''; position: absolute; left: 2px; top: .42em; width: 9px; height: 9px;
   background: var(--c-primary); border-radius: 2px; transform: rotate(45deg);
 }
 [data-theme-group="game"] .markdown-body blockquote { border-left-width: 3px; border-right: 3px solid var(--c-primary-soft); }
@@ -349,6 +354,12 @@
 .md-mermaid__btn:active { transform: scale(.97); }
 .md-mermaid__btn:disabled { opacity: .5; cursor: progress; }
 .md-mermaid__svg { overflow: auto; padding: var(--sp-2); background: var(--c-surface); border-radius: var(--r-2); }
+
+/* GROUP_DECOR_SAFE：所有分组的标题装饰都不得覆盖文字 */
+.markdown-body h2 { position: relative; }
+[data-theme-group="cn"] .markdown-body h2 { padding-left: var(--sp-4); }
+[data-theme-group="system"] .markdown-body h2 { padding-left: 0; }
+.markdown-body h2 .md-anchor { position: absolute; right: -14px; top: .1em; }
 
 /* ===== editor.css ===== */
 /* editor.css — 编辑器布局（主题变量驱动） */

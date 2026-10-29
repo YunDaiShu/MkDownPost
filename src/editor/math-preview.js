@@ -1,6 +1,6 @@
 /* src/editor/math-preview.js — 光标落在 $...$ / $$...$$ 里时，实时用 KaTeX 预览该公式
    不侵入编辑区排版：以浮动小卡片呈现，Esc / 移出公式即隐藏。 */
-import { loadKatex } from '../markdown/katex.js?v=vmvtotbl5';
+import { loadKatex } from '../markdown/katex.js?v=vmvtp05h5';
 
 const MATH = /(\$\$[\s\S]+?\$\$|\$[^$\n]+\$)/g;
 
