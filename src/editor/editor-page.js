@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtgbi2c';
-import { initSplitPane } from './split-pane.js?v=vmvtgbi2c';
-import { initShortcuts } from './shortcuts.js?v=vmvtgbi2c';
-import { initAutosave } from './autosave.js?v=vmvtgbi2c';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtgbi2c';
-import { toast } from '../components/theme-switcher.js?v=vmvtgbi2c';
-import { mountHighlight } from './highlight-layer.js?v=vmvtgbi2c';
-import { mountMathPreview } from './math-preview.js?v=vmvtgbi2c';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtgbi2c';
-import * as Adapters from '../adapters/index.js?v=vmvtgbi2c';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtge011';
+import { initSplitPane } from './split-pane.js?v=vmvtge011';
+import { initShortcuts } from './shortcuts.js?v=vmvtge011';
+import { initAutosave } from './autosave.js?v=vmvtge011';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdfRaster } from './export.js';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtge011';
+import { toast } from '../components/theme-switcher.js?v=vmvtge011';
+import { mountHighlight } from './highlight-layer.js?v=vmvtge011';
+import { mountMathPreview } from './math-preview.js?v=vmvtge011';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtge011';
+import * as Adapters from '../adapters/index.js?v=vmvtge011';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -444,7 +444,7 @@ export default function render(root) {
     if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
     if (b.dataset.exp === 'pdf') {
       toast('正在生成 PDF…');
-      exportPdf(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成文本 PDF（' + r2.pages + ' 页，可选中/搜索）') : ('PDF 失败：' + r2.reason)));
+      exportPdfRaster(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
     }
     if (b.dataset.exp === 'png') {
       toast('正在生成长图…');
