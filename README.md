@@ -103,7 +103,7 @@ node tools/shot.mjs "https://…/#/" 1920 1080 out.png '--waitFor=.card' '--eval
 MkDownPost/
 ├── index.html
 ├── assets/styles/    tokens / base / layout / components / themes / themes.generated / markdown / editor / pages
-├── content/          6 篇示例 Markdown
+├── content/              81 篇 Markdown（7 组：入门 / 语法 / 进阶 / 主题 / 方法 / 平台 / 本站）
 ├── content-index.json
 ├── data/             themes.js（50 套元数据）/ themes.generated.js
 ├── src/
@@ -183,7 +183,7 @@ index.html            单页外壳（所有 CSS 链接带 ?v= 版本戳，避免
 src/                  42 个 ES 模块（router / 页面 / 编辑器 / 渲染管线 / 适配器）
 assets/styles/        10 个 CSS（令牌 → 主题 → 布局 → 组件 → 页面）
 assets/img/demo.svg   唯一图片（其余全部文字/渐变绘制）
-content/              6 篇示例 Markdown
+content/        81 篇 Markdown（7 组）
 data/                 100 套主题元数据（8 手调 + 92 生成）
 tools/                8 个零依赖脚本（serve / shot / audit / vendor / gen-themes / lint / smoke / check-imports）
 vendor/               本地第三方库（运行时不联网）
