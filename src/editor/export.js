@@ -62,6 +62,7 @@ export function printDoc(container) {
   const w = window.open('', '_blank', 'width=900,height=1200');
   if (!w) return;
   w.document.write('<meta charset="utf-8"><title>打印</title><style>body{font:16px/1.8 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#111;margin:32px}img{max-width:100%}pre{background:#f6f8fa;padding:12px;border-radius:8px;overflow:auto}blockquote{border-left:3px solid #ccc;margin:16px 0;padding:8px 16px;color:#555}table{border-collapse:collapse}td,th{border:1px solid #ddd;padding:6px 10px}</style>');
+  w.document.write('<div class="hint">在打印对话框的「目标打印机」中选择「<b>另存为 PDF</b>」，再点保存。</div>');
   w.document.write(container.innerHTML);
   w.document.close();
   setTimeout(() => { w.focus(); w.print(); }, 300);
@@ -104,7 +105,10 @@ export function printDocWithTemplate(container, template = 'brand') {
   const brand = template === 'brand';
   const w = window.open('', '_blank', 'width=900,height=1200');
   if (!w) return;
-  w.document.write('<meta charset="utf-8"><title>打印</title><style>' +
+  w.document.write('<meta charset="utf-8"><title>导出 PDF · MkDownPost</title><style>' +
+    '.hint{position:fixed;left:0;right:0;top:0;padding:10px 16px;background:#fffbe6;border-bottom:1px solid #ffe58f;font-size:13px;color:#874d00;z-index:9}' +
+    '@media print{.hint{display:none}}' +
+    'body{padding-top:48px}' +
     'body{font:11pt/1.8 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:' + (brand ? v('--c-text') : '#111') + ';margin:32px;max-width:720px}' +
     'h1{font-size:20pt;' + (brand ? 'color:' + v('--c-primary-text') + ';' : '') + '}' +
     'h2{font-size:15pt;' + (brand ? 'color:' + v('--c-primary-text') + ';border-left:3px solid ' + v('--c-primary') + ';padding-left:8px;' : 'border-bottom:1px solid #ddd;padding-bottom:4px;') + '}' +

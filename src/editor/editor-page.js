@@ -100,8 +100,8 @@ export default function render(root) {
           <button role="menuitem" type="button" data-exp="md">下载 .md</button>
           <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
           <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
-          <button role="menuitem" type="button" data-exp="print">打印 / 存 PDF（主题色）</button>
-          <button role="menuitem" type="button" data-exp="print-min">打印 / 存 PDF（极简）</button>
+          <button role="menuitem" type="button" data-exp="print">导出 PDF（主题色）</button>
+          <button role="menuitem" type="button" data-exp="print-min">导出 PDF（极简黑白）</button>
           <button role="menuitem" type="button" data-exp="png">导出 PNG 长图</button>
           <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
@@ -411,8 +411,8 @@ export default function render(root) {
     exportBtn.setAttribute('aria-expanded', 'false');
     if (b.dataset.exp === 'md') { exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
     if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
-    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); }
-    if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); }
+    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
+    if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
     if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word（.doc）'); }
     if (b.dataset.exp === 'png') {
       toast('正在生成长图…');
