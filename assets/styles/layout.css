@@ -117,3 +117,8 @@
 @media (min-width: 1600px) {
   .shell:has(.editor) .app-header { padding-inline: var(--sp-7); }
 }
+
+/* EDITOR_HEADER_2000：超宽屏编辑器页头与工作台内边距保持一致 */
+@media (min-width: 2000px) {
+  .shell:has(.editor) .app-header { padding-inline: var(--sp-8); }
+}
