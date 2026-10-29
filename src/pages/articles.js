@@ -39,7 +39,7 @@ export default async function render(root, params) {
   let index = [];
   if (__indexCache) index = __indexCache;
   else {
-    try { index = await (await fetch('./content-index.json?c=vmvtq0vsa')).json(); __indexCache = index; } catch { index = []; }
+    try { index = await (await fetch('./content-index.json?c=vmvtq3j3f')).json(); __indexCache = index; } catch { index = []; }
   }
   const wantGroup = params && params.query && params.query.get ? params.query.get('g') : null;
 

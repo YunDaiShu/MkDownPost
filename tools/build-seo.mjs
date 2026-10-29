@@ -45,7 +45,9 @@ for (const a of index) {
   // 去掉正文里的首个 h1（页面已用 article__title 呈现）
   body = body.replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>/, '');
 
-  const related = index.filter((x) => x.slug !== a.slug && (x.tags || []).some((t) => (a.tags || []).includes(t))).slice(0, 5);
+  // 相关文章：优先同标签，不足 5 篇用其他文章补齐（保证静态页之间有内链）
+  const sameTag = index.filter((x) => x.slug !== a.slug && (x.tags || []).some((t) => (a.tags || []).includes(t)));
+  const related = sameTag.concat(index.filter((x) => x.slug !== a.slug && !sameTag.includes(x))).slice(0, 5);
   const url = SITE + '/a/' + a.slug + '.html';
 
   const jsonld = {
