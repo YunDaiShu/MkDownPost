@@ -108,3 +108,15 @@ a:active { transform: none; }   /* 文字链接不做缩放，避免抖动 */
   }
   button:active, .btn:active, .icon-btn:active, .seg__btn:active, .pcard:active, .theme-card:active { transform: none !important; }
 }
+
+/* NO_UNDERLINE：全站取消装饰性下划线（链接/按钮/页脚/标题） */
+a, a:hover, a:focus, a:active,
+.btn, .btn:hover, .btn--ghost:hover,
+.footer-legal a, .footer-legal a:hover,
+.hero__actions a, .hero__actions a:hover,
+.section__link, .section__link:hover,
+.nav a:hover, .tabs__item:hover {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+.markdown-body h2, .md-h2 { border-bottom: 0 !important; }

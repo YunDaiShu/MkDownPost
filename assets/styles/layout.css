@@ -123,5 +123,5 @@
   .shell:has(.editor) .app-header { padding-inline: var(--sp-8); }
 }
 
-.footer-legal a { color: var(--c-text-secondary); text-decoration: underline; }
+.footer-legal a { color: var(--c-text-secondary); }
 .footer-legal a:hover { color: var(--c-primary); }

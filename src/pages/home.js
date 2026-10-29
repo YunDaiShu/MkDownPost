@@ -1,7 +1,7 @@
 import { derivePalette } from '../theme-custom.js';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=vmvtjvxny';
+import { THEMES } from '../../data/themes.js?v=vmvtk96di';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -35,7 +35,7 @@ function buildChip(t) {
 
 export default async function render(root) {
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtjvxny')).json(); } catch { index = []; }
+  try { index = await (await fetch('./content-index.json?c=vmvtk96di')).json(); } catch { index = []; }
   const featured = index.filter((a) => a.featured).slice(0, 9);
 
   root.replaceChildren();

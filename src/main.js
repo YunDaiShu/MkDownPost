@@ -1,10 +1,10 @@
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
-import { defineRoute, setNotFound, startRouter } from './router.js?v=vmvtjvxny';
-import * as Themes from './theme-manager.js?v=vmvtjvxny';
-import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvtjvxny';
-import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvtjvxny';
-import { cycle as cycleTheme } from './theme-manager.js?v=vmvtjvxny';
+import { defineRoute, setNotFound, startRouter } from './router.js?v=vmvtk96di';
+import * as Themes from './theme-manager.js?v=vmvtk96di';
+import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvtk96di';
+import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvtk96di';
+import { cycle as cycleTheme } from './theme-manager.js?v=vmvtk96di';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -25,12 +25,12 @@ function applyMode(pref) {
 }
 
 /* ---------- 路由表（页面模块在 M6 补全，当前为占位） ---------- */
-defineRoute('/', () => import('./pages/home.js?v=vmvtjvxny'), () => 'MkDownPost · 码稿');
-defineRoute('/editor', () => import('./pages/editor.js?v=vmvtjvxny'), () => '编辑器 · MkDownPost');
-defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvtjvxny'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
-defineRoute('/themes', () => import('./pages/themes.js?v=vmvtjvxny'), () => '主题库 · MkDownPost');
-defineRoute('/about', () => import('./pages/about.js?v=vmvtjvxny'), () => '关于 · MkDownPost');
-setNotFound(() => import('./pages/notfound.js?v=vmvtjvxny'), '页面不存在 · MkDownPost');
+defineRoute('/', () => import('./pages/home.js?v=vmvtk96di'), () => 'MkDownPost · 码稿');
+defineRoute('/editor', () => import('./pages/editor.js?v=vmvtk96di'), () => '编辑器 · MkDownPost');
+defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvtk96di'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+defineRoute('/themes', () => import('./pages/themes.js?v=vmvtk96di'), () => '主题库 · MkDownPost');
+defineRoute('/about', () => import('./pages/about.js?v=vmvtk96di'), () => '关于 · MkDownPost');
+setNotFound(() => import('./pages/notfound.js?v=vmvtk96di'), '页面不存在 · MkDownPost');
 
 /* ---------- 启动 ---------- */
 function boot() {
