@@ -17,6 +17,8 @@ export function initShortcuts(ta, { onSave, onInsertCode, toast, onUndo } = {}) 
     if (mod && e.key.toLowerCase() === 'i') { e.preventDefault(); wrap('*', '*', '斜体'); return; }
     if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); wrap('[', '](https://)', '链接文字'); return; }
     if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); onSave && onSave(); return; }
+    if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); onUndo && onUndo(e.shiftKey); return; }
+    if (mod && e.key.toLowerCase() === 'y') { e.preventDefault(); onUndo && onUndo(true); return; }
     if (mod && e.key === '/') { e.preventDefault(); onInsertCode && onInsertCode(); return; }
     if (e.key === 'Tab') {
       e.preventDefault();
