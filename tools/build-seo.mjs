@@ -117,11 +117,10 @@ ${related.length ? '<nav class="related"><h2>相关文章</h2><ul>' + related.ma
 
 /* ---------- 2. sitemap.xml ---------- */
 const today = new Date().toISOString().slice(0, 10);
+/* 只收录"真实可访问、无 hash 片段"的 URL：
+   hash 路由（/#/themes 等）不是独立页面，sitemap 规范禁止带 #，会导致整份被拒 */
 const urls = [
-  { loc: SITE + '/', pri: '1.0', freq: 'weekly' },
-  { loc: SITE + '/#/themes', pri: '0.8', freq: 'monthly' },
-  { loc: SITE + '/#/articles', pri: '0.9', freq: 'weekly' },
-  { loc: SITE + '/#/about', pri: '0.4', freq: 'yearly' }
+  { loc: SITE + '/', pri: '1.0', freq: 'weekly' }
 ].concat(index.map((a) => ({ loc: SITE + '/a/' + a.slug + '.html', pri: '0.7', freq: 'monthly', lastmod: date(a.date) })));
 
 const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n' +
