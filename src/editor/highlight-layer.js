@@ -6,7 +6,16 @@ const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>':
 /** 极简 Markdown token 着色（不追求完整语法，只求可读的层次） */
 export function highlightMarkdown(src) {
   const lines = src.split('\n');
+  let inFence = false;
   const out = lines.map((line) => {
+    // 围栏：开/关行本身按代码色，中间整行也按代码色
+    const fence = /^\s*(`{3,}|~{3,})/.test(line);
+    if (fence) {
+      inFence = !inFence;
+      return '<span class="tok-codeblock">' + esc(line) + '</span>';
+    }
+    if (inFence) return '<span class="tok-codeblock">' + esc(line) + '</span>';
+
     // 围栏代码块内：整行按代码色
     let s = esc(line);
 

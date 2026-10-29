@@ -128,3 +128,9 @@
 .editor__hl .tok-hr { color: var(--c-border); }
 .editor__hl .tok-table { color: var(--c-success); }
 @media (max-width: 639px) { .editor__hl { font-size: 16px; left: 0; } }
+
+.editor__hl .tok-codeblock {
+  color: var(--c-warning);
+  background: color-mix(in srgb, var(--c-code-bg) 70%, transparent);
+  display: inline-block; width: 100%;
+}
