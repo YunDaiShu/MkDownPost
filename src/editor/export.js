@@ -255,228 +255,174 @@ export async function exportPdfRaster(container, name = 'draft') {
   }
 }
 
-/* ============ 真·文本 PDF（可选中 / 可搜索） ============
-   依赖本地子集字体 vendor/fonts/NotoSansSC-subset.ttf（GB2312 + 拉丁，约 2.1MB）
-   逐块排版：标题 / 段落 / 列表 / 引用 / 代码块 / 表格 / 图片 / 分隔线，自动分页加页码 */
-const PDF_FONT_URL = './vendor/fonts/NotoSansSC-subset.ttf';
-let pdfFontCache = null;
 
-async function loadPdfFontBase64() {
-  if (pdfFontCache) return pdfFontCache;
-  const res = await fetch(PDF_FONT_URL);
-  if (!res.ok) return null;
-  const buf = new Uint8Array(await res.arrayBuffer());
-  let bin = '';
-  const CHUNK = 0x8000;
-  for (let i = 0; i < buf.length; i += CHUNK) {
-    bin += String.fromCharCode.apply(null, buf.subarray(i, i + CHUNK));
-  }
-  pdfFontCache = btoa(bin);
-  return pdfFontCache;
-}
+/* ============ 真·文本 PDF（pdf-lib + 子集字体，含 ToUnicode，可选中/搜索） ============ */
+export async function exportPdf(container, name = 'draft') {
+  const okA = await loadScriptOnce('./vendor/pdf-lib.min.js');
+  const okB = await loadScriptOnce('./vendor/fontkit.umd.min.js');
+  if (!okA || !okB || !window.PDFLib) return { ok: false, reason: 'PDF 库未就绪（运行 node tools/vendor.mjs）' };
+  const fontBytes = await fetch('./vendor/fonts/NotoSansSC-subset.ttf').then((r) => (r.ok ? r.arrayBuffer() : null));
+  if (!fontBytes) return { ok: false, reason: '中文字体缺失（vendor/fonts/NotoSansSC-subset.ttf）' };
 
-export async function exportPdfText(container, name = 'draft', opts = {}) {
-  const okLib = await loadScriptOnce('./vendor/jspdf.umd.min.js');
-  if (!okLib || !window.jspdf) return { ok: false, reason: 'PDF 库未就绪（运行 node tools/vendor.mjs）' };
-  const fontB64 = await loadPdfFontBase64();
-  if (!fontB64) return { ok: false, reason: '中文字体未找到（vendor/fonts/NotoSansSC-subset.ttf）' };
+  const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+  if (window.fontkit) window.PDFLib.PDFDocument.registerFontkit(window.fontkit);
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
-  pdf.addFileToVFS('NotoSansSC.ttf', fontB64);
-  pdf.addFont('NotoSansSC.ttf', 'Noto', 'normal');
-  pdf.setFont('Noto', 'normal');
+  const pdf = await PDFDocument.create();
+  const font = await pdf.embedFont(fontBytes, { subset: true });
+  const bold = font;   // 子集只有常规字重，标题用字号区分
+  const black = rgb(0.07, 0.08, 0.09);
+  const gray = rgb(0.45, 0.47, 0.5);
+  const primary = rgb(0.13, 0.15, 0.17);
 
-  const cs = getComputedStyle(document.documentElement);
-  const v = (k) => cs.getPropertyValue(k).trim();
-  const ink = v('--c-text') || '#111111';
-  const pageW = pdf.internal.pageSize.getWidth();
-  const pageH = pdf.internal.pageSize.getHeight();
-  const M = opts.margin || 48;
-  const CW = pageW - M * 2;
-  let y = M;
+  const PW = 595.28, PH = 841.89, M = 48;
+  const CW = PW - M * 2;
+  let page = pdf.addPage([PW, PH]);
+  let y = PH - M;
   let pageNo = 1;
 
-  const footer = () => {
-    pdf.setFontSize(8);
-    pdf.setTextColor(150);
-    pdf.text(String(pageNo), pageW / 2, pageH - 20, { align: 'center' });
-    pdf.setTextColor(ink);
+  const stampFooter = () => {
+    page.drawText(String(pageNo), { x: PW / 2 - 3, y: 22, size: 8, font, color: gray });
   };
-  const newPage = () => { footer(); pdf.addPage(); pageNo++; y = M; };
-  const need = (h) => { if (y + h > pageH - M) newPage(); };
-  const write = (text, size, indent, lh, color) => {
-    pdf.setFontSize(size);
-    pdf.setTextColor(color || ink);
-    const maxW = CW - indent;
-    const rows = pdf.splitTextToSize(String(text || ''), maxW);
-    const lineH = size * (lh || 1.7);
-    for (const row of rows) { need(lineH); pdf.text(row, M + indent, y + size); y += lineH; }
+  const newPage = () => { stampFooter(); page = pdf.addPage([PW, PH]); pageNo++; y = PH - M; };
+  const need = (h) => { if (y - h < M) newPage(); };
+
+  // 手动断行（pdf-lib 的 widthOfTextAtSize + 逐字测量，兼容中文）
+  const wrap = (text, size, maxW) => {
+    const src = String(text || '').replace(/\r/g, '');
+    const lines = [];
+    for (const para of src.split('\n')) {
+      if (!para) { lines.push(''); continue; }
+      let cur = '';
+      for (const ch of para) {
+        const test = cur + ch;
+        if (font.widthOfTextAtSize(test, size) > maxW && cur) { lines.push(cur); cur = ch; }
+        else cur = test;
+      }
+      if (cur) lines.push(cur);
+    }
+    return lines.length ? lines : [''];
+  };
+
+  const drawLines = (lines, size, indent, lh, color) => {
+    for (const line of lines) {
+      need(lh);
+      if (line) page.drawText(line, { x: M + indent, y: y - size, size, font: bold, color: color || black });
+      y -= lh;
+    }
   };
 
   const root = container.cloneNode(true);
   root.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
 
-  const blocks = [...root.children];
-  for (const el of blocks) {
+  for (const el of [...root.children]) {
     const tag = el.tagName.toLowerCase();
 
     if (/^h[1-4]$/.test(tag)) {
-      const sizes = { h1: 20, h2: 15, h3: 13, h4: 12 };
-      y += tag === 'h1' ? 6 : 12;
-      need(sizes[tag] * 2);
-      write(el.textContent.trim(), sizes[tag], 0, 1.5, v('--c-primary-text') || ink);
-      y += 6;
+      const size = { h1: 20, h2: 15, h3: 13, h4: 12 }[tag];
+      y -= size * 0.6;
+      drawLines(wrap(el.textContent.trim(), size, CW), size, 0, size * 1.6, primary);
+      y -= 6;
       continue;
     }
 
     if (tag === 'p') {
-      need(14);
-      write(el.textContent.trim(), 11, 0, 1.9);
-      y += 8;
+      drawLines(wrap(el.textContent.trim(), 11, CW), 11, 0, 11 * 1.9, black);
+      y -= 8;
       continue;
     }
 
     if (tag === 'ul' || tag === 'ol') {
-      const items = [...el.querySelectorAll('li')];
-      items.forEach((li, i) => {
+      [...el.querySelectorAll('li')].forEach((li, i) => {
         const mark = tag === 'ol' ? (i + 1) + '. ' : '• ';
-        need(14);
-        write(mark + li.textContent.trim(), 11, 12, 1.85);
+        drawLines(wrap(mark + li.textContent.trim(), 11, CW - 14), 11, 14, 11 * 1.85, black);
       });
-      y += 6;
+      y -= 6;
       continue;
     }
 
     if (tag === 'blockquote') {
-      const text = el.textContent.trim();
-      const rows = pdf.splitTextToSize(text, CW - 24);
-      const h = rows.length * 11 * 1.8 + 12;
+      const lines = wrap(el.textContent.trim(), 11, CW - 28);
+      const h = lines.length * 11 * 1.8 + 12;
       need(h);
-      pdf.setFillColor(245, 247, 250);
-      pdf.rect(M, y, CW, h, 'F');
-      pdf.setFillColor(v('--c-primary') || '#222222');
-      pdf.rect(M, y, 3, h, 'F');
-      pdf.setTextColor(ink);
-      let yy = y + 14;
-      pdf.setFontSize(11);
-      for (const r of rows) { pdf.text(r, M + 14, yy); yy += 11 * 1.8; }
-      y += h + 8;
+      page.drawRectangle({ x: M, y: y - h, width: CW, height: h, color: rgb(0.96, 0.97, 0.98) });
+      page.drawRectangle({ x: M, y: y - h, width: 3, height: h, color: rgb(0.4, 0.45, 0.5) });
+      drawLines(lines, 11, 14, 11 * 1.8, black);
+      y -= 8;
       continue;
     }
 
-    if (tag === 'pre' || el.querySelector('pre')) {
-      const pre = tag === 'pre' ? el : el.querySelector('pre');
-      const text = pre.textContent.replace(/\s+$/, '');
-      const rows = pdf.splitTextToSize(text, CW - 20);
-      const lineH = 10 * 1.6;
-      let idx = 0;
-      while (idx < rows.length) {
-        need(20);
-        const avail = Math.floor((pageH - M - y - 16) / lineH);
-        const chunk = rows.slice(idx, idx + Math.max(1, avail));
-        const h = chunk.length * lineH + 12;
-        pdf.setFillColor(246, 248, 250);
-        pdf.rect(M, y, CW, h, 'F');
-        pdf.setTextColor(ink);
-        pdf.setFontSize(10);
-        let yy = y + 14;
-        for (const r of chunk) { pdf.text(r, M + 10, yy); yy += lineH; }
-        y += h + 8;
-        idx += chunk.length;
-        if (idx < rows.length) newPage();
+    if (tag === 'pre') {
+      const lines = wrap(el.textContent.replace(/\s+$/, ''), 9.5, CW - 20);
+      for (let i = 0; i < lines.length; ) {
+        const avail = Math.max(3, Math.floor((y - M - 16) / (9.5 * 1.6)));
+        const chunk = lines.slice(i, i + avail);
+        const h = chunk.length * 9.5 * 1.6 + 12;
+        page.drawRectangle({ x: M, y: y - h, width: CW, height: h, color: rgb(0.965, 0.972, 0.98) });
+        drawLines(chunk, 9.5, 10, 9.5 * 1.6, black);
+        i += chunk.length;
+        y -= 8;
+        if (i < lines.length) newPage();
       }
       continue;
     }
 
-    if (tag === 'table') {
-      const rows = [...el.querySelectorAll('tr')];
+    if (tag === 'table' || (tag === 'div' && el.querySelector('table'))) {
+      const table = tag === 'table' ? el : el.querySelector('table');
+      const rows = [...table.querySelectorAll('tr')];
       const cols = Math.max(1, rows[0] ? rows[0].children.length : 1);
       const colW = CW / cols;
       for (const tr of rows) {
-        const cells = [...tr.children];
-        const texts = cells.map((c) => pdf.splitTextToSize(c.textContent.trim(), colW - 10));
-        const rowH = Math.max(...texts.map((t) => t.length)) * 10 * 1.6 + 10;
+        const cells = [...tr.children].map((c) => wrap(c.textContent.trim(), 9.5, colW - 10));
+        const rowH = Math.max(...cells.map((c) => c.length)) * 9.5 * 1.6 + 10;
         need(rowH);
         const isHead = tr.parentElement && tr.parentElement.tagName.toLowerCase() === 'thead';
-        if (isHead) { pdf.setFillColor(240, 244, 250); pdf.rect(M, y, CW, rowH, 'F'); }
-        pdf.setDrawColor(220, 224, 230);
-        pdf.setFontSize(9.5);
-        pdf.setTextColor(ink);
-        cells.forEach((c, i) => {
-          pdf.rect(M + i * colW, y, colW, rowH);
-          let yy = y + 12;
-          for (const line of texts[i]) { pdf.text(line, M + i * colW + 5, yy); yy += 10 * 1.6; }
+        if (isHead) page.drawRectangle({ x: M, y: y - rowH, width: CW, height: rowH, color: rgb(0.94, 0.955, 0.98) });
+        cells.forEach((lines, ci) => {
+          page.drawRectangle({ x: M + ci * colW, y: y - rowH, width: colW, height: rowH, borderColor: rgb(0.86, 0.88, 0.9), borderWidth: 0.6 });
+          let yy = y - 12;
+          for (const line of lines) {
+            if (line) page.drawText(line, { x: M + ci * colW + 5, y: yy, size: 9.5, font, color: black });
+            yy -= 9.5 * 1.6;
+          }
         });
-        y += rowH;
+        y -= rowH;
       }
-      y += 10;
+      y -= 10;
       continue;
     }
 
     if (tag === 'hr') {
       need(12);
-      pdf.setDrawColor(220, 224, 230);
-      pdf.line(M, y + 4, pageW - M, y + 4);
-      y += 16;
+      page.drawLine({ start: { x: M, y: y - 4 }, end: { x: PW - M, y: y - 4 }, thickness: 0.8, color: rgb(0.86, 0.88, 0.9) });
+      y -= 16;
       continue;
     }
 
-    if (tag === 'div' && el.querySelector('table')) {
-      // .md-table 包裹层：把里面的 table 走上面的逻辑
-      const table = el.querySelector('table');
-      const rows = [...table.querySelectorAll('tr')];
-      const cols = Math.max(1, rows[0] ? rows[0].children.length : 1);
-      const colW = CW / cols;
-      for (const tr of rows) {
-        const cells = [...tr.children];
-        const texts = cells.map((c) => pdf.splitTextToSize(c.textContent.trim(), colW - 10));
-        const rowH = Math.max(...texts.map((t) => t.length)) * 10 * 1.6 + 10;
-        need(rowH);
-        const isHead = tr.parentElement && tr.parentElement.tagName.toLowerCase() === 'thead';
-        if (isHead) { pdf.setFillColor(240, 244, 250); pdf.rect(M, y, CW, rowH, 'F'); }
-        pdf.setDrawColor(220, 224, 230);
-        pdf.setFontSize(9.5);
-        pdf.setTextColor(ink);
-        cells.forEach((c, i) => {
-          pdf.rect(M + i * colW, y, colW, rowH);
-          let yy = y + 12;
-          for (const line of texts[i]) { pdf.text(line, M + i * colW + 5, yy); yy += 10 * 1.6; }
-        });
-        y += rowH;
-      }
-      y += 10;
-      continue;
-    }
-
-    if (tag === 'img' || el.querySelector('img')) {
-      const img = tag === 'img' ? el : el.querySelector('img');
+    if (tag === 'img') {
       try {
-        const src = img.currentSrc || img.src;
-        const bmp = await fetch(src).then((r) => r.blob()).then((b) => new Promise((res) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(b); }));
-        const dims = await new Promise((res) => { const i2 = new Image(); i2.onload = () => res({ w: i2.naturalWidth, h: i2.naturalHeight }); i2.onerror = () => res(null); i2.src = bmp; });
-        if (dims) {
-          const w = Math.min(CW, dims.w);
-          const h = (dims.h / dims.w) * w;
-          need(h + 10);
-          pdf.addImage(bmp, 'JPEG', M, y, w, h);
-          y += h + 10;
-          continue;
-        }
-      } catch (e) { /* 图片失败则退回文字说明 */ }
-      write('[图片] ' + (img.getAttribute('alt') || ''), 10, 0, 1.6, '#888888');
+        const src = el.currentSrc || el.src;
+        const bytes = new Uint8Array(await fetch(src).then((r) => r.arrayBuffer()));
+        const isPng = /png/i.test(src) || (bytes[0] === 0x89 && bytes[1] === 0x50);
+        const img = isPng ? await pdf.embedPng(bytes) : await pdf.embedJpg(bytes);
+        const w = Math.min(CW, img.width);
+        const h = (img.height / img.width) * w;
+        need(h + 10);
+        page.drawImage(img, { x: M, y: y - h, width: w, height: h });
+        y -= h + 10;
+      } catch (e) { drawLines(wrap('[图片] ' + (el.getAttribute('alt') || ''), 10, CW), 10, 0, 16, gray); }
       continue;
     }
 
-    if (el.textContent.trim()) { write(el.textContent.trim(), 11, 0, 1.8); y += 6; }
+    if (el.textContent.trim()) { drawLines(wrap(el.textContent.trim(), 11, CW), 11, 0, 11 * 1.8, black); y -= 6; }
   }
 
-  footer();
-  const blob = pdf.output('blob');
+  stampFooter();
+  const bytes = await pdf.save();
+  const blob = new Blob([bytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = name + '.pdf';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 3000);
-  return { ok: true, pages: pdf.getNumberOfPages(), bytes: blob.size, text: true };
+  return { ok: true, pages: pdf.getPageCount(), bytes: blob.size, text: true };
 }
