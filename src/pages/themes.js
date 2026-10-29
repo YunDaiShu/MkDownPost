@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=vmvtdx1zq';
-import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtdx1zq';
-import { toast } from '../components/theme-switcher.js?v=vmvtdx1zq';
-import { derivePalette } from '../theme-custom.js?v=vmvtdx1zq';
+import { THEMES } from '../../data/themes.js?v=vmvte2ttb';
+import { apply, get, exportCSS } from '../theme-manager.js?v=vmvte2ttb';
+import { toast } from '../components/theme-switcher.js?v=vmvte2ttb';
+import { derivePalette } from '../theme-custom.js?v=vmvte2ttb';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
@@ -93,13 +93,8 @@ export default function render(root, params) {
       const k = cardEl.dataset.key;
       apply(k);
       toast('已应用 ' + k);
-      root.querySelectorAll('.theme-card').forEach((c) => {
-        const on = c.dataset.key === get();
-        c.classList.toggle('is-on', on);
-        c.setAttribute('aria-current', String(on));
-        const note = c.querySelector('.theme-card__note');
-        if (note) note.textContent = on ? '正在使用' : (note.dataset.group || note.textContent);
-      });
+      // 只允许一张卡是选中态：统一走 paint，避免手动 toggle 出现双高亮
+      paint(false);
       return;
     }
     const chip = e.target.closest('[data-g]');
