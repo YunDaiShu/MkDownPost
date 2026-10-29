@@ -1,110 +1,158 @@
 [
   {
-    "slug": "getting-started",
-    "title": "从零写第一篇公众号排版",
+    "slug": "start-in-3-minutes",
+    "title": "3 分钟上手：写出第一篇能直接发布的稿子",
+    "excerpt": "第一次来只看这篇：打开编辑器、5 个语法、挑主题、导出、粘进公众号。",
     "tags": [
       "入门",
-      "公众号"
+      "教程"
     ],
-    "featured": true,
-    "excerpt": "这是一篇可以直接在编辑器里改的示例。把左侧内容换成你的稿子，右侧就是最终排版。",
-    "date": "2026-10-20",
-    "readingTime": 2
+    "readingTime": 6,
+    "date": "2026-10-10",
+    "order": 1,
+    "featured": true
+  },
+  {
+    "slug": "what-this-site-does",
+    "title": "这个网站能做什么、不能做什么",
+    "excerpt": "有没有 AI？会不会上传？能不能一键发布？能力边界一次说清。",
+    "tags": [
+      "入门",
+      "说明"
+    ],
+    "readingTime": 7,
+    "date": "2026-10-11",
+    "order": 2,
+    "featured": true
   },
   {
     "slug": "markdown-cheatsheet",
     "title": "Markdown 速查（含任务列表与表格）",
+    "excerpt": "常用写法一页看完：标题、列表、任务、表格、引用、代码块。",
     "tags": [
       "速查",
       "参考"
     ],
-    "featured": true,
-    "excerpt": "常用写法一页看完：标题、列表、任务、表格、引用、代码块。",
-    "date": "2026-10-21",
-    "readingTime": 2
+    "readingTime": 2,
+    "date": "2026-10-12",
+    "order": 3,
+    "featured": true
   },
   {
-    "slug": "theme-system",
-    "title": "主题系统是怎么做到一键换色的",
+    "slug": "getting-started",
+    "title": "从零写第一篇公众号排版",
+    "excerpt": "一篇可以直接在编辑器里改的示例，左侧换成你的稿子，右侧就是最终排版。",
     "tags": [
-      "主题",
-      "CSS"
+      "入门",
+      "公众号"
     ],
-    "featured": true,
-    "excerpt": "令牌层 + 主题层两层结构：一处改色，全站联动。",
-    "date": "2026-10-22",
-    "readingTime": 2
+    "readingTime": 4,
+    "date": "2026-10-13",
+    "order": 4,
+    "featured": true
   },
   {
-    "slug": "mermaid-and-math",
-    "title": "图表与公式：Mermaid 和 KaTeX",
+    "slug": "wechat-publishing-guide",
+    "title": "公众号排版实战：从草稿到发布",
+    "excerpt": "主题/字号/行宽怎么选，图片怎么处理，导出粘贴 4 步与发布前自检清单。",
     "tags": [
-      "图表",
-      "公式"
+      "公众号",
+      "实战"
     ],
-    "featured": true,
-    "excerpt": "流程图、时序图与行内/块级公式，写进 Markdown 就能渲染。",
-    "date": "2026-10-23",
-    "readingTime": 2
+    "readingTime": 10,
+    "date": "2026-10-14",
+    "order": 5,
+    "featured": true
   },
   {
     "slug": "export-to-platforms",
     "title": "三个平台的导出差异（附对照）",
+    "excerpt": "公众号要全内联样式，小黑盒看标题与图片，TapTap 需降级表格。",
     "tags": [
       "导出",
       "平台"
     ],
-    "featured": true,
-    "excerpt": "公众号要全内联样式，小黑盒看标题与图片，TapTap 需降级表格。",
-    "date": "2026-10-24",
-    "readingTime": 2
-  },
-  {
-    "slug": "local-first",
-    "title": "本地优先：你的稿子不上传",
-    "tags": [
-      "隐私",
-      "设计"
-    ],
-    "featured": true,
-    "excerpt": "草稿只存在浏览器：断网能写、没有账号，也不会被上传。",
-    "date": "2026-10-25",
-    "readingTime": 2
+    "readingTime": 5,
+    "date": "2026-10-15",
+    "order": 6,
+    "featured": true
   },
   {
     "slug": "markdown-what-is",
     "title": "Markdown 是什么：定义、起源与设计哲学",
+    "excerpt": "从 John Gruber 2004 年的设计初衷讲起：为什么它可读、为什么它活下来、适合与不适合什么。",
     "tags": [
-      "入门",
-      "概念"
+      "概念",
+      "历史"
     ],
-    "featured": true,
-    "date": "2026-10-26",
-    "readingTime": 8,
-    "excerpt": "从 John Gruber 2004 年的设计初衷讲起：为什么它可读、为什么它活下来、它适合与不适合什么。"
+    "readingTime": 9,
+    "date": "2026-10-16",
+    "order": 7,
+    "featured": true
   },
   {
     "slug": "markdown-syntax-guide",
     "title": "Markdown 语法全解（含示例与坑）",
+    "excerpt": "14 类语法示例 + 嵌套规则 + 换行写法 + 常见坑表，可直接抄。",
     "tags": [
       "语法",
       "速查"
     ],
-    "featured": true,
-    "date": "2026-10-27",
-    "readingTime": 12,
-    "excerpt": "标题到公式的 14 类语法示例，附 6 条常见坑与处理方式，可直接抄。"
+    "readingTime": 13,
+    "date": "2026-10-17",
+    "order": 8,
+    "featured": true
   },
   {
     "slug": "markdown-ecosystem",
     "title": "Markdown 生态：标准、方言与发布路径",
+    "excerpt": "CommonMark 与 GFM 的区别、五条发布路径、四平台实操耗时对照、替代方案决策表。",
     "tags": [
       "生态",
       "平台"
     ],
-    "featured": true,
-    "date": "2026-10-28",
-    "readingTime": 9,
-    "excerpt": "CommonMark 与 GFM 的区别、一份 Markdown 的五条发布路径、六大平台的实务差异。"
+    "readingTime": 11,
+    "date": "2026-10-18",
+    "order": 9,
+    "featured": true
+  },
+  {
+    "slug": "theme-system",
+    "title": "主题系统是怎么做到一键换色的",
+    "excerpt": "令牌层 + 主题层两层结构：一处改色，全站联动。",
+    "tags": [
+      "主题",
+      "CSS"
+    ],
+    "readingTime": 5,
+    "date": "2026-10-19",
+    "order": 10,
+    "featured": false
+  },
+  {
+    "slug": "mermaid-and-math",
+    "title": "图表与公式：Mermaid 和 KaTeX",
+    "excerpt": "流程图、时序图与行内/块级公式，写进 Markdown 就能渲染。",
+    "tags": [
+      "图表",
+      "公式"
+    ],
+    "readingTime": 5,
+    "date": "2026-10-20",
+    "order": 11,
+    "featured": false
+  },
+  {
+    "slug": "local-first",
+    "title": "本地优先：你的稿子不上传",
+    "excerpt": "草稿只存在浏览器：断网能写、没有账号、也不会被上传。",
+    "tags": [
+      "隐私",
+      "设计"
+    ],
+    "readingTime": 3,
+    "date": "2026-10-21",
+    "order": 12,
+    "featured": false
   }
 ]
