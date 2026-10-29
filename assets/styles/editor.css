@@ -255,3 +255,15 @@
 .editor__tool.is-on { background: var(--c-primary-bg); color: var(--c-primary); }
 .editor__tool.is-on::after { content: ''; position: absolute; }
 .editor__tool[data-act="hl"] { position: relative; }
+
+/* editor__skel：预览首帧占位（分步渲染，先骨架后真内容） */
+.editor__skel { display: grid; gap: 12px; padding: var(--sp-2) 0; }
+.editor__skel span {
+  display: block; height: 14px; border-radius: 6px;
+  background: linear-gradient(90deg, var(--c-surface-2) 25%, var(--c-border) 37%, var(--c-surface-2) 63%);
+  background-size: 400% 100%;
+  animation: skelShimmer 1.2s ease-in-out infinite;
+}
+.editor__skel span:nth-child(3n+1) { height: 22px; }
+@keyframes skelShimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+@media (prefers-reduced-motion: reduce) { .editor__skel span { animation: none; } }

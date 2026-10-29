@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtkbrjc';
-import { initSplitPane } from './split-pane.js?v=vmvtkbrjc';
-import { initShortcuts } from './shortcuts.js?v=vmvtkbrjc';
-import { initAutosave } from './autosave.js?v=vmvtkbrjc';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtkf5rc';
+import { initSplitPane } from './split-pane.js?v=vmvtkf5rc';
+import { initShortcuts } from './shortcuts.js?v=vmvtkf5rc';
+import { initAutosave } from './autosave.js?v=vmvtkf5rc';
 import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdfRaster } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtkbrjc';
-import { toast } from '../components/theme-switcher.js?v=vmvtkbrjc';
-import { mountHighlight } from './highlight-layer.js?v=vmvtkbrjc';
-import { mountMathPreview } from './math-preview.js?v=vmvtkbrjc';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtkbrjc';
-import * as Adapters from '../adapters/index.js?v=vmvtkbrjc';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtkf5rc';
+import { toast } from '../components/theme-switcher.js?v=vmvtkf5rc';
+import { mountHighlight } from './highlight-layer.js?v=vmvtkf5rc';
+import { mountMathPreview } from './math-preview.js?v=vmvtkf5rc';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtkf5rc';
+import * as Adapters from '../adapters/index.js?v=vmvtkf5rc';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -77,6 +77,11 @@ const TOOLS = [
   { act: 'hl', label: '语法高亮（默认关闭）', icon: S('<path d="M4 20l6-6"/><path d="M14 4l6 6-6 6-6-6z"/>') },
   { act: 'hr', label: '分隔线', icon: S('<path d="M3 12h18"/><path d="M6 6h12M6 18h12" opacity=".35"/>') }
 ];
+
+const afterPaintMount = (fn) => {
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => setTimeout(fn, 0));
+  else setTimeout(fn, 0);
+};
 
 export default function render(root) {
   root.innerHTML = `
@@ -315,7 +320,7 @@ export default function render(root) {
     setHlButton(false);
   }
   if (readHlPref()) enableHighlight();
-  mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'));
+  afterPaintMount(() => mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit')));
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
   ta.addEventListener('input', () => { persist(); });
@@ -604,7 +609,21 @@ export default function render(root) {
     streamReveal(result.querySelector('.cc-cards') || result, { step: 40 });
   }
 
-  update();
-  streamReveal(preview, { step: 30 });
-  ta.focus({ preventScroll: true });
+  /* ---------- 分步渲染：先出骨架与编辑器，预览/装饰延后挂载 ---------- */
+  const paintSkeleton = () => {
+    if (!preview || !ta.value.trim()) return;
+    preview.innerHTML = '<div class="editor__skel" aria-hidden="true">' +
+      '<span style="width:62%"></span><span style="width:96%"></span><span style="width:88%"></span>' +
+      '<span style="width:96%"></span><span style="width:54%"></span>' +
+      '<span style="width:96%"></span><span style="width:96%"></span><span style="width:73%"></span>' +
+      '</div>';
+  };
+  const afterPaint = (fn) => requestAnimationFrame(() => setTimeout(fn, 0));
+
+  paintSkeleton();                       // 立即出骨架
+  ta.focus({ preventScroll: true });      // 先让输入可用
+  afterPaint(() => {
+    update();                             // 预览真实渲染（内部仍 180ms 防抖）
+    streamReveal(preview, { step: 30 });
+  });
 }
