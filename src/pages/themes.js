@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=vmvtjhx55';
-import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtjhx55';
-import { toast } from '../components/theme-switcher.js?v=vmvtjhx55';
-import { derivePalette } from '../theme-custom.js?v=vmvtjhx55';
+import { THEMES } from '../../data/themes.js?v=vmvtjptai';
+import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtjptai';
+import { toast } from '../components/theme-switcher.js?v=vmvtjptai';
+import { derivePalette } from '../theme-custom.js?v=vmvtjptai';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
@@ -67,7 +67,7 @@ export default function render(root, params) {
       '<article class="theme-card' + (on ? ' is-on' : '') + '" data-key="' + t.key + '"' + (t.key === focus ? ' data-focus="1"' : '') + ' aria-current="' + on + '">',
       '<header class="theme-card__head">',
       '<span class="pcard__dots">' + dots + '</span>',
-      '<h2 class="theme-card__name">' + t.name + '</h2>',
+      '<h2 class="theme-card__name">' + t.name + (t.note ? '<span class="theme-card__desc">' + t.note + '</span>' : '') + '</h2>',
       '<span class="theme-card__note">' + (on ? '正在使用' : (GROUP_LABEL[t.group] || t.group || '')) + '</span>',
       '</header>',
       '<div class="theme-card__prev">',

@@ -254,3 +254,7 @@
   70%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-primary) 0%, transparent); }
   100% { box-shadow: none; }
 }
+
+/* 主题库卡片描述（与首页主题墙一致的气质词） */
+.theme-card__desc { display: block; margin-top: 2px; font-size: var(--fs-12); color: var(--c-text-muted); }
+.theme-card__head { align-items: flex-start; }

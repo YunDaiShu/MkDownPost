@@ -1,7 +1,7 @@
 import { derivePalette } from '../theme-custom.js';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=vmvtjhx55';
+import { THEMES } from '../../data/themes.js?v=vmvtjptai';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -85,7 +85,7 @@ export default async function render(root) {
   more2.href = '#/themes';
   head2.append(el('h2', 'section__title', '主题预览墙'), more2);
   const strip = el('div', 'theme-strip');
-  THEMES.slice(0, 12).forEach((t) => { if (t && t.brand) strip.appendChild(buildChip(t)); });
+  THEMES.slice(0, 18).forEach((t) => { if (t && t.brand) strip.appendChild(buildChip(t)); });
   sec2.append(head2, strip);
 
   root.append(hero, features, sec, sec2);
