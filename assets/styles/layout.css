@@ -109,3 +109,11 @@
   :root { --maxw: 1600px; }
   .app-main { padding-inline: var(--sp-8); }
 }
+
+/* EDITOR_HEADER_FIT：编辑器页是全宽工作台，页头内边距同步收纳，保持左边缘对齐 */
+@media (min-width: 1280px) {
+  .shell:has(.editor) .app-header { padding-inline: var(--sp-6); }
+}
+@media (min-width: 1600px) {
+  .shell:has(.editor) .app-header { padding-inline: var(--sp-7); }
+}

@@ -160,3 +160,9 @@
   .hero__cta { flex-direction: column; align-items: stretch; }
   .hero__cta .btn { width: 100%; }
 }
+
+/* THEME_BTN_44：移动端主题卡操作按钮 ≥44px */
+@media (max-width: 639px) {
+  .theme-card__foot { gap: var(--sp-2); }
+  .theme-card__foot .btn { min-height: 44px; flex: 1; }
+}

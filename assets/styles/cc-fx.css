@@ -69,3 +69,8 @@
   .icon-btn, .nav-toggle { width: 44px; height: 44px; }
   .editor__tool { min-width: 44px; height: 44px; }
 }
+
+/* BTN44_FINAL：移动端 .btn 统一 44px（覆盖 components.css 的 36px） */
+@media (max-width: 639px) {
+  .btn { min-height: 44px; }
+}
