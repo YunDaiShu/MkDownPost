@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtetp3h';
-import { initSplitPane } from './split-pane.js?v=vmvtetp3h';
-import { initShortcuts } from './shortcuts.js?v=vmvtetp3h';
-import { initAutosave } from './autosave.js?v=vmvtetp3h';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtetp3h';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtetp3h';
-import { toast } from '../components/theme-switcher.js?v=vmvtetp3h';
-import { mountHighlight } from './highlight-layer.js?v=vmvtetp3h';
-import { mountMathPreview } from './math-preview.js?v=vmvtetp3h';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtetp3h';
-import * as Adapters from '../adapters/index.js?v=vmvtetp3h';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtevki6';
+import { initSplitPane } from './split-pane.js?v=vmvtevki6';
+import { initShortcuts } from './shortcuts.js?v=vmvtevki6';
+import { initAutosave } from './autosave.js?v=vmvtevki6';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtevki6';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtevki6';
+import { toast } from '../components/theme-switcher.js?v=vmvtevki6';
+import { mountHighlight } from './highlight-layer.js?v=vmvtevki6';
+import { mountMathPreview } from './math-preview.js?v=vmvtevki6';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtevki6';
+import * as Adapters from '../adapters/index.js?v=vmvtevki6';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -119,7 +119,7 @@ export default function render(root) {
       <div class="editor__split">
         <section class="editor__pane editor__pane--edit" aria-label="Markdown 编辑区">
           <div class="editor__gutter" id="gutter" aria-hidden="true"></div>
-          <textarea class="editor__ta" id="ta" spellcheck="false" aria-label="Markdown 输入"></textarea>
+          <textarea class="editor__ta" id="ta" spellcheck="false" wrap="off" aria-label="Markdown 输入"></textarea>
           <div class="editor__empty" id="emptyHint">
             <p><b>把 .md 文件拖进来</b>，或直接开始写</p>
             <ul class="editor__keys">
@@ -295,7 +295,7 @@ export default function render(root) {
     }, 180);
   };
 
-  const hl = mountHighlight(ta, ta.parentElement);
+  const hl = mountHighlight(ta, ta.parentElement, (() => { try { return (JSON.parse(localStorage.getItem('mdp:v1:prefs') || '{}').fontSize) || 16; } catch { return 16; } })());
   mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'));
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
@@ -434,7 +434,7 @@ export default function render(root) {
   const fsBtns = [...root.querySelectorAll('[data-fs]')];
   const lwBtns = [...root.querySelectorAll('[data-lw]')];
 
-  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; };
+  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; if (hl && hl.setFontSize) hl.setFontSize(v); };
   const applyLineWidth = (v) => { preview.style.maxWidth = v + 'px'; preview.style.margin = '0 auto'; };
   const mark = (btns, attr, val) => btns.forEach((b) => {
     const on = String(b.getAttribute(attr)) === String(val);
@@ -443,6 +443,7 @@ export default function render(root) {
   });
 
   const fsInit = prefs.fontSize || 16;
+  if (hl && hl.setFontSize) hl.setFontSize(fsInit);
   const lwInit = prefs.lineWidth || 680;
   applyFontSize(fsInit); mark(fsBtns, 'data-fs', fsInit);
   applyLineWidth(lwInit); mark(lwBtns, 'data-lw', lwInit);

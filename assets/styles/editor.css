@@ -106,7 +106,9 @@
 .editor__hl {
   position: absolute; inset: 0; margin: 0; padding: var(--sp-3);
   overflow: hidden; pointer-events: none; z-index: 0;
-  font: 15px/1.7 ui-monospace, Menlo, Consolas, monospace;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 16px;   /* 由 JS 同步为当前字号 */
+  line-height: 1.7;
   white-space: pre-wrap; word-break: break-word; tab-size: 2;
   color: var(--c-text); background: transparent;
   left: 44px;              /* 让开行号槽 */
@@ -229,3 +231,20 @@
   color: var(--c-text);
   -webkit-text-fill-color: var(--c-text);
 }
+
+/* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、都不软换行 */
+.editor__ta,
+.editor__hl {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  line-height: 1.7;
+  letter-spacing: 0;
+  tab-size: 2;
+  -moz-tab-size: 2;
+  white-space: pre;          /* 关键：都不自动换行，换行只由 \n 决定 */
+  word-break: normal;
+  overflow-wrap: normal;
+  padding: var(--sp-3);
+  margin: 0;
+}
+.editor__ta { overflow: auto; }
+.editor__hl { overflow: hidden; }
