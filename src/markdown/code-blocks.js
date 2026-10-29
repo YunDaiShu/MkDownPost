@@ -28,7 +28,22 @@ export function decorateCodeBlocks(root, { copy } = {}) {
     btn.className = 'md-copy';
     btn.textContent = '复制';
     btn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(code.textContent); } catch { /* 忽略 */ }
+      try {
+      await navigator.clipboard.writeText(code.textContent);
+      if (typeof copy === 'function') copy('已复制代码');
+    } catch {
+      // 剪贴板被拒（http、权限）时给出可操作提示，而不是静默失败
+      try {
+        const r = document.createRange();
+        r.selectNodeContents(code);
+        const sel = getSelection();
+        sel.removeAllRanges();
+        sel.addRange(r);
+        if (typeof copy === 'function') copy('已选中代码，请按 Ctrl/⌘ + C 复制');
+      } catch {
+        if (typeof copy === 'function') copy('复制失败，请手动选择代码');
+      }
+    }
       btn.textContent = '已复制';
       btn.classList.add('is-done');
       setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('is-done'); }, 1500);

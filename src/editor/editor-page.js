@@ -1,10 +1,11 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvtmftew';
-import { initShortcuts } from './shortcuts.js?v=vmvtmftew';
-import { initAutosave } from './autosave.js?v=vmvtmftew';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtmftew';
-import { toast } from '../components/theme-switcher.js?v=vmvtmftew';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtmftew';
+import { initSplitPane } from './split-pane.js?v=vmvtotbl5';
+import { initShortcuts } from './shortcuts.js?v=vmvtotbl5';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvtotbl5';
+import { initAutosave } from './autosave.js?v=vmvtotbl5';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtotbl5';
+import { toast } from '../components/theme-switcher.js?v=vmvtotbl5';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtotbl5';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -77,8 +78,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvtmftew'),
-      import('../markdown/renderer.js?v=vmvtmftew')
+      import('../markdown/vendor-loader.js?v=vmvtotbl5'),
+      import('../markdown/renderer.js?v=vmvtotbl5')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -87,23 +88,23 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtmftew');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtotbl5');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvtmftew');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvtotbl5');
   return _exportMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvtmftew');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvtotbl5');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvtmftew');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvtotbl5');
   return _mathMod;
 };
 
@@ -355,7 +356,7 @@ export default function render(root) {
   }
   if (readHlPref()) enableHighlight();
   afterPaintMount(() => { loadMathPreview().then((m) => m.mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'))).catch(() => {}); });
-  const paintAll = () => { hl.update(); };
+  const paintAll = () => { if (hl) hl.update(); };
   ta.addEventListener('input', paintAll);
   ta.addEventListener('input', () => { persist(); });
 
@@ -544,7 +545,16 @@ export default function render(root) {
 
   initShortcuts(ta, {
     onUndo: doUndo,
-    onSave: () => { autosave.save(); toast('草稿已保存'); },
+    onSave: () => { autosave.save();
+  // 快捷键面板：? 打开；与主题/明暗联动
+  bindShortcutSheet({
+    onThemeNext: () => window.themes && window.themes.next && window.themes.next(),
+    onThemePrev: () => window.themes && window.themes.prev && window.themes.prev(),
+    onMode: () => window.themes && window.themes.toggleDark && window.themes.toggleDark()
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '?' && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); toggleSheet(); }
+  }); toast('草稿已保存'); },
     onInsertCode: () => insert('\n```js\n', '\n```\n', 'console.log(1)'),
     toast
   });

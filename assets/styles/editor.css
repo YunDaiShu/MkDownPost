@@ -33,7 +33,7 @@
 .editor__split { display: flex; gap: var(--sp-2); align-items: stretch; min-height: 60vh; }
 .editor__pane { position: relative; min-width: 0; border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface); overflow: hidden; }
 .editor__pane--edit { flex: 0 0 50%; display: flex; }
-.editor__pane--preview { flex: 1 1 0; overflow: auto; padding: var(--sp-4); }
+.editor__pane--preview { flex: 1 1 0; overflow: auto; padding: var(--sp-3); }   /* 与 .editor__ta 的 12px 对齐 */
 .editor__gutter {
   flex: none; width: 44px; padding: var(--sp-3) var(--sp-2); overflow: hidden;
   background: var(--c-surface-2); border-right: 1px solid var(--c-divider);
@@ -267,3 +267,18 @@
 .editor__skel span:nth-child(3n+1) { height: 22px; }
 @keyframes skelShimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
 @media (prefers-reduced-motion: reduce) { .editor__skel span { animation: none; } }
+
+/* 预览首元素与文本框首行严格对齐 */
+#preview > *:first-child, .editor__pane--preview .markdown-body > *:first-child { margin-top: 0 !important; }
+#preview .markdown-body { padding: 0; }
+
+/* EDITOR_NO_OVERFLOW：编辑器整页锁定视口高度，状态栏永不被挤出屏幕 */
+.editor { display: flex; flex-direction: column; height: calc(100vh - var(--header-h) - var(--sp-5, 24px)); min-height: 0; overflow: hidden; }
+.editor .editor__split { flex: 1 1 auto; min-height: 0; }
+.editor .editor__status { flex: 0 0 auto; }
+@media (max-width: 900px) { .editor { height: auto; overflow: visible; } }
+
+/* HAS_EDITOR：编辑器路由下隐藏站点页脚、锁定页面滚动（状态栏常驻可见） */
+body:has(.editor) { overflow: hidden; }
+body:has(.editor) .app-footer { display: none; }
+@media (max-width: 900px) { body:has(.editor) { overflow: auto; } }
