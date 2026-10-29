@@ -88,7 +88,7 @@
 }
 /* 编辑器是工作台：大屏不吃 1120 上限 */
 @media (min-width: 1280px) {
-  .app-main:has(.editor) { max-width: none; padding-left: var(--sp-6); padding-right: var(--sp-6); }
+  .app-main:has(.editor) { max-width: none; }
 }
 
 /* header-align：页头内容与主内容左边缘对齐（大屏不再左右各贴屏幕边） */

@@ -97,7 +97,12 @@ const PROBE = `(() => {
     title: document.title,
     overflow: document.documentElement.scrollWidth > innerWidth + 1,
     brandX: (box('.brand') || {}).x,
-    mainLeft: (() => { const m = q('.app-main'); if (!m) return undefined; const r = m.getBoundingClientRect(); return Math.round(r.x + parseFloat(getComputedStyle(m).paddingLeft)); })(),
+    mainLeft: (() => {
+      const m = q('.app-main'); if (!m) return undefined;
+      const r = m.getBoundingClientRect(); const pl = parseFloat(getComputedStyle(m).paddingLeft);
+      const fullBleed = r.width >= innerWidth - 2;   // 全宽工作台：页头应与内容（含内边距）对齐
+      return Math.round(fullBleed ? r.x + pl : r.x);
+    })(),
     cols: grid ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 0,
     heroFont: q('.hero__title') ? getComputedStyle(q('.hero__title')).fontSize : null,
     smallTargets: ctrl.slice(0, 4),
