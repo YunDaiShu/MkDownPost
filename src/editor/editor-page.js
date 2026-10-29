@@ -5,6 +5,8 @@ import { initShortcuts } from './shortcuts.js';
 import { initAutosave, loadDraft } from './autosave.js';
 import { exportMarkdown, exportInlineHTMLFile, printDoc } from './export.js';
 import { toast } from '../components/theme-switcher.js';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js';
+import * as Adapters from '../adapters/index.js';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -79,6 +81,7 @@ export default function render(root) {
           <button role="menuitem" type="button" data-exp="md">下载 .md</button>
           <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
           <button role="menuitem" type="button" data-exp="print">打印 / 存 PDF</button>
+          <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
       </div>
 
@@ -108,8 +111,10 @@ export default function render(root) {
         </section>
       </div>
 
+      <div id="ccPanel" hidden></div>
+
       <div class="editor__status">
-        <span id="statusSave" class="editor__saved">未保存</span>
+        <span id="statusSave" class="editor__saved"><i class="cc-status-dot"></i>未保存</span>
         <span class="editor__spacer"></span>
         <span id="wordCount">0 字</span>
         <span id="readTime">约 0 分钟</span>
@@ -232,6 +237,15 @@ export default function render(root) {
     exportMenu.hidden = !open;
     exportBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
+  const closeExportMenu = () => { exportMenu.hidden = true; exportBtn.setAttribute('aria-expanded', 'false'); };
+  document.addEventListener('click', (e) => {
+    if (!exportMenu.hidden && !e.target.closest('#exportMenu') && !e.target.closest('#exportBtn')) closeExportMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !exportMenu.hidden) closeExportMenu();
+    if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
+  });
+
   exportMenu.addEventListener('click', (e) => {
     const b = e.target.closest('[data-exp]');
     if (!b) return;
@@ -240,6 +254,7 @@ export default function render(root) {
     if (b.dataset.exp === 'md') { exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
     if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
     if (b.dataset.exp === 'print') { printDoc(preview); }
+    if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
 
   // 字号 / 行宽
@@ -271,6 +286,64 @@ export default function render(root) {
     toast
   });
 
+  /* ---------- 平台适配面板（Claude Code 风格：思考态 → 结果卡片 → 复制） ---------- */
+  const panel = root.querySelector('#ccPanel');
+  let activePlat = null;
+
+  function openPlatformPanel() {
+    panel.hidden = false;
+    const ads = Adapters.list();
+    panel.innerHTML = [
+      '<div class="cc-panel">',
+      '<div class="cc-panel__head"><span class="cc-spin">✳</span><b>平台适配导出</b>',
+      '<span class="muted" style="margin-left:auto;font-size:12px">选平台 → 看处理说明 → 复制 HTML</span></div>',
+      '<div class="cc-panel__body"><div class="cc-plat" id="ccPlats">',
+      ads.map((a) => '<button class="cc-plat__chip" type="button" data-plat="' + a.key + '" data-status="' + a.status + '">' + a.name + '</button>').join(''),
+      '</div><div id="ccResult"></div></div>',
+      '<div class="cc-panel__foot"><button class="btn" type="button" id="ccCopy">复制 HTML</button>',
+      '<button class="btn" type="button" id="ccClose" style="margin-left:auto">关闭</button></div>',
+      '</div>'
+    ].join('');
+
+    panel.querySelector('#ccClose').addEventListener('click', () => { panel.hidden = true; });
+    panel.querySelectorAll('[data-plat]').forEach((chip) => {
+      chip.addEventListener('click', () => runAdapter(chip.dataset.plat, chip));
+    });
+    panel.querySelector('#ccCopy').addEventListener('click', async () => {
+      if (!activePlat) { toast('先选一个平台'); return; }
+      try { await navigator.clipboard.writeText(activePlat.html); toast('已复制 ' + activePlat.name + ' 的 HTML'); }
+      catch { toast('复制失败，请手动选择'); }
+    });
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function runAdapter(key, chip) {
+    const result = panel.querySelector('#ccResult');
+    panel.querySelectorAll('[data-plat]').forEach((c) => c.classList.toggle('is-on', c === chip));
+    result.innerHTML = '';
+    const ad = Adapters.get(key);
+    const stop = thinking(result, '正在适配 ' + ad.name);
+    await new Promise((r) => setTimeout(r, 260));
+    stop();
+
+    const out = Adapters.run(key, ta.value);
+    activePlat = { name: ad.name, html: out.html };
+
+    const cards = noteCards(out.notes, { title: ad.name + ' · 处理说明' });
+    result.appendChild(cards);
+
+    const prev = document.createElement('div');
+    prev.className = 'cc-panel';
+    prev.innerHTML = '<div class="cc-panel__head"><span class="cc-card__dot"></span>渲染预览（' + ad.name + '）</div>';
+    const body = document.createElement('div');
+    body.className = 'cc-panel__body markdown-body';
+    body.innerHTML = out.html;
+    prev.appendChild(body);
+    result.appendChild(prev);
+    streamReveal(result.querySelector('.cc-cards') || result, { step: 40 });
+  }
+
   update();
+  streamReveal(preview, { step: 30 });
   ta.focus({ preventScroll: true });
 }

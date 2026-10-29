@@ -2,6 +2,7 @@
 import { renderMarkdown } from '../markdown/renderer.js';
 import { buildTOC } from '../markdown/toc.js';
 import { toast } from '../components/theme-switcher.js';
+import { streamReveal } from '../components/cc-fx.js';
 
 export default async function render(root, params) {
   const slug = params.slug;
@@ -33,7 +34,7 @@ export default async function render(root, params) {
       <article class="article__main">
         <nav class="crumbs" aria-label="面包屑"><a href="#/">首页</a><span>›</span><span class="crumbs__cur">${meta.title}</span></nav>
         <h1 class="article__title">${meta.title}</h1>
-        <p class="article__meta">${meta.date || ''} · ${(meta.tags || []).join(' / ')} · ${meta.readingTime || 3} 分钟</p>
+        <p class="article__meta"><a href="#/editor" id="openInEditor">在编辑器中打开</a> · ${meta.date || ''} · ${(meta.tags || []).join(' / ')} · ${meta.readingTime || 3} 分钟</p>
         <div class="article__body" id="articleBody"></div>
         <nav class="article__nav" aria-label="上下篇">
           ${prev ? '<a class="btn" href="#/article/' + prev.slug + '">‹ ' + prev.title + '</a>' : '<span></span>'}
@@ -45,6 +46,15 @@ export default async function render(root, params) {
 
   // 挂真实元素（保留事件与异步装饰），而不是 innerHTML
   root.querySelector('#articleBody').appendChild(out.element);
+
+  const openBtn = root.querySelector('#openInEditor');
+  if (openBtn) openBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    try { localStorage.setItem('mdp:v1:draft', JSON.stringify({ text: md, updatedAt: Date.now() })); } catch {}
+    location.hash = '#/editor';
+  });
+
+  streamReveal(out.element, { step: 22 });
 
   buildTOC(out.headings, root.querySelector('#tocHost'), { onNavigate: () => {} });
 

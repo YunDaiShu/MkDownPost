@@ -1,0 +1,65 @@
+/* cc-fx.css — Claude Code 风格动效 */
+.cc-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px;
+  background: var(--c-primary); border-radius: 1px; animation: ccBlink 1s steps(2, start) infinite; }
+@keyframes ccBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+.cc-hidden { opacity: 0; transform: translateY(4px); }
+.cc-in { animation: ccIn 220ms var(--ease) both; }
+@keyframes ccIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.cc-fade { animation: ccIn 260ms var(--ease) both; }
+
+/* 思考态 */
+.cc-thinking { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
+  border: 1px dashed var(--c-border); border-radius: var(--r-2); background: var(--c-surface-2);
+  color: var(--c-text-secondary); font-size: var(--fs-13); }
+.cc-spin { display: inline-block; color: var(--c-primary); animation: ccSpin 1.2s linear infinite; }
+@keyframes ccSpin { to { transform: rotate(360deg); } }
+.cc-thinking__label::after { content: '…'; animation: ccDots 1.6s steps(4, end) infinite; }
+@keyframes ccDots { 0% { opacity: .2 } 50% { opacity: 1 } 100% { opacity: .2 } }
+
+/* 工具调用卡片 */
+.cc-cards { display: grid; gap: var(--sp-2); margin-top: var(--sp-3); }
+.cc-cards__head { font-size: var(--fs-12); color: var(--c-text-muted); letter-spacing: .3px; text-transform: uppercase; }
+.cc-card { border: 1px solid var(--c-border); border-left: 3px solid var(--c-primary); border-radius: var(--r-2);
+  background: var(--c-surface-2); animation: ccIn 240ms var(--ease) both; }
+.cc-card__bar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-13); color: var(--c-text); }
+.cc-card__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-success); flex: none;
+  box-shadow: 0 0 0 0 var(--c-success); animation: ccPulse 2s var(--ease) infinite; }
+@keyframes ccPulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-success) 60%, transparent); }
+  70% { box-shadow: 0 0 0 6px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.cc-card__name { flex: 1; }
+.cc-card__tag { font-size: var(--fs-12); color: var(--c-text-muted); background: var(--c-surface);
+  border: 1px solid var(--c-border); border-radius: var(--r-1); padding: 0 6px; }
+
+/* 状态栏呼吸点 */
+.cc-status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px;
+  background: var(--c-success); animation: ccBreathe 2.4s var(--ease) infinite; }
+@keyframes ccBreathe { 0%, 100% { opacity: .45; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.1); } }
+
+/* 适配结果面板 */
+.cc-panel { margin-top: var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2); overflow: hidden; }
+.cc-panel__head { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
+  background: var(--c-code-bar); border-bottom: 1px solid var(--c-border); font-size: var(--fs-13); }
+.cc-panel__body { max-height: 300px; overflow: auto; padding: var(--sp-3); background: var(--c-surface); }
+.cc-panel__foot { display: flex; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border-top: 1px solid var(--c-border); background: var(--c-surface-2); }
+.cc-plat { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.cc-plat__chip { min-height: 34px; padding: 0 var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.cc-plat__chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.cc-plat__chip:active { transform: scale(.97); }
+.cc-plat__chip.is-on { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
+.cc-plat__chip[data-status="beta"]::after { content: '实验'; margin-left: 6px; font-size: 10px; opacity: .7; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-caret, .cc-spin, .cc-card__dot, .cc-status-dot, .cc-thinking__label::after { animation: none; }
+  .cc-hidden { opacity: 1; transform: none; }
+}
+
+@media (max-width: 639px) {
+  .cc-plat__chip { min-height: 44px; font-size: var(--fs-14); }
+  .editor__menu button { min-height: 44px; }
+  .cc-panel__foot .btn { min-height: 44px; }
+}
