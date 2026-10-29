@@ -268,7 +268,8 @@ export async function exportPdf(container, name = 'draft') {
   if (window.fontkit) window.PDFLib.PDFDocument.registerFontkit(window.fontkit);
 
   const pdf = await PDFDocument.create();
-  const font = await pdf.embedFont(fontBytes, { subset: true });
+  // CJK 子集化在浏览器里非常慢（fontkit），这里直接嵌入已子集的字体文件
+  const font = await pdf.embedFont(fontBytes, { subset: false });
   const bold = font;   // 子集只有常规字重，标题用字号区分
   const black = rgb(0.07, 0.08, 0.09);
   const gray = rgb(0.45, 0.47, 0.5);
