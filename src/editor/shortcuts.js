@@ -1,6 +1,6 @@
 /* src/editor/shortcuts.js — 编辑器快捷键与 Tab 缩进
    Cmd/Ctrl+B 加粗 · I 斜体 · K 链接 · S 保存草稿 · / 插入代码块 · Tab 缩进 */
-export function initShortcuts(ta, { onSave, onInsertCode, toast } = {}) {
+export function initShortcuts(ta, { onSave, onInsertCode, toast, onUndo } = {}) {
   const wrap = (before, after, placeholder) => {
     const s = ta.selectionStart, e = ta.selectionEnd;
     const sel = ta.value.slice(s, e) || placeholder || '';

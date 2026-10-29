@@ -166,3 +166,15 @@
   .theme-card__foot { gap: var(--sp-2); }
   .theme-card__foot .btn { min-height: 44px; flex: 1; }
 }
+
+/* 主题墙工具条 */
+.theme-tools { display: grid; gap: var(--sp-2); }
+.theme-search {
+  width: min(360px, 100%); height: 36px; padding: 0 var(--sp-3);
+  border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); color: var(--c-text); font-size: var(--fs-13);
+}
+.theme-search:focus-visible { border-color: var(--c-primary); }
+.theme-groups { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+.theme-card__prev { min-height: 118px; }
+@media (max-width: 639px) { .theme-search { height: 44px; } .theme-groups .tsw__chip { height: 40px; } }

@@ -3,6 +3,7 @@
 import { defineRoute, setNotFound, startRouter } from './router.js';
 import * as Themes from './theme-manager.js';
 import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js';
+import { bindShortcutSheet } from './components/shortcut-sheet.js';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -36,6 +37,7 @@ function boot() {
   applyMode(readMode());
   document.getElementById('themeBtn')?.addEventListener('click', toggleThemePanel);
   bindThemeShortcuts();
+  bindShortcutSheet();   // ? 打开快捷键帮助
   document.getElementById('modeBtn')?.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-mode');
     applyMode(cur === 'dark' ? 'light' : 'dark');

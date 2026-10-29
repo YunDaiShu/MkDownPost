@@ -342,7 +342,15 @@ export default function render(root) {
   });
 
   initSplitPane(root.querySelector('.editor'));
+  const doUndo = (isRedo) => {
+    clearTimeout(history.timer); pushHistory();
+    if (isRedo) { if (history.at < history.stack.length - 1) { history.at++; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); } }
+    else if (history.at > 0) { history.at--; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); }
+    syncHistoryBtn();
+  };
+
   initShortcuts(ta, {
+    onUndo: doUndo,
     onSave: () => { autosave.save(); toast('草稿已保存'); },
     onInsertCode: () => insert('\n```js\n', '\n```\n', 'console.log(1)'),
     toast
