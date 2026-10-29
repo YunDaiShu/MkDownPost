@@ -1,5 +1,5 @@
 /* src/pages/editor.js — 编辑器路由入口 */
-import renderEditor from '../editor/editor-page.js?v=vmvte9w8h';
+import renderEditor from '../editor/editor-page.js?v=vmvted2h2';
 
 export default function render(root) {
   renderEditor(root);

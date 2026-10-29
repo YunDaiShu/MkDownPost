@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=vmvte9w8h';
-import { apply, get, exportCSS } from '../theme-manager.js?v=vmvte9w8h';
-import { toast } from '../components/theme-switcher.js?v=vmvte9w8h';
-import { derivePalette } from '../theme-custom.js?v=vmvte9w8h';
+import { THEMES } from '../../data/themes.js?v=vmvted2h2';
+import { apply, get, exportCSS } from '../theme-manager.js?v=vmvted2h2';
+import { toast } from '../components/theme-switcher.js?v=vmvted2h2';
+import { derivePalette } from '../theme-custom.js?v=vmvted2h2';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
@@ -130,5 +130,11 @@ export default function render(root, params) {
   });
 
   paint(false);
+  // 从首页跳来：滚到该主题并闪一下，随后清掉标记（不留永久描边）
+  const focusCard = focus ? grid.querySelector('.theme-card[data-key="' + focus + '"]') : null;
+  if (focusCard) {
+    focusCard.scrollIntoView({ block: 'center' });
+    setTimeout(() => { focusCard.removeAttribute('data-focus'); }, 1500);   /* focusFlashDone */
+  }
   [...grid.children].forEach((c, i) => c.style.setProperty('--d', Math.min(i, 24) * 18 + 'ms'));
 }
