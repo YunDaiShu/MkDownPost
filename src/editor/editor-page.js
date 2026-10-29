@@ -1,11 +1,11 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvtpyndt';
-import { initShortcuts } from './shortcuts.js?v=vmvtpyndt';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvtpyndt';
-import { initAutosave } from './autosave.js?v=vmvtpyndt';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtpyndt';
-import { toast } from '../components/theme-switcher.js?v=vmvtpyndt';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtpyndt';
+import { initSplitPane } from './split-pane.js?v=vmvtq0vsa';
+import { initShortcuts } from './shortcuts.js?v=vmvtq0vsa';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvtq0vsa';
+import { initAutosave } from './autosave.js?v=vmvtq0vsa';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtq0vsa';
+import { toast } from '../components/theme-switcher.js?v=vmvtq0vsa';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtq0vsa';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -78,8 +78,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvtpyndt'),
-      import('../markdown/renderer.js?v=vmvtpyndt')
+      import('../markdown/vendor-loader.js?v=vmvtq0vsa'),
+      import('../markdown/renderer.js?v=vmvtq0vsa')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -88,23 +88,23 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtpyndt');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtq0vsa');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvtpyndt');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvtq0vsa');
   return _exportMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvtpyndt');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvtq0vsa');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvtpyndt');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvtq0vsa');
   return _mathMod;
 };
 
