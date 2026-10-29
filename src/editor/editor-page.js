@@ -2,8 +2,9 @@
 import { renderMarkdown } from '../markdown/renderer.js';
 import { initSplitPane } from './split-pane.js';
 import { initShortcuts } from './shortcuts.js';
-import { initAutosave, loadDraft } from './autosave.js';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate } from './export.js';
+import { initAutosave } from './autosave.js';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng } from './export.js';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js';
 import { toast } from '../components/theme-switcher.js';
 import { mountHighlight } from './highlight-layer.js';
 import { mountMathPreview } from './math-preview.js';
@@ -79,6 +80,8 @@ const TOOLS = [
 export default function render(root) {
   root.innerHTML = `
     <div class="editor">
+      <div class="tabs" role="tablist" aria-label="草稿标签" id="tabBar"></div>
+
       <div class="editor__bar" role="toolbar" aria-label="编辑工具栏">
         ${TOOLS.map((t) => t.sep
           ? '<span class="editor__sep" aria-hidden="true"></span>'
@@ -99,6 +102,7 @@ export default function render(root) {
           <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
           <button role="menuitem" type="button" data-exp="print">打印 / 存 PDF（主题色）</button>
           <button role="menuitem" type="button" data-exp="print-min">打印 / 存 PDF（极简）</button>
+          <button role="menuitem" type="button" data-exp="png">导出 PNG 长图</button>
           <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
       </div>
@@ -150,8 +154,80 @@ export default function render(root) {
   const readTime = root.querySelector('#readTime');
   const cursorPos = root.querySelector('#cursorPos');
 
-  const draft = loadDraft();
-  ta.value = (draft && draft.text) || SAMPLE;
+  /* ---------- 多标签页 ---------- */
+  const tabState = initTabs(SAMPLE);
+  let tabs = tabState.tabs;
+  let activeTab = tabState.active;
+
+  const tabBar = root.querySelector('#tabBar');
+
+  function currentTab() { return tabs.find((t) => t.id === activeTab) || tabs[0]; }
+
+  function persist() {
+    tabs = updateText(tabs, activeTab, ta.value);
+    saveAll(tabs, activeTab);
+  }
+
+  function paintTabs() {
+    tabBar.innerHTML = tabs.map((t) => {
+      const on = t.id === activeTab;
+      return '<div class="tabs__item' + (on ? ' is-on' : '') + '" role="tab" aria-selected="' + on + '" data-tab="' + t.id + '">' +
+        '<span class="tabs__name" data-rename="' + t.id + '" title="双击重命名">' + (t.name || '未命名') + '</span>' +
+        (tabs.length > 1 ? '<button class="tabs__close" type="button" data-close="' + t.id + '" aria-label="关闭标签">×</button>' : '') +
+        '</div>';
+    }).join('') + '<button class="tabs__add" type="button" id="tabAdd" aria-label="新建标签">+</button>';
+  }
+
+  function switchTo(id) {
+    if (id === activeTab) return;
+    persist();
+    activeTab = id;
+    saveAll(tabs, activeTab);
+    ta.value = currentTab().text || '';
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    paintTabs();
+    ta.focus();
+  }
+
+  tabBar.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('[data-close]');
+    if (closeBtn) {
+      const id = closeBtn.getAttribute('data-close');
+      const r2 = closeTab(tabs, activeTab, id);
+      tabs = r2.tabs; activeTab = r2.active;
+      saveAll(tabs, activeTab);
+      ta.value = currentTab().text || '';
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+      paintTabs();
+      return;
+    }
+    if (e.target.closest('#tabAdd')) {
+      persist();
+      const r3 = addTab(tabs);
+      tabs = r3.tabs; activeTab = r3.active;
+      saveAll(tabs, activeTab);
+      ta.value = '';
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+      paintTabs();
+      ta.focus();
+      return;
+    }
+    const item = e.target.closest('[data-tab]');
+    if (item) switchTo(item.getAttribute('data-tab'));
+  });
+
+  tabBar.addEventListener('dblclick', (e) => {
+    const nameEl = e.target.closest('[data-rename]');
+    if (!nameEl) return;
+    const id = nameEl.getAttribute('data-rename');
+    const cur = tabs.find((t) => t.id === id);
+    const next = prompt('标签名', cur ? cur.name : '');
+    if (next !== null) { tabs = renameTab(tabs, id, next.trim()); saveAll(tabs, activeTab); paintTabs(); }
+  });
+
+  paintTabs();
+  ta.value = currentTab().text || SAMPLE;
+
 
   /* ---------- 编辑历史（自管栈，用于按钮置灰） ---------- */
   const history = { stack: [{ v: ta.value, t: Date.now() }], at: 0, timer: null };
@@ -178,10 +254,6 @@ export default function render(root) {
   initHistory();
 
   const autosave = initAutosave(ta, { onStatus: (t) => { statusSave.textContent = t; } });
-  if (draft && draft.updatedAt) {
-    const d = new Date(draft.updatedAt);
-    statusSave.textContent = '已保存于 ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-  }
 
   const syncGutter = () => {
     const lines = ta.value.split('\n').length;
@@ -215,6 +287,7 @@ export default function render(root) {
   mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'));
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
+  ta.addEventListener('input', () => { persist(); });
 
   ta.addEventListener('input', update);
   ta.addEventListener('scroll', () => {
@@ -323,6 +396,10 @@ export default function render(root) {
     if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); }
     if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); }
     if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word（.doc）'); }
+    if (b.dataset.exp === 'png') {
+      toast('正在生成长图…');
+      exportPng(preview, 'mkdownpost').then((ok) => toast(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
+    }
     if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
 

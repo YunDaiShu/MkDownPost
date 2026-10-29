@@ -164,3 +164,13 @@
 .hist__time { font-family: ui-monospace, Menlo, monospace; color: var(--c-text-muted); }
 .hist__txt { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hist__size { color: var(--c-text-muted); }
+
+/* ===== 编辑器多标签页 ===== */
+.tabs { display: flex; align-items: center; gap: var(--sp-1); overflow-x: auto; padding-bottom: 2px; }
+.tabs__item { display: inline-flex; align-items: center; gap: var(--sp-1); padding: 4px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2) var(--r-2) 0 0; background: var(--c-surface-2); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; white-space: nowrap; }
+.tabs__item.is-on { background: var(--c-surface); border-color: var(--c-primary); color: var(--c-primary-text); font-weight: 600; }
+.tabs__close { width: 18px; height: 18px; border: 0; border-radius: var(--r-1); background: transparent; color: inherit; cursor: pointer; line-height: 1; }
+.tabs__close:hover { background: var(--c-surface-2); }
+.tabs__add { width: 26px; height: 26px; border: 1px dashed var(--c-border); border-radius: var(--r-1); background: transparent; color: var(--c-text-muted); cursor: pointer; }
+.tabs__add:hover { border-color: var(--c-primary); color: var(--c-primary); }
+@media (max-width: 639px) { .tabs__item, .tabs__add { min-height: 40px; } }

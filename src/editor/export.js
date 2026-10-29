@@ -119,3 +119,69 @@ export function printDocWithTemplate(container, template = 'brand') {
   w.document.close();
   setTimeout(() => { w.focus(); w.print(); }, 300);
 }
+
+/** 导出 PNG 长图：SVG foreignObject 包住渲染后的 HTML → canvas → PNG
+    优点：不引第三方库；缺点：外链图片需允许 CORS，否则会被跳过。 */
+export async function exportPng(container, name = 'draft', { width = 750, scale = 2 } = {}) {
+  const cs = getComputedStyle(document.documentElement);
+  const v = (k) => cs.getPropertyValue(k).trim();
+  const clone = container.cloneNode(true);
+  clone.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+
+  const css = [
+    'body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:' + v('--c-text') + ';background:' + v('--c-bg') + ';}',
+    'h1{font-size:24px;color:' + v('--c-primary-text') + ';}',
+    'h2{font-size:19px;color:' + v('--c-primary-text') + ';border-left:3px solid ' + v('--c-primary') + ';padding-left:10px;}',
+    'h3{font-size:16px;color:' + v('--c-primary-text') + ';}',
+    'p,li{font-size:15px;line-height:1.9;}',
+    'a{color:' + v('--c-link') + ';}',
+    'code{font-family:Menlo,Consolas,monospace;background:' + v('--c-code-bg') + ';padding:1px 4px;border-radius:4px;}',
+    'pre{background:' + v('--c-code-bg') + ';padding:12px;border-radius:8px;white-space:pre-wrap;}',
+    'blockquote{border-left:3px solid ' + v('--c-quote-bar') + ';background:' + v('--c-primary-bg') + ';padding:8px 14px;margin:12px 0;}',
+    'table{border-collapse:collapse;width:100%;}th,td{border:1px solid ' + v('--c-border') + ';padding:6px 10px;font-size:13px;}',
+    'th{background:' + v('--c-primary-soft') + ';}',
+    'img{max-width:100%;}'
+  ].join('');
+
+  const html = '<div xmlns="http://www.w3.org/1999/xhtml" style="width:' + width + 'px;padding:24px;box-sizing:border-box;">' +
+    '<style>' + css + '</style>' + clone.innerHTML + '</div>';
+
+  // 先量高度
+  const measure = document.createElement('div');
+  measure.style.cssText = 'position:absolute;left:-9999px;top:0;width:' + width + 'px;';
+  measure.innerHTML = '<style>' + css + '</style>' + clone.innerHTML;
+  document.body.appendChild(measure);
+  const height = Math.ceil(measure.getBoundingClientRect().height) + 48;
+  measure.remove();
+
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '">' +
+    '<foreignObject width="100%" height="100%">' + html + '</foreignObject></svg>';
+
+  const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = v('--c-bg');
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      canvas.toBlob((b) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = name + '.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        resolve(true);
+      }, 'image/png');
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(false); };
+    img.src = url;
+  });
+}

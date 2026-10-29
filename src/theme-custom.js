@@ -79,3 +79,49 @@ export function clearCustom() {
   Object.keys(derivePalette('#000000', 'light')).forEach((k) => html.style.removeProperty(k));
   try { localStorage.removeItem(KEY); } catch { /* 忽略 */ }
 }
+
+/** 导出当前配色为 JSON（可分享给别人导入） */
+export function exportThemeJson(name = 'mkdownpost-theme') {
+  const cs = getComputedStyle(document.documentElement);
+  const vars = {};
+  Object.keys(derivePalette('#000000', 'light')).forEach((k) => {
+    vars[k] = cs.getPropertyValue(k).trim();
+  });
+  const payload = {
+    format: 'mkdownpost-theme@1',
+    name,
+    theme: document.documentElement.getAttribute('data-theme'),
+    mode: document.documentElement.getAttribute('data-mode'),
+    vars
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  return payload;
+}
+
+/** 导入配色 JSON（校验格式 → 应用变量） */
+export async function importThemeJson(file) {
+  const text = await file.text();
+  let payload;
+  try { payload = JSON.parse(text); } catch { return { ok: false, reason: '不是合法的 JSON' }; }
+  if (!payload || payload.format !== 'mkdownpost-theme@1' || !payload.vars) {
+    return { ok: false, reason: '不是 MkDownPost 配色文件' };
+  }
+  const html = document.documentElement;
+  const known = Object.keys(derivePalette('#000000', 'light'));
+  let applied = 0;
+  known.forEach((k) => {
+    const val = payload.vars[k];
+    if (typeof val === 'string' && /^#[0-9a-f]{3,8}$/i.test(val.trim())) {
+      html.style.setProperty(k, val.trim());
+      applied++;
+    }
+  });
+  html.setAttribute('data-theme', 'custom');
+  document.dispatchEvent(new CustomEvent('theme:change', { detail: { key: 'custom' } }));
+  return { ok: applied > 0, applied, name: payload.name || '' };
+}
