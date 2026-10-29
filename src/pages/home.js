@@ -1,6 +1,6 @@
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=vmvte42ix';
+import { THEMES } from '../../data/themes.js?v=vmvte8auu';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -22,9 +22,13 @@ function buildCard(a) {
 function buildChip(t) {
   const a = el('a', 'theme-chip');
   a.href = '#/themes?theme=' + t.key;
-  const dot = el('span', 'theme-chip__dot');
-  dot.style.background = t.brand.light;
-  a.append(dot, el('span', 'theme-chip__name', t.name), el('span', 'theme-chip__note', t.note));
+  const dark = document.documentElement.getAttribute('data-mode') === 'dark';
+  const pal = derivePalette(dark ? t.brand.dark : t.brand.light, dark ? 'dark' : 'light');
+  // 与主题库 / 配色面板一致：5 个重叠色点
+  const dots = el('span', 'pcard__dots');
+  [pal['--c-primary'], pal['--c-primary-soft'], pal['--c-bg'], pal['--c-text'], pal['--c-link']]
+    .forEach((c) => { const i = document.createElement('i'); i.style.background = c; dots.appendChild(i); });
+  a.append(dots, el('span', 'theme-chip__name', t.name), el('span', 'theme-chip__note', t.note));
   return a;
 }
 

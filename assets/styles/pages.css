@@ -240,3 +240,10 @@
   .theme-card { animation: none; }
   .theme-card:hover, .theme-card:active { transform: none; }
 }
+
+/* CHIP_DOTS：首页主题墙与主题库一致的 5 色点 */
+.theme-chip { display: grid; grid-template-rows: auto auto auto; gap: 2px; }
+.theme-chip .pcard__dots { margin-bottom: var(--sp-1); }
+.theme-chip .pcard__dots i { width: 20px; height: 20px; }
+.theme-chip .pcard__dots i + i { margin-left: -7px; }
+.theme-chip:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.08); }
