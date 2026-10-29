@@ -2,6 +2,7 @@
 import { THEMES } from '../../data/themes.js';
 import { apply, get, exportCSS } from '../theme-manager.js';
 import { toast } from '../components/theme-switcher.js';
+import { derivePalette } from '../theme-custom.js';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
@@ -45,12 +46,18 @@ export default function render(root, params) {
   function paint() {
     const list = visible();
     count.textContent = '显示 ' + list.length + ' / ' + THEMES.length + ' 套';
-    grid.innerHTML = list.map((t) => [
-      '<article class="theme-card" data-key="' + t.key + '"' + (t.key === focus ? ' data-focus="1"' : '') + ' aria-current="' + (t.key === get()) + '">',
+    const dark = document.documentElement.getAttribute('data-mode') === 'dark';
+    grid.innerHTML = list.map((t) => {
+      const pal = derivePalette(dark ? t.brand.dark : t.brand.light, dark ? 'dark' : 'light');
+      const dots = [pal['--c-primary'], pal['--c-primary-soft'], pal['--c-bg'], pal['--c-text'], pal['--c-link']]
+        .map((c) => '<i style="background:' + c + '"></i>').join('');
+      const on = t.key === get();
+      return [
+      '<article class="theme-card' + (on ? ' is-on' : '') + '" data-key="' + t.key + '"' + (t.key === focus ? ' data-focus="1"' : '') + ' aria-current="' + on + '">',
       '<header class="theme-card__head">',
-      '<span class="theme-card__dot" style="background:' + t.brand.light + '"></span>',
+      '<span class="pcard__dots">' + dots + '</span>',
       '<h2 class="theme-card__name">' + t.name + '</h2>',
-      '<span class="theme-card__note">' + (GROUP_LABEL[t.group] || t.group || '') + '</span>',
+      '<span class="theme-card__note">' + (on ? '正在使用' : (GROUP_LABEL[t.group] || t.group || '')) + '</span>',
       '</header>',
       '<div class="theme-card__prev">',
       '<h3 class="theme-card__demo-h" style="color:' + t.brand.light + '">标题示例 Heading</h3>',
@@ -61,7 +68,7 @@ export default function render(root, params) {
       '<button class="btn" type="button" data-apply="' + t.key + '">应用</button>',
       '<button class="btn" type="button" data-copy="' + t.key + '">复制变量</button>',
       '</footer></article>'
-    ].join('')).join('');
+    ].join(''); }).join('');
   }
 
   root.addEventListener('input', (e) => {

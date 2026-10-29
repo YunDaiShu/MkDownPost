@@ -184,3 +184,12 @@
   .theme-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .theme-card__prev { min-height: 108px; }
 }
+
+/* THEME_CARD_DOTS：主题库与配色面板统一为「色点卡片」 */
+.theme-card__head { display: flex; align-items: center; gap: var(--sp-2); }
+.theme-card__head .pcard__dots { flex: none; }
+.theme-card__head .pcard__dots i { width: 20px; height: 20px; }
+.theme-card__head .pcard__dots i + i { margin-left: -7px; }
+.theme-card.is-on { border-color: var(--c-primary); box-shadow: inset 0 0 0 1px var(--c-primary); background: var(--c-primary-bg); }
+.theme-card__name { font-size: var(--fs-14); }
+.theme-card__note { margin-left: auto; font-size: var(--fs-12); color: var(--c-text-muted); }
