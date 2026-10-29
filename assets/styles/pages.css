@@ -178,3 +178,9 @@
 .theme-groups { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
 .theme-card__prev { min-height: 118px; }
 @media (max-width: 639px) { .theme-search { height: 44px; } .theme-groups .tsw__chip { height: 40px; } }
+
+/* GRID_5COL：超宽屏主题墙 5 列，避免卡片过大 */
+@media (min-width: 2000px) {
+  .theme-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .theme-card__prev { min-height: 108px; }
+}

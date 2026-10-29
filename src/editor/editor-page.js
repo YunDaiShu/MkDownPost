@@ -6,6 +6,7 @@ import { initAutosave, loadDraft } from './autosave.js';
 import { exportMarkdown, exportInlineHTMLFile, printDoc } from './export.js';
 import { toast } from '../components/theme-switcher.js';
 import { mountHighlight } from './highlight-layer.js';
+import { mountMathPreview } from './math-preview.js';
 import { streamReveal, thinking, noteCards } from '../components/cc-fx.js';
 import * as Adapters from '../adapters/index.js';
 
@@ -207,6 +208,7 @@ export default function render(root) {
   };
 
   const hl = mountHighlight(ta, ta.parentElement);
+  mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'));
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
 

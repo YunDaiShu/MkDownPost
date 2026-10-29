@@ -134,3 +134,20 @@
   background: color-mix(in srgb, var(--c-code-bg) 70%, transparent);
   display: inline-block; width: 100%;
 }
+
+/* ===== 公式实时预览卡片 ===== */
+.math-preview {
+  position: absolute; right: var(--sp-3); bottom: var(--sp-3); z-index: 5;
+  max-width: min(360px, calc(100% - var(--sp-6)));
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--r-2); box-shadow: var(--shadow-2);
+  padding: var(--sp-2) var(--sp-3); animation: ccIn 160ms var(--ease) both;
+}
+.math-preview[hidden] { display: none; }
+.math-preview__src {
+  font: var(--fs-12)/1.5 ui-monospace, Menlo, Consolas, monospace;
+  color: var(--c-text-muted); margin-bottom: var(--sp-1);
+  max-height: 3em; overflow: auto; word-break: break-all;
+}
+.math-preview__body { color: var(--c-text); overflow-x: auto; }
+.math-preview__body .katex { font-size: 1.05em; }

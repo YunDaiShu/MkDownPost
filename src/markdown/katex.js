@@ -1,7 +1,7 @@
 /* src/markdown/katex.js — KaTeX：行内 $...$ / 块级 $$...$$；库缺失或失败时保留原文 */
 
 let loading = null;
-function loadKatex() {
+export function loadKatex() {
   if (window.katex) return Promise.resolve(window.katex);
   if (loading) return loading;
   loading = new Promise((resolve) => {

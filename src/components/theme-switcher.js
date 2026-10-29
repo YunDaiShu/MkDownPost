@@ -158,15 +158,6 @@ export function toggle() { if (el) close(); else open(); }
 export function isOpen() { return !!el; }
 
 export function bindShortcuts() {
-  document.addEventListener('keydown', (e) => {
-    const tag = (e.target && e.target.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea' || e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.key === 't' || e.key === 'T') {
-      e.preventDefault();
-      const k = cycle(e.shiftKey ? -1 : 1);
-      if (el) refresh();
-      toast('已应用 ' + k);
-    }
-  });
+  // T / Shift+T 已由 src/editor/keymap.js 统一接管，这里仅保留主题变更时的刷新
   document.addEventListener('theme:change', () => { if (el) refresh(); });
 }

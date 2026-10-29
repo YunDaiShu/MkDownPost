@@ -1,6 +1,7 @@
-/* src/editor/shortcuts.js — 编辑器快捷键与 Tab 缩进
-   Cmd/Ctrl+B 加粗 · I 斜体 · K 链接 · S 保存草稿 · / 插入代码块 · Tab 缩进 */
-export function initShortcuts(ta, { onSave, onInsertCode, toast, onUndo } = {}) {
+/* src/editor/shortcuts.js — 编辑器快捷键（走 keymap，可自定义）+ Tab 缩进 */
+import { match } from './keymap.js';
+
+export function initShortcuts(ta, { onSave, onInsertCode, onUndo, onAction } = {}) {
   const wrap = (before, after, placeholder) => {
     const s = ta.selectionStart, e = ta.selectionEnd;
     const sel = ta.value.slice(s, e) || placeholder || '';
@@ -12,14 +13,19 @@ export function initShortcuts(ta, { onSave, onInsertCode, toast, onUndo } = {}) 
   };
 
   ta.addEventListener('keydown', (e) => {
-    const mod = e.metaKey || e.ctrlKey;
-    if (mod && e.key.toLowerCase() === 'b') { e.preventDefault(); wrap('**', '**', '粗体'); return; }
-    if (mod && e.key.toLowerCase() === 'i') { e.preventDefault(); wrap('*', '*', '斜体'); return; }
-    if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); wrap('[', '](https://)', '链接文字'); return; }
-    if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); onSave && onSave(); return; }
-    if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); onUndo && onUndo(e.shiftKey); return; }
-    if (mod && e.key.toLowerCase() === 'y') { e.preventDefault(); onUndo && onUndo(true); return; }
-    if (mod && e.key === '/') { e.preventDefault(); onInsertCode && onInsertCode(); return; }
+    const id = match(e);
+    if (id) {
+      const handled = ['bold', 'italic', 'link', 'code', 'save', 'undo', 'redo'].includes(id);
+      if (handled) { e.preventDefault(); e.stopPropagation(); }
+      if (id === 'bold') return wrap('**', '**', '粗体');
+      if (id === 'italic') return wrap('*', '*', '斜体');
+      if (id === 'link') return wrap('[', '](https://)', '链接文字');
+      if (id === 'code') return onInsertCode && onInsertCode();
+      if (id === 'save') return onSave && onSave();
+      if (id === 'undo') return onUndo && onUndo(false);
+      if (id === 'redo') return onUndo && onUndo(true);
+      if (onAction) return onAction(id);
+    }
     if (e.key === 'Tab') {
       e.preventDefault();
       const s = ta.selectionStart, en = ta.selectionEnd;
@@ -28,6 +34,6 @@ export function initShortcuts(ta, { onSave, onInsertCode, toast, onUndo } = {}) 
       ta.dispatchEvent(new Event('input', { bubbles: true }));
       return;
     }
-    if (e.key === 'Escape') { ta.blur(); }
+    if (e.key === 'Escape') ta.blur();
   });
 }
