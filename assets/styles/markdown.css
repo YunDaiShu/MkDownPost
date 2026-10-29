@@ -122,3 +122,19 @@
 /* 代码块顶栏随分组微调 */
 [data-theme-group="dev"] .md-codebar { background: var(--c-code-bg); }
 [data-theme-group="game"] .md-codebar { background: var(--c-primary-soft); }
+
+/* Mermaid 点击渲染条 */
+.md-mermaid { border-style: solid; text-align: left; }
+.md-mermaid__bar { display: flex; align-items: center; gap: var(--sp-2); padding-bottom: var(--sp-2); }
+.md-mermaid__label { font-size: var(--fs-12); color: var(--c-text-muted); font-weight: 600; }
+.md-mermaid__btn {
+  margin-left: auto; height: 28px; padding: 0 var(--sp-3);
+  border: 1px solid var(--c-primary); border-radius: var(--radius-btn, 8px);
+  background: var(--c-primary-bg); color: var(--c-primary-text);
+  font-size: var(--fs-12); font-weight: 600; cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+.md-mermaid__btn:hover { opacity: .85; }
+.md-mermaid__btn:active { transform: scale(.97); }
+.md-mermaid__btn:disabled { opacity: .5; cursor: progress; }
+.md-mermaid__svg { overflow: auto; padding: var(--sp-2); background: var(--c-surface); border-radius: var(--r-2); }

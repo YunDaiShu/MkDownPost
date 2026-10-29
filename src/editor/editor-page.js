@@ -147,6 +147,29 @@ export default function render(root) {
   const draft = loadDraft();
   ta.value = (draft && draft.text) || SAMPLE;
 
+  /* ---------- 编辑历史（自管栈，用于按钮置灰） ---------- */
+  const history = { stack: [ta.value], at: 0, timer: null };
+  const undoBtn = root.querySelector('[data-act="undo"]');
+  const redoBtn = root.querySelector('[data-act="redo"]');
+  function syncHistoryBtn() {
+    if (undoBtn) undoBtn.disabled = history.at <= 0;
+    if (redoBtn) redoBtn.disabled = history.at >= history.stack.length - 1;
+  }
+  function pushHistory() {
+    const v = ta.value;
+    if (v === history.stack[history.at]) return;
+    history.stack = history.stack.slice(0, history.at + 1);
+    history.stack.push(v);
+    if (history.stack.length > 120) history.stack.shift();
+    history.at = history.stack.length - 1;
+    syncHistoryBtn();
+  }
+  const initHistory = () => {
+    ta.addEventListener('input', () => { clearTimeout(history.timer); history.timer = setTimeout(pushHistory, 400); });
+    syncHistoryBtn();
+  };
+  initHistory();
+
   const autosave = initAutosave(ta, { onStatus: (t) => { statusSave.textContent = t; } });
   if (draft && draft.updatedAt) {
     const d = new Date(draft.updatedAt);
@@ -224,8 +247,15 @@ export default function render(root) {
   root.querySelectorAll('.editor__tool').forEach((btn) => {
     btn.addEventListener('click', () => {
       const act = btn.dataset.act;
-      if (act === 'undo') { ta.focus(); document.execCommand('undo'); return; }
-      if (act === 'redo') { ta.focus(); document.execCommand('redo'); return; }
+      if (act === 'undo') {
+        clearTimeout(history.timer); pushHistory();
+        if (history.at > 0) { history.at--; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); }
+        syncHistoryBtn(); return;
+      }
+      if (act === 'redo') {
+        if (history.at < history.stack.length - 1) { history.at++; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); }
+        syncHistoryBtn(); return;
+      }
       if (act === 'h1') return linePrefix('# ');
       if (act === 'h2') return linePrefix('## ');
       if (act === 'h3') return linePrefix('### ');

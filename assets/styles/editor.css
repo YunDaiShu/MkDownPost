@@ -96,3 +96,7 @@
 .editor__tool svg { pointer-events: none; }
 .editor__tool:hover { background: var(--c-primary-bg); color: var(--c-primary); }
 @media (max-width: 639px) { .editor__tool { width: 44px; height: 44px; } }
+
+/* TOOL_DISABLED：撤销/重做不可用时置灰 */
+.editor__tool:disabled { opacity: .35; cursor: not-allowed; background: transparent; }
+.editor__tool:disabled:hover { background: transparent; color: var(--c-text-secondary); }

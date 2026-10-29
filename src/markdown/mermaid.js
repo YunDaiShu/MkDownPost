@@ -1,4 +1,4 @@
-/* src/markdown/mermaid.js — Mermaid 懒加载：进入视口才渲染；失败降级为源码 + 提示 */
+/* src/markdown/mermaid.js — Mermaid：点击才渲染（不自动加载 3.3MB 包），失败降级为源码 */
 
 let loading = null;
 function loadMermaid() {
@@ -17,32 +17,45 @@ function loadMermaid() {
   return loading;
 }
 
+const esc = (s) => String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+
 export function upgradeMermaid(root) {
-  const blocks = Array.from(root.querySelectorAll('code.language-mermaid, code.language-mm'));
-  blocks.forEach((code, i) => {
+  root.querySelectorAll('code.language-mermaid, code.language-mm').forEach((code, i) => {
     const pre = code.parentElement;
+    const src = code.textContent;
+
     const wrap = document.createElement('div');
     wrap.className = 'md-mermaid';
-    wrap.innerHTML = '<div class="md-mermaid__ph">Mermaid 图表（滚动到可见区域时渲染）</div>';
+    wrap.innerHTML =
+      '<div class="md-mermaid__bar">' +
+      '<span class="md-mermaid__label">Mermaid 图表</span>' +
+      '<button class="md-mermaid__btn" type="button">渲染图表</button>' +
+      '</div>' +
+      '<pre class="md-mermaid__src"><code>' + esc(src) + '</code></pre>';
+
     pre.replaceWith(wrap);
 
-    const io = new IntersectionObserver(async (entries) => {
-      if (!entries.some((e) => e.isIntersecting)) return;
-      io.disconnect();
+    const btn = wrap.querySelector('.md-mermaid__btn');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.textContent = '渲染中…';
       const mermaid = await loadMermaid();
       if (!mermaid) {
-        wrap.innerHTML = '<pre class="md-mermaid__src"><code>' + code.textContent.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])) + '</code></pre>' +
-          '<p class="md-mermaid__err">图表库未加载（可执行 node tools/vendor.mjs 下载 mermaid），以上为源码</p>';
+        wrap.querySelector('.md-mermaid__src').insertAdjacentHTML('afterend',
+          '<p class="md-mermaid__err">图表库未加载（可运行 node tools/vendor.mjs 下载），以上为源码</p>');
+        btn.textContent = '无法渲染';
         return;
       }
       try {
-        const { svg } = await mermaid.render('mmd' + i + '_' + Date.now(), code.textContent);
-        wrap.innerHTML = svg;
+        const { svg } = await mermaid.render('mmd' + i + '_' + Date.now(), src);
+        wrap.querySelector('.md-mermaid__src').outerHTML = '<div class="md-mermaid__svg">' + svg + '</div>';
+        btn.remove();
       } catch (err) {
-        wrap.innerHTML = '<pre class="md-mermaid__src"><code>' + code.textContent + '</code></pre>' +
-          '<p class="md-mermaid__err">图表渲染失败：' + String(err && err.message || err).slice(0, 120) + '</p>';
+        wrap.querySelector('.md-mermaid__src').insertAdjacentHTML('afterend',
+          '<p class="md-mermaid__err">渲染失败：' + String((err && err.message) || err).slice(0, 120) + '</p>');
+        btn.disabled = false;
+        btn.textContent = '重试';
       }
-    }, { threshold: 0.1 });
-    io.observe(wrap);
+    });
   });
 }

@@ -1,10 +1,17 @@
-/* src/components/theme-switcher.js — 主题切换器（色板网格 + 实时小样 + 复制 CSS 变量）
+/* src/components/theme-switcher.js — 主题切换器（100 套：分组筛选 + 搜索 + 实时小样 + 复制变量）
    快捷键：T 循环 / Shift+T 反向 / Esc 关闭 */
 
 import { list, get, apply, cycle, exportCSS } from '../theme-manager.js';
 
+const GROUP_LABEL = {
+  ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具',
+  lang: '语言', system: '系统', framework: '框架', media: '媒体',
+  browser: '浏览器', design: '设计', cms: '建站', cn: '国内', infra: '基础设施', misc: '其他'
+};
+
 let el = null;
 let toastEl = null;
+let state = { group: 'all', q: '' };
 
 function ensureToast() {
   if (toastEl) return toastEl;
@@ -24,31 +31,45 @@ export function toast(msg) {
 }
 
 async function copyText(text, okMsg) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast(okMsg || '已复制');
-  } catch {
-    toast('复制失败，请手动选择复制');
-  }
+  try { await navigator.clipboard.writeText(text); toast(okMsg || '已复制'); }
+  catch { toast('复制失败，请手动选择复制'); }
 }
 
-function renderGrid() {
+function groups() {
+  const set = new Set(list().map((t) => t.group || 'misc'));
+  return ['all', ...Array.from(set)];
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  return list().filter((t) => {
+    if (state.group !== 'all' && (t.group || 'misc') !== state.group) return false;
+    if (!q) return true;
+    return (t.name + ' ' + t.key + ' ' + (t.note || '')).toLowerCase().includes(q);
+  });
+}
+
+function renderBody() {
   const cur = get();
-  return list().map((t) => {
-    const brand = t.brand[document.documentElement.getAttribute('data-mode') === 'dark' ? 'dark' : 'light'];
-    return `
-      <button class="tsw__item" type="button" role="listitem" data-theme-key="${t.key}"
-              aria-pressed="${t.key === cur}" title="${t.name} · ${t.note}">
-        <span class="tsw__row">
-          <span class="tsw__dot" style="background:${brand}"></span>
-          <span class="tsw__name">${t.name}</span>
-        </span>
-        <span class="tsw__prev" style="--c-primary-text:${brand}">
-          <b>标题示例</b>
-          正文与 <code>代码</code>
-        </span>
-      </button>`;
+  const dark = document.documentElement.getAttribute('data-mode') === 'dark';
+  const items = filtered();
+
+  const chips = groups().map((g) => {
+    const on = state.group === g;
+    const label = g === 'all' ? '全部' : (GROUP_LABEL[g] || g);
+    const n = g === 'all' ? list().length : list().filter((t) => (t.group || 'misc') === g).length;
+    return '<button class="tsw__chip' + (on ? ' is-on' : '') + '" type="button" data-group="' + g + '" aria-pressed="' + on + '">' + label + ' ' + n + '</button>';
   }).join('');
+
+  const grid = items.map((t) => {
+    const brand = dark ? t.brand.dark : t.brand.light;
+    return '<button class="tsw__item" type="button" role="listitem" data-theme-key="' + t.key + '" aria-pressed="' + (t.key === cur) + '" title="' + t.name + ' · ' + (t.note || '') + '">' +
+      '<span class="tsw__row"><span class="tsw__dot" style="background:' + brand + '"></span><span class="tsw__name">' + t.name + '</span></span>' +
+      '<span class="tsw__prev" style="--c-primary-text:' + brand + '"><b>标题示例</b>正文与 <code>代码</code></span>' +
+      '</button>';
+  }).join('') || '<p class="tsw__empty">没有匹配的主题</p>';
+
+  return { chips, grid, count: items.length };
 }
 
 function mount() {
@@ -56,25 +77,43 @@ function mount() {
   el.className = 'tsw';
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-label', '选择主题');
-  el.innerHTML = `
-    <div class="tsw__head">
-      <span class="tsw__title">主题库（8 套）</span>
-      <span class="tsw__hint">T 循环 · Shift+T 反向 · Esc 关闭</span>
-    </div>
-    <div class="tsw__grid" role="list">${renderGrid()}</div>
-    <div class="tsw__foot">
-      <button class="btn btn--primary" type="button" data-act="copy">复制当前主题 CSS 变量</button>
-      <button class="btn" type="button" data-act="cycle">下一个主题</button>
-      <button class="btn" type="button" data-act="close" style="margin-left:auto">关闭</button>
-    </div>`;
+  const b = renderBody();
+  el.innerHTML = [
+    '<div class="tsw__head">',
+    '<span class="tsw__title">主题库（' + list().length + ' 套）</span>',
+    '<input class="tsw__search" type="search" placeholder="搜索主题名…" aria-label="搜索主题" />',
+    '<span class="tsw__hint">T 循环 · Esc 关闭</span>',
+    '</div>',
+    '<div class="tsw__chips" role="group" aria-label="按分组筛选">' + b.chips + '</div>',
+    '<div class="tsw__grid" role="list">' + b.grid + '</div>',
+    '<div class="tsw__foot">',
+    '<button class="btn btn--primary" type="button" data-act="copy">复制当前主题 CSS 变量</button>',
+    '<button class="btn" type="button" data-act="cycle">下一个主题</button>',
+    '<button class="btn" type="button" data-act="close" style="margin-left:auto">关闭</button>',
+    '</div>'
+  ].join('');
+
+  const search = el.querySelector('.tsw__search');
+  search.addEventListener('input', () => {
+    state.q = search.value;
+    const nb = renderBody();
+    el.querySelector('.tsw__grid').innerHTML = nb.grid;
+  });
 
   el.addEventListener('click', (e) => {
+    const g = e.target.closest('[data-group]');
+    if (g) {
+      state.group = g.getAttribute('data-group');
+      const nb = renderBody();
+      el.querySelector('.tsw__chips').innerHTML = nb.chips;
+      el.querySelector('.tsw__grid').innerHTML = nb.grid;
+      return;
+    }
     const item = e.target.closest('[data-theme-key]');
     if (item) {
       const key = item.getAttribute('data-theme-key');
       apply(key);
-      el.querySelectorAll('[data-theme-key]').forEach((b) =>
-        b.setAttribute('aria-pressed', b.getAttribute('data-theme-key') === key ? 'true' : 'false'));
+      el.querySelectorAll('[data-theme-key]').forEach((b2) => b2.setAttribute('aria-pressed', b2.getAttribute('data-theme-key') === key ? 'true' : 'false'));
       toast('已应用 ' + key);
       return;
     }
@@ -92,7 +131,9 @@ function mount() {
 
 function refresh() {
   if (!el) return;
-  el.querySelector('.tsw__grid').innerHTML = renderGrid();
+  const nb = renderBody();
+  el.querySelector('.tsw__chips').innerHTML = nb.chips;
+  el.querySelector('.tsw__grid').innerHTML = nb.grid;
 }
 
 function onKey(e) {
@@ -102,28 +143,20 @@ function onKey(e) {
 
 export function open() {
   if (!el) mount(); else refresh();
-  const btn = document.getElementById('themeBtn');
-  if (btn) btn.setAttribute('aria-expanded', 'true');
+  document.getElementById('themeBtn')?.setAttribute('aria-expanded', 'true');
 }
 
 export function close() {
   if (!el) return;
-  el.remove();
-  el = null;
+  el.remove(); el = null;
   document.removeEventListener('keydown', onKey, true);
   const btn = document.getElementById('themeBtn');
   if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
 }
 
-export function toggle() {
-  if (el) close(); else open();
-}
+export function toggle() { if (el) close(); else open(); }
+export function isOpen() { return !!el; }
 
-export function isOpen() {
-  return !!el;
-}
-
-/** 全局快捷键：T 循环 / Shift+T 反向（输入框内不触发） */
 export function bindShortcuts() {
   document.addEventListener('keydown', (e) => {
     const tag = (e.target && e.target.tagName || '').toLowerCase();
