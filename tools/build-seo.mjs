@@ -135,9 +135,16 @@ const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '\n</urlset>\n';
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
 
-/* ---------- 3. robots.txt ---------- */
-fs.writeFileSync(path.join(ROOT, 'robots.txt'),
-  'User-agent: *\nAllow: /\n\nSitemap: ' + SITE + '/sitemap.xml\n', 'utf8');
+/* ---------- 3. robots.txt + sitemap.txt（百度更认纯文本地图） ---------- */
+fs.writeFileSync(path.join(ROOT, 'sitemap.txt'), urls.map((u) => u.loc).join('\n') + '\n', 'utf8');
+fs.writeFileSync(path.join(ROOT, 'robots.txt'), [
+  'User-agent: *', 'Allow: /', '',
+  'User-agent: Baiduspider', 'Allow: /', '',
+  'User-agent: bingbot', 'Allow: /', '',
+  'User-agent: Googlebot', 'Allow: /', '',
+  'Sitemap: ' + SITE + '/sitemap.xml',
+  'Sitemap: ' + SITE + '/sitemap.txt', ''
+].join('\n'), 'utf8');
 
 /* ---------- 4. feed.xml（RSS 2.0，最近 30 篇） ---------- */
 const items = index.slice(0, 30).map((a) => {

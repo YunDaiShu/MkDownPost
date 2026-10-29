@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+User-agent: Baiduspider
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
 Sitemap: https://yundaishu.github.io/MkDownPost/sitemap.xml
+Sitemap: https://yundaishu.github.io/MkDownPost/sitemap.txt
