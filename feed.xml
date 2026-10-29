@@ -5,12 +5,12 @@
     <link>https://yundaishu.github.io/MkDownPost/</link>
     <description>面向公众号、小黑盒、TapTap 创作者的 Markdown 写作与排版工作台</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 29 Oct 2026 16:19:13 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2026 16:21:50 GMT</lastBuildDate>
     <item>
       <title>3 分钟上手：写出第一篇能直接发布的稿子</title>
       <link>https://yundaishu.github.io/MkDownPost/a/start-in-3-minutes.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/start-in-3-minutes.html</guid>
-      <pubDate>Sat, 10 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Thu, 29 Oct 2026 01:00:00 GMT</pubDate>
       <description>第一次来只看这篇：打开编辑器、5 个语法、挑主题、导出、粘进公众号。</description>
       <category>入门</category>
     </item>
@@ -18,7 +18,7 @@
       <title>这个网站能做什么、不能做什么</title>
       <link>https://yundaishu.github.io/MkDownPost/a/what-this-site-does.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/what-this-site-does.html</guid>
-      <pubDate>Sun, 11 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Wed, 28 Oct 2026 01:00:00 GMT</pubDate>
       <description>有没有 AI？会不会上传？能不能一键发布？能力边界一次说清。</description>
       <category>入门</category>
     </item>
@@ -26,7 +26,7 @@
       <title>Markdown 速查（含任务列表与表格）</title>
       <link>https://yundaishu.github.io/MkDownPost/a/markdown-cheatsheet.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/markdown-cheatsheet.html</guid>
-      <pubDate>Mon, 12 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Tue, 27 Oct 2026 01:00:00 GMT</pubDate>
       <description>常用写法一页看完：标题、列表、任务、表格、引用、代码块。</description>
       <category>速查</category>
     </item>
@@ -34,7 +34,7 @@
       <title>从零写第一篇公众号排版</title>
       <link>https://yundaishu.github.io/MkDownPost/a/getting-started.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/getting-started.html</guid>
-      <pubDate>Tue, 13 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Mon, 26 Oct 2026 01:00:00 GMT</pubDate>
       <description>一篇可以直接在编辑器里改的示例，左侧换成你的稿子，右侧就是最终排版。</description>
       <category>入门</category>
     </item>
@@ -42,7 +42,7 @@
       <title>公众号排版实战：从草稿到发布</title>
       <link>https://yundaishu.github.io/MkDownPost/a/wechat-publishing-guide.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/wechat-publishing-guide.html</guid>
-      <pubDate>Wed, 14 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sun, 25 Oct 2026 01:00:00 GMT</pubDate>
       <description>主题/字号/行宽怎么选，图片怎么处理，导出粘贴 4 步与发布前自检清单。</description>
       <category>公众号</category>
     </item>
@@ -50,7 +50,7 @@
       <title>写作工作流：从灵感到发布的一条流水线</title>
       <link>https://yundaishu.github.io/MkDownPost/a/writing-workflow.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/writing-workflow.html</guid>
-      <pubDate>Fri, 06 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sat, 24 Oct 2026 01:00:00 GMT</pubDate>
       <description>收集→起草→结构→打磨→发布五阶段，含时间分配表、坏习惯对照与可复用模板。</description>
       <category>方法</category>
     </item>
@@ -58,7 +58,7 @@
       <title>三个平台的导出差异（附对照）</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-to-platforms.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-to-platforms.html</guid>
-      <pubDate>Thu, 15 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Fri, 23 Oct 2026 01:00:00 GMT</pubDate>
       <description>公众号要全内联样式，小黑盒看标题与图片，TapTap 需降级表格。</description>
       <category>导出</category>
     </item>
@@ -66,7 +66,7 @@
       <title>各平台图片规则实测对照</title>
       <link>https://yundaishu.github.io/MkDownPost/a/image-rules-by-platform.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/image-rules-by-platform.html</guid>
-      <pubDate>Sun, 08 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Thu, 22 Oct 2026 01:00:00 GMT</pubDate>
       <description>公众号/小黑盒/TapTap/知乎的图片尺寸、比例、格式与转存规则，附图裂 6 因与发布清单。</description>
       <category>图片</category>
     </item>
@@ -74,7 +74,7 @@
       <title>Markdown 是什么：定义、起源与设计哲学</title>
       <link>https://yundaishu.github.io/MkDownPost/a/markdown-what-is.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/markdown-what-is.html</guid>
-      <pubDate>Fri, 16 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Wed, 21 Oct 2026 01:00:00 GMT</pubDate>
       <description>从 John Gruber 2004 年的设计初衷讲起：为什么它可读、为什么它活下来、适合与不适合什么。</description>
       <category>概念</category>
     </item>
@@ -82,7 +82,7 @@
       <title>CommonMark 规范里最坑的 12 个边界案例</title>
       <link>https://yundaishu.github.io/MkDownPost/a/commonmark-edge-cases.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/commonmark-edge-cases.html</guid>
-      <pubDate>Wed, 11 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Tue, 20 Oct 2026 01:00:00 GMT</pubDate>
       <description>加粗失效、列表被合并、代码块位置不对……12 个真实边界案例与可靠写法。</description>
       <category>进阶</category>
     </item>
@@ -90,7 +90,7 @@
       <title>批量发布：一份稿子发四个平台的流程</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-batch-workflow.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-batch-workflow.html</guid>
-      <pubDate>Wed, 11 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Mon, 19 Oct 2026 01:00:00 GMT</pubDate>
       <description>固定流程能省掉每次的犹豫。</description>
       <category>导出</category>
     </item>
@@ -98,7 +98,7 @@
       <title>导出内联样式 HTML：粘贴即用的关键</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-inline-html.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-inline-html.html</guid>
-      <pubDate>Thu, 12 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sun, 18 Oct 2026 01:00:00 GMT</pubDate>
       <description>这是本站最重要的导出，没有之一。</description>
       <category>导出</category>
     </item>
@@ -106,7 +106,7 @@
       <title>导出 .md 文件：把源码带走</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-markdown-file.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-markdown-file.html</guid>
-      <pubDate>Fri, 13 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sat, 17 Oct 2026 01:00:00 GMT</pubDate>
       <description>最不起眼但最有用的导出：原始 Markdown。</description>
       <category>导出</category>
     </item>
@@ -114,7 +114,7 @@
       <title>导出的 PDF：能做什么、有什么限制</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-pdf-limits.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-pdf-limits.html</guid>
-      <pubDate>Sat, 14 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Fri, 16 Oct 2026 01:00:00 GMT</pubDate>
       <description>本站的 PDF 是**图片型**：视觉与屏幕一致，但文字不可选中。</description>
       <category>导出</category>
     </item>
@@ -122,7 +122,7 @@
       <title>导出 PNG 长图：一张图发完一篇文章</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-png.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-png.html</guid>
-      <pubDate>Sun, 15 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Thu, 15 Oct 2026 01:00:00 GMT</pubDate>
       <description>长图适合群分享、社交平台预览、快速归档。</description>
       <category>导出</category>
     </item>
@@ -130,7 +130,7 @@
       <title>打印与另存为 PDF：两个模板</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-print.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-print.html</guid>
-      <pubDate>Mon, 16 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Wed, 14 Oct 2026 01:00:00 GMT</pubDate>
       <description>浏览器打印是&quot;可获得可搜索 PDF&quot;的官方路径。</description>
       <category>导出</category>
     </item>
@@ -138,7 +138,7 @@
       <title>导出排错：九种现象与对应原因</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-troubleshoot.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-troubleshoot.html</guid>
-      <pubDate>Tue, 17 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Tue, 13 Oct 2026 01:00:00 GMT</pubDate>
       <description>导出出问题，先按现象定位。</description>
       <category>导出</category>
     </item>
@@ -146,7 +146,7 @@
       <title>导出 Word：交付与二次编辑</title>
       <link>https://yundaishu.github.io/MkDownPost/a/export-word.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/export-word.html</guid>
-      <pubDate>Wed, 18 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Mon, 12 Oct 2026 01:00:00 GMT</pubDate>
       <description>.wdoc 格式适合&quot;给对方改&quot;的场景。</description>
       <category>导出</category>
     </item>
@@ -154,7 +154,7 @@
       <title>本地优先：你的稿子不上传</title>
       <link>https://yundaishu.github.io/MkDownPost/a/local-first.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/local-first.html</guid>
-      <pubDate>Wed, 21 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sun, 11 Oct 2026 01:00:00 GMT</pubDate>
       <description>草稿只存在浏览器：断网能写、没有账号、也不会被上传。</description>
       <category>隐私</category>
     </item>
@@ -162,7 +162,7 @@
       <title>Markdown 生态：标准、方言与发布路径</title>
       <link>https://yundaishu.github.io/MkDownPost/a/markdown-ecosystem.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/markdown-ecosystem.html</guid>
-      <pubDate>Sun, 18 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sat, 10 Oct 2026 01:00:00 GMT</pubDate>
       <description>CommonMark 与 GFM 的区别、五条发布路径、四平台实操耗时对照、替代方案决策表。</description>
       <category>生态</category>
     </item>
@@ -170,7 +170,7 @@
       <title>Markdown 语法全解（含示例与坑）</title>
       <link>https://yundaishu.github.io/MkDownPost/a/markdown-syntax-guide.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/markdown-syntax-guide.html</guid>
-      <pubDate>Sat, 17 Oct 2026 01:00:00 GMT</pubDate>
+      <pubDate>Fri, 09 Oct 2026 01:00:00 GMT</pubDate>
       <description>14 类语法示例 + 嵌套规则 + 换行写法 + 常见坑表，可直接抄。</description>
       <category>语法</category>
     </item>
@@ -178,7 +178,7 @@
       <title>徽章（badges）：README 的门面</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-badges-shields.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-badges-shields.html</guid>
-      <pubDate>Sun, 22 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Thu, 08 Oct 2026 01:00:00 GMT</pubDate>
       <description>徽章是 README 顶部那排小图标，用来一眼说明项目状态。</description>
       <category>进阶</category>
     </item>
@@ -186,7 +186,7 @@
       <title>引用块：不只是摘抄</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-blockquote-usage.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-blockquote-usage.html</guid>
-      <pubDate>Mon, 23 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Wed, 07 Oct 2026 01:00:00 GMT</pubDate>
       <description>引用块在技术写作里有三种更实用的用法。</description>
       <category>语法</category>
     </item>
@@ -194,7 +194,7 @@
       <title>代码块：语言标记、行内代码与高亮</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-code-blocks.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-code-blocks.html</guid>
-      <pubDate>Tue, 24 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Tue, 06 Oct 2026 01:00:00 GMT</pubDate>
       <description>技术写作里，代码块的正确率直接决定可读性。</description>
       <category>语法</category>
     </item>
@@ -202,7 +202,7 @@
       <title>为什么需要 CommonMark：把边界情况定死</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-commonmark-why.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-commonmark-why.html</guid>
-      <pubDate>Wed, 25 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Mon, 05 Oct 2026 01:00:00 GMT</pubDate>
       <description>原始 Markdown 只给了语法说明，没定义边界，于是每个实现都不同。</description>
       <category>原理</category>
     </item>
@@ -210,7 +210,7 @@
       <title>定义列表与术语表：Markdown 没有，但可以模拟</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-definition-lists.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-definition-lists.html</guid>
-      <pubDate>Thu, 26 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sun, 04 Oct 2026 01:00:00 GMT</pubDate>
       <description>标准 Markdown 没有定义列表，技术文档却经常需要&quot;术语加解释&quot;。</description>
       <category>进阶</category>
     </item>
@@ -218,7 +218,7 @@
       <title>符号与 emoji：克制、一致、跨平台</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-emoji-symbols.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-emoji-symbols.html</guid>
-      <pubDate>Fri, 27 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Sat, 03 Oct 2026 01:00:00 GMT</pubDate>
       <description>符号能让长文透气，但用多了会显廉价。</description>
       <category>进阶</category>
     </item>
@@ -226,7 +226,7 @@
       <title>强调：加粗、斜体、删除线的正确用法</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-emphasis-rules.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-emphasis-rules.html</guid>
-      <pubDate>Sat, 28 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Fri, 02 Oct 2026 01:00:00 GMT</pubDate>
       <description>强调是语气，不是装饰。滥用会让重点彻底失效。</description>
       <category>语法</category>
     </item>
@@ -234,7 +234,7 @@
       <title>Markdown 常见问题 20 问</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-faq-top20.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-faq-top20.html</guid>
-      <pubDate>Sun, 01 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Thu, 01 Oct 2026 01:00:00 GMT</pubDate>
       <description>写作者最常问的 20 个问题，按频率排序。</description>
       <category>FAQ</category>
     </item>
@@ -242,7 +242,7 @@
       <title>脚注：语法、平台差异与替代方案</title>
       <link>https://yundaishu.github.io/MkDownPost/a/md-footnotes.html</link>
       <guid isPermaLink="true">https://yundaishu.github.io/MkDownPost/a/md-footnotes.html</guid>
-      <pubDate>Mon, 02 Nov 2026 01:00:00 GMT</pubDate>
+      <pubDate>Wed, 30 Sep 2026 01:00:00 GMT</pubDate>
       <description>脚注适合放&quot;不影响主线、但需要交代&quot;的信息：出处、补充说明、延伸阅读。</description>
       <category>进阶</category>
     </item>
