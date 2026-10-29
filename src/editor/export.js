@@ -261,15 +261,18 @@ export async function exportPdf(container, name = 'draft') {
   const okA = await loadScriptOnce('./vendor/pdf-lib.min.js');
   const okB = await loadScriptOnce('./vendor/fontkit.umd.min.js');
   if (!okA || !okB || !window.PDFLib) return { ok: false, reason: 'PDF 库未就绪（运行 node tools/vendor.mjs）' };
-  const fontBytes = await fetch('./vendor/fonts/NotoSansSC-subset.ttf').then((r) => (r.ok ? r.arrayBuffer() : null));
-  if (!fontBytes) return { ok: false, reason: '中文字体缺失（vendor/fonts/NotoSansSC-subset.ttf）' };
+  const fontBytes = await fetch('./vendor/fonts/NotoSansSC-l1.ttf').then((r) => (r.ok ? r.arrayBuffer() : null));
+  if (!fontBytes) return { ok: false, reason: '中文字体缺失（vendor/fonts/NotoSansSC-l1.ttf）' };
 
   const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
   if (window.fontkit) window.PDFLib.PDFDocument.registerFontkit(window.fontkit);
 
+  const pdfTiming = { embed: 0, layout: 0, save: 0 };
+  const t0 = Date.now();
   const pdf = await PDFDocument.create();
   // CJK 子集化在浏览器里非常慢（fontkit），这里直接嵌入已子集的字体文件
   const font = await pdf.embedFont(fontBytes, { subset: false });
+  pdfTiming.embed = Date.now() - t0;
   const bold = font;   // 子集只有常规字重，标题用字号区分
   const black = rgb(0.07, 0.08, 0.09);
   const gray = rgb(0.45, 0.47, 0.5);
@@ -315,6 +318,8 @@ export async function exportPdf(container, name = 'draft') {
   const root = container.cloneNode(true);
   root.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
 
+  const tLayout = Date.now();
+  try {
   for (const el of [...root.children]) {
     const tag = el.tagName.toLowerCase();
 
@@ -417,13 +422,20 @@ export async function exportPdf(container, name = 'draft') {
     if (el.textContent.trim()) { drawLines(wrap(el.textContent.trim(), 11, CW), 11, 0, 11 * 1.8, black); y -= 6; }
   }
 
+  } catch (err) {
+    return { ok: false, reason: '排版失败：' + String((err && err.message) || err).slice(0, 100) };
+  }
+  pdfTiming.layout = Date.now() - tLayout;
+
   stampFooter();
+  const tSave = Date.now();
   const bytes = await pdf.save();
+  pdfTiming.save = Date.now() - tSave;
   const blob = new Blob([bytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = name + '.pdf';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 3000);
-  return { ok: true, pages: pdf.getPageCount(), bytes: blob.size, text: true };
+  return { ok: true, pages: pdf.getPageCount(), bytes: blob.size, text: true, timing: pdfTiming };
 }
