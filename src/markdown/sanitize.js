@@ -3,7 +3,8 @@
 
 const ALLOW_TAGS = new Set(['H1','H2','H3','H4','H5','H6','P','BR','HR','STRONG','EM','DEL','MARK','CODE','PRE','BLOCKQUOTE','UL','OL','LI','A','IMG','TABLE','THEAD','TBODY','TR','TH','TD','DIV','SPAN','INPUT','SUP','SUB','KBD','FIGURE','FIGCAPTION']);
 const ALLOW_ATTR = new Set(['href','src','alt','title','class','id','type','checked','disabled','loading','colspan','rowspan','lang']);
-const SAFE_URL = /^(https?:|mailto:|#|\.{0,2}\/|data:image\/)/i;
+// 允许：http(s) / mailto / 锚点 / 绝对路径 / ./ 与 ../ / 以及 "dir/file.ext" 这类无协议相对路径
+const SAFE_URL = /^(https?:|mailto:|#|data:image\/|\/|\.{0,2}\/|[a-z0-9._-]+\/)/i;
 
 export function sanitize(html, doc = document) {
   const host = doc.implementation.createHTMLDocument('md');
