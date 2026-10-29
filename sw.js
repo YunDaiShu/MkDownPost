@@ -1,10 +1,24 @@
 /* sw.js — 离线缓存：HTML 走网络优先，静态资源（带版本戳）缓存优先 */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const STATIC_CACHE = 'mdp-static-' + VERSION;
 const HTML_CACHE = 'mdp-html-' + VERSION;
 
+/* 首次安装时预热应用外壳（index + 关键 CSS + 入口模块），
+   其余带版本戳的资源在首次被 SW 接管后的访问中进入缓存 */
+const PRECACHE = ['./', './index.html', './assets/styles/critical.css', './assets/styles/rest.css', './src/main.js', './src/router.js'];
+
 self.addEventListener('install', (e) => {
-  self.skipWaiting();
+  e.waitUntil((async () => {
+    const cache = await caches.open(HTML_CACHE);
+    const staticCache = await caches.open(STATIC_CACHE);
+    await Promise.allSettled(PRECACHE.map(async (url) => {
+      try {
+        const res = await fetch(url, { cache: 'reload' });
+        if (res && res.ok) await (url.includes('main.js') || url.includes('router.js') || url.includes('.css') ? staticCache : cache).put(url, res.clone());
+      } catch { /* 单个失败不影响安装 */ }
+    }));
+    self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (e) => {
