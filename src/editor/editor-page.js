@@ -3,7 +3,7 @@ import { renderMarkdown } from '../markdown/renderer.js';
 import { initSplitPane } from './split-pane.js';
 import { initShortcuts } from './shortcuts.js';
 import { initAutosave, loadDraft } from './autosave.js';
-import { exportMarkdown, exportInlineHTMLFile, printDoc } from './export.js';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate } from './export.js';
 import { toast } from '../components/theme-switcher.js';
 import { mountHighlight } from './highlight-layer.js';
 import { mountMathPreview } from './math-preview.js';
@@ -46,6 +46,7 @@ const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fi
 
 const TOOLS = [
   { act: 'new', label: '新建', icon: S('<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>') },
+  { act: 'history', label: '编辑历史', icon: S('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>') },
   { act: 'open', label: '打开 .md', icon: S('<path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>') },
   { sep: 1 },
   { act: 'undo', label: '撤销', icon: S('<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12H9"/>') },
@@ -95,7 +96,9 @@ export default function render(root) {
         <div class="editor__menu" id="exportMenu" role="menu" hidden>
           <button role="menuitem" type="button" data-exp="md">下载 .md</button>
           <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
-          <button role="menuitem" type="button" data-exp="print">打印 / 存 PDF</button>
+          <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
+          <button role="menuitem" type="button" data-exp="print">打印 / 存 PDF（主题色）</button>
+          <button role="menuitem" type="button" data-exp="print-min">打印 / 存 PDF（极简）</button>
           <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
       </div>
@@ -126,6 +129,7 @@ export default function render(root) {
         </section>
       </div>
 
+      <div id="historyPanel" class="hist" hidden></div>
       <div id="ccPanel" hidden></div>
 
       <div class="editor__status">
@@ -150,7 +154,7 @@ export default function render(root) {
   ta.value = (draft && draft.text) || SAMPLE;
 
   /* ---------- 编辑历史（自管栈，用于按钮置灰） ---------- */
-  const history = { stack: [ta.value], at: 0, timer: null };
+  const history = { stack: [{ v: ta.value, t: Date.now() }], at: 0, timer: null };
   const undoBtn = root.querySelector('[data-act="undo"]');
   const redoBtn = root.querySelector('[data-act="redo"]');
   function syncHistoryBtn() {
@@ -159,9 +163,9 @@ export default function render(root) {
   }
   function pushHistory() {
     const v = ta.value;
-    if (v === history.stack[history.at]) return;
+    if (v === history.stack[history.at].v) return;
     history.stack = history.stack.slice(0, history.at + 1);
-    history.stack.push(v);
+    history.stack.push({ v, t: Date.now() });
     if (history.stack.length > 120) history.stack.shift();
     history.at = history.stack.length - 1;
     syncHistoryBtn();
@@ -255,15 +259,9 @@ export default function render(root) {
   root.querySelectorAll('.editor__tool').forEach((btn) => {
     btn.addEventListener('click', () => {
       const act = btn.dataset.act;
-      if (act === 'undo') {
-        clearTimeout(history.timer); pushHistory();
-        if (history.at > 0) { history.at--; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); }
-        syncHistoryBtn(); return;
-      }
-      if (act === 'redo') {
-        if (history.at < history.stack.length - 1) { history.at++; ta.value = history.stack[history.at]; ta.dispatchEvent(new Event('input', { bubbles: true })); }
-        syncHistoryBtn(); return;
-      }
+      if (act === 'undo') { doUndo(false); return; }
+      if (act === 'redo') { doUndo(true); return; }
+      if (act === 'history') { toggleHistoryPanel(); return; }
       if (act === 'h1') return linePrefix('# ');
       if (act === 'h2') return linePrefix('## ');
       if (act === 'h3') return linePrefix('### ');
@@ -322,7 +320,9 @@ export default function render(root) {
     exportBtn.setAttribute('aria-expanded', 'false');
     if (b.dataset.exp === 'md') { exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
     if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
-    if (b.dataset.exp === 'print') { printDoc(preview); }
+    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); }
+    if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); }
+    if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word（.doc）'); }
     if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
 
@@ -361,6 +361,43 @@ export default function render(root) {
     onSave: () => { autosave.save(); toast('草稿已保存'); },
     onInsertCode: () => insert('\n```js\n', '\n```\n', 'console.log(1)'),
     toast
+  });
+
+  /* ---------- 历史面板（时间线） ---------- */
+  function jumpTo(i) {
+    history.at = i;
+    ta.value = history.stack[i].v;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    syncHistoryBtn();
+    paintHistory();
+  }
+
+  function paintHistory() {
+    const box = root.querySelector('#historyPanel');
+    if (!box || box.hidden) return;
+    box.innerHTML = '<div class="hist__head"><b>编辑历史</b><span class="muted">' + history.stack.length + ' 个版本</span>' +
+      '<button class="hist__close" type="button" aria-label="关闭">×</button></div><ol class="hist__list">' +
+      history.stack.map((h, i) => {
+        const d = new Date(h.t);
+        const time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + ':' + String(d.getSeconds()).padStart(2, '0');
+        const first = (h.v.split('\n').find((l) => l.trim()) || '（空）').slice(0, 28);
+        return '<li><button type="button" data-hist="' + i + '" class="hist__item' + (i === history.at ? ' is-on' : '') + '">' +
+          '<span class="hist__time">' + time + '</span><span class="hist__txt">' + first.replace(/[<>&]/g, '') + '</span>' +
+          '<span class="hist__size">' + h.v.length + '</span></button></li>';
+      }).join('') + '</ol>';
+  }
+
+  function toggleHistoryPanel() {
+    const box = root.querySelector('#historyPanel');
+    if (!box) return;
+    box.hidden = !box.hidden;
+    if (!box.hidden) paintHistory();
+  }
+
+  root.querySelector('#historyPanel').addEventListener('click', (e) => {
+    if (e.target.closest('.hist__close')) { root.querySelector('#historyPanel').hidden = true; return; }
+    const b = e.target.closest('[data-hist]');
+    if (b) jumpTo(Number(b.getAttribute('data-hist')));
   });
 
   /* ---------- 平台适配面板（Claude Code 风格：思考态 → 结果卡片 → 复制） ---------- */

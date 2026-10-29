@@ -66,3 +66,56 @@ export function printDoc(container) {
   w.document.close();
   setTimeout(() => { w.focus(); w.print(); }, 300);
 }
+
+/** 导出为 Word 可打开的 .doc（HTML + Office 命名空间，保留内联样式） */
+export function exportWordHTML(container, name = 'draft', title = '未命名') {
+  const cs = getComputedStyle(document.documentElement);
+  const v = (k) => cs.getPropertyValue(k).trim();
+  const body = container.cloneNode(true);
+  body.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+
+  const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+    'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+    '<head><meta charset="utf-8"><title>' + title + '</title>' +
+    '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->' +
+    '<style>' +
+    '@page { size: A4; margin: 2cm; }' +
+    'body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11pt; line-height: 1.75; color: ' + v('--c-text') + '; }' +
+    'h1 { font-size: 20pt; color: ' + v('--c-primary-text') + '; }' +
+    'h2 { font-size: 15pt; color: ' + v('--c-primary-text') + '; border-left: 3px solid ' + v('--c-primary') + '; padding-left: 8px; }' +
+    'h3 { font-size: 13pt; color: ' + v('--c-primary-text') + '; }' +
+    'a { color: ' + v('--c-link') + '; }' +
+    'blockquote { border-left: 3px solid ' + v('--c-quote-bar') + '; background: ' + v('--c-primary-bg') + '; padding: 8px 12px; margin: 10px 0; }' +
+    'pre { background: ' + v('--c-code-bg') + '; padding: 10px; font-family: Consolas, monospace; font-size: 9.5pt; white-space: pre-wrap; }' +
+    'code { font-family: Consolas, monospace; background: ' + v('--c-code-bg') + '; }' +
+    'table { border-collapse: collapse; width: 100%; } ' +
+    'th, td { border: 1px solid ' + v('--c-border') + '; padding: 6px 10px; font-size: 10.5pt; }' +
+    'th { background: ' + v('--c-primary-soft') + '; }' +
+    'img { max-width: 100%; }' +
+    '</style></head><body>' + body.innerHTML + '</body></html>';
+
+  download(name + '.doc', html, 'application/msword;charset=utf-8');
+}
+
+/** 打印模板：minimal（黑白省墨） / brand（带主题色） */
+export function printDocWithTemplate(container, template = 'brand') {
+  const cs = getComputedStyle(document.documentElement);
+  const v = (k) => cs.getPropertyValue(k).trim();
+  const brand = template === 'brand';
+  const w = window.open('', '_blank', 'width=900,height=1200');
+  if (!w) return;
+  w.document.write('<meta charset="utf-8"><title>打印</title><style>' +
+    'body{font:11pt/1.8 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:' + (brand ? v('--c-text') : '#111') + ';margin:32px;max-width:720px}' +
+    'h1{font-size:20pt;' + (brand ? 'color:' + v('--c-primary-text') + ';' : '') + '}' +
+    'h2{font-size:15pt;' + (brand ? 'color:' + v('--c-primary-text') + ';border-left:3px solid ' + v('--c-primary') + ';padding-left:8px;' : 'border-bottom:1px solid #ddd;padding-bottom:4px;') + '}' +
+    'h3{font-size:13pt}' +
+    'a{color:' + (brand ? v('--c-link') : '#0b57d0') + ';text-decoration:none}' +
+    'blockquote{margin:12px 0;padding:8px 14px;' + (brand ? 'border-left:3px solid ' + v('--c-quote-bar') + ';background:' + v('--c-primary-bg') + ';' : 'border-left:3px solid #ddd;color:#444;') + '}' +
+    'pre{background:' + (brand ? v('--c-code-bg') : '#f6f8fa') + ';padding:12px;border-radius:8px;overflow:auto;font-size:9.5pt}' +
+    'table{border-collapse:collapse;width:100%}th,td{border:1px solid ' + (brand ? v('--c-border') : '#ddd') + ';padding:6px 10px}' +
+    'img{max-width:100%}@media print{a{color:inherit}}' +
+    '</style>');
+  w.document.write(container.innerHTML);
+  w.document.close();
+  setTimeout(() => { w.focus(); w.print(); }, 300);
+}

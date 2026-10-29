@@ -3,6 +3,7 @@
    暴露 window.themes 便于控制台调试。 */
 
 import { THEMES, themeMeta } from '../data/themes.js';
+import { clearCustom, reapplyCustomIfActive } from '../theme-custom.js';
 
 const KEY_THEME = 'mdp:v1:theme';
 const KEY_MODE = 'mdp:v1:mode';
@@ -34,6 +35,7 @@ export function apply(key, { silent = false } = {}) {
 
   // 200ms 颜色过渡（reduced-motion 时由 base.css 全局关断）
   html.style.transition = 'background-color 200ms cubic-bezier(.16,1,.3,1)';
+  if (k !== 'custom') clearCustom();
   html.setAttribute('data-theme', k);
   const meta = themeMeta(k);
   html.setAttribute('data-theme-group', (meta && meta.group) || 'misc');   // 装饰变体分组
@@ -53,6 +55,7 @@ export function toggleDark(force) {
     ? (force ? 'dark' : 'light')
     : (getMode() === 'dark' ? 'light' : 'dark');
   document.documentElement.setAttribute('data-mode', next);
+  reapplyCustomIfActive();
   const darkSheet = document.getElementById('hljsDark');
   if (darkSheet) darkSheet.media = next === 'dark' ? 'all' : 'not all';
   writeLS(KEY_MODE, next);

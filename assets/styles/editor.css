@@ -151,3 +151,16 @@
 }
 .math-preview__body { color: var(--c-text); overflow-x: auto; }
 .math-preview__body .katex { font-size: 1.05em; }
+
+/* ===== 编辑历史面板 ===== */
+.hist { border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface); max-height: 260px; overflow: auto; }
+.hist[hidden] { display: none; }
+.hist__head { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--c-divider); font-size: var(--fs-13); position: sticky; top: 0; background: var(--c-surface); }
+.hist__close { margin-left: auto; width: 24px; height: 24px; border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); cursor: pointer; }
+.hist__list { list-style: none; margin: 0; padding: var(--sp-1); display: grid; gap: 2px; }
+.hist__item { display: flex; align-items: center; gap: var(--sp-2); width: 100%; padding: var(--sp-1) var(--sp-2); border: 0; border-radius: var(--r-1); background: transparent; color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; text-align: left; }
+.hist__item:hover { background: var(--c-surface-2); color: var(--c-text); }
+.hist__item.is-on { background: var(--c-primary-bg); color: var(--c-primary-text); font-weight: 600; }
+.hist__time { font-family: ui-monospace, Menlo, monospace; color: var(--c-text-muted); }
+.hist__txt { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hist__size { color: var(--c-text-muted); }

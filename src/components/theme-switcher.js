@@ -2,6 +2,7 @@
    快捷键：T 循环 / Shift+T 反向 / Esc 关闭 */
 
 import { list, get, apply, cycle, exportCSS } from '../theme-manager.js';
+import { applyCustom, readCustom } from '../theme-custom.js';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具',
@@ -89,9 +90,16 @@ function mount() {
     '<div class="tsw__foot">',
     '<button class="btn btn--primary" type="button" data-act="copy">复制当前主题 CSS 变量</button>',
     '<button class="btn" type="button" data-act="cycle">下一个主题</button>',
+    '<label class="tsw__custom" title="自定义主色">',
+    '<input type="color" id="tswColor" value="' + (readCustom() || '#4A7CF7') + '" aria-label="自定义主色" />',
+    '<span>自定义</span></label>',
     '<button class="btn" type="button" data-act="close" style="margin-left:auto">关闭</button>',
     '</div>'
   ].join('');
+
+  el.querySelector('#tswColor').addEventListener('input', (ev) => {
+    applyCustom(ev.target.value);
+  });
 
   const search = el.querySelector('.tsw__search');
   search.addEventListener('input', () => {
@@ -122,6 +130,7 @@ function mount() {
     if (act.dataset.act === 'copy') copyText(exportCSS(), '已复制当前主题 CSS 变量');
     if (act.dataset.act === 'cycle') { const k = cycle(1); refresh(); toast('已应用 ' + k); }
     if (act.dataset.act === 'close') close();
+    if (act.dataset.act === 'custom') { const hex = el.querySelector('#tswColor').value; applyCustom(hex); toast('已应用自定义主色 ' + hex); }
   });
 
   document.body.appendChild(el);
