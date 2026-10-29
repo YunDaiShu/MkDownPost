@@ -74,3 +74,19 @@
   .nav a { padding: var(--sp-3); min-height: 44px; display: flex; align-items: center; }
   .app-main { padding: var(--sp-5) var(--sp-4) var(--sp-7); }
 }
+
+/* ===== 大屏适配（1920×1080 等） ===== */
+@media (min-width: 1280px) {
+  :root { --maxw: 1240px; }
+  .app-main { padding: var(--sp-7) var(--sp-6) var(--sp-8); }
+}
+@media (min-width: 1600px) {
+  :root { --maxw: 1440px; --header-h: 64px; }
+  .app-main { padding: var(--sp-8) var(--sp-7) 96px; }
+  .nav a { padding: var(--sp-2) var(--sp-4); font-size: var(--fs-16); }
+  .brand__text { font-size: var(--fs-18); }
+}
+/* 编辑器是工作台：大屏不吃 1120 上限 */
+@media (min-width: 1280px) {
+  .app-main:has(.editor) { max-width: none; padding-left: var(--sp-6); padding-right: var(--sp-6); }
+}

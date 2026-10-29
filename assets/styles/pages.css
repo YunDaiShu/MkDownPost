@@ -105,3 +105,27 @@
   .hero__cta .btn { flex: 1; min-height: 44px; }
   .theme-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== 大屏：放大首屏与栅格 ===== */
+@media (min-width: 1280px) {
+  .hero { padding: var(--sp-8) 0 var(--sp-6); gap: var(--sp-4); }
+  .hero__title { font-size: 44px; max-width: 20em; }
+  .hero__sub { font-size: var(--fs-18); }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--sp-4); }
+  .theme-grid { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+  .theme-strip { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .features { gap: var(--sp-5); }
+  .feature { padding: var(--sp-5); }
+  .article { grid-template-columns: minmax(0, 780px) 260px; gap: var(--sp-8); justify-content: center; }
+  .article__title { font-size: 36px; }
+  .markdown-body { font-size: 17px; }
+}
+@media (min-width: 1600px) {
+  .hero__title { font-size: 52px; }
+  .hero__sub { font-size: var(--fs-20); }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .theme-grid { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+  .article { grid-template-columns: minmax(0, 860px) 280px; }
+  .article__title { font-size: 40px; }
+  .markdown-body { font-size: 18px; }
+}
