@@ -65,6 +65,19 @@
     "featured": true
   },
   {
+    "slug": "writing-workflow",
+    "title": "写作工作流：从灵感到发布的一条流水线",
+    "excerpt": "收集→起草→结构→打磨→发布五阶段，含时间分配表、坏习惯对照与可复用模板。",
+    "tags": [
+      "方法",
+      "效率"
+    ],
+    "readingTime": 11,
+    "date": "2026-11-06",
+    "order": 6,
+    "featured": true
+  },
+  {
     "slug": "export-to-platforms",
     "title": "三个平台的导出差异（附对照）",
     "excerpt": "公众号要全内联样式，小黑盒看标题与图片，TapTap 需降级表格。",
@@ -74,7 +87,20 @@
     ],
     "readingTime": 5,
     "date": "2026-10-15",
-    "order": 6,
+    "order": 7,
+    "featured": true
+  },
+  {
+    "slug": "image-rules-by-platform",
+    "title": "各平台图片规则实测对照",
+    "excerpt": "公众号/小黑盒/TapTap/知乎的图片尺寸、比例、格式与转存规则，附图裂 6 因与发布清单。",
+    "tags": [
+      "图片",
+      "平台"
+    ],
+    "readingTime": 10,
+    "date": "2026-11-08",
+    "order": 8,
     "featured": true
   },
   {
@@ -87,7 +113,7 @@
     ],
     "readingTime": 9,
     "date": "2026-10-16",
-    "order": 7,
+    "order": 9,
     "featured": true
   },
   {
@@ -100,8 +126,21 @@
     ],
     "readingTime": 13,
     "date": "2026-10-17",
-    "order": 8,
-    "featured": true
+    "order": 10,
+    "featured": false
+  },
+  {
+    "slug": "commonmark-edge-cases",
+    "title": "CommonMark 规范里最坑的 12 个边界案例",
+    "excerpt": "加粗失效、列表被合并、代码块位置不对……12 个真实边界案例与可靠写法。",
+    "tags": [
+      "进阶",
+      "规范"
+    ],
+    "readingTime": 12,
+    "date": "2026-11-11",
+    "order": 11,
+    "featured": false
   },
   {
     "slug": "markdown-ecosystem",
@@ -113,8 +152,8 @@
     ],
     "readingTime": 11,
     "date": "2026-10-18",
-    "order": 9,
-    "featured": true
+    "order": 12,
+    "featured": false
   },
   {
     "slug": "theme-system",
@@ -126,7 +165,7 @@
     ],
     "readingTime": 5,
     "date": "2026-10-19",
-    "order": 10,
+    "order": 13,
     "featured": false
   },
   {
@@ -139,7 +178,7 @@
     ],
     "readingTime": 5,
     "date": "2026-10-20",
-    "order": 11,
+    "order": 14,
     "featured": false
   },
   {
@@ -152,7 +191,7 @@
     ],
     "readingTime": 3,
     "date": "2026-10-21",
-    "order": 12,
+    "order": 15,
     "featured": false
   }
 ]
