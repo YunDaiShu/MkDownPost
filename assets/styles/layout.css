@@ -90,3 +90,8 @@
 @media (min-width: 1280px) {
   .app-main:has(.editor) { max-width: none; padding-left: var(--sp-6); padding-right: var(--sp-6); }
 }
+
+/* header-align：页头内容与主内容左边缘对齐（大屏不再左右各贴屏幕边） */
+.app-header { padding-inline: max(var(--sp-5), calc((100vw - var(--maxw)) / 2)); }
+@media (min-width: 1280px) { .app-header { padding-inline: max(var(--sp-6), calc((100vw - var(--maxw)) / 2)); } }
+@media (min-width: 1600px) { .app-header { padding-inline: max(var(--sp-7), calc((100vw - var(--maxw)) / 2)); } }

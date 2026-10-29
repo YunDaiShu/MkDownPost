@@ -49,7 +49,7 @@
 .theme-card__dot { width: 14px; height: 14px; border-radius: 50%; }
 .theme-card__name { font-size: var(--fs-16); }
 .theme-card__note { margin-left: auto; font-size: var(--fs-12); color: var(--c-text-muted); }
-.theme-card__prev { padding: var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-bg); display: grid; gap: var(--sp-1); }
+.theme-card__prev { padding: var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-bg); display: grid; gap: var(--sp-1); align-content: start; min-height: 118px; }
 .theme-card__demo-h { font-size: var(--fs-18); color: var(--demo); }
 .theme-card__demo-p { font-size: var(--fs-13); color: var(--c-text-secondary); }
 .theme-card__demo-p a { color: var(--demo); }
@@ -128,4 +128,11 @@
   .article { grid-template-columns: minmax(0, 860px) 280px; }
   .article__title { font-size: 40px; }
   .markdown-body { font-size: 18px; }
+}
+
+@media (min-width: 1600px) {
+  .card__desc, .feature p { font-size: var(--fs-14); }
+  .card { padding: var(--sp-5); }
+  .theme-card__prev { min-height: 128px; }
+  .theme-card__demo-p { font-size: var(--fs-14); }
 }

@@ -78,3 +78,15 @@
   .editor[data-tab="preview"] .editor__pane--edit { display: none; }
   .editor__ta { font-size: 16px; }
 }
+
+/* OVERFLOW_FIX：预览栏不得被内容撑破 */
+.editor { min-width: 0; }
+.editor__split { min-width: 0; }
+.editor__pane { min-width: 0; }
+.editor__pane--preview { min-width: 0; overflow: auto; }
+.editor__preview { min-width: 0; max-width: 100%; overflow-x: auto; }
+.editor__preview .md-table,
+.editor__preview .md-codeblock,
+.editor__preview pre,
+.editor__preview table { max-width: 100%; }
+.editor__preview .md-table { overflow-x: auto; }
