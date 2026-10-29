@@ -1,15 +1,15 @@
 /* src/pages/article.js — 文章详情：Markdown 渲染 + 侧边 TOC + 阅读进度 + 上下篇 */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtjtq73';
-import { buildTOC } from '../markdown/toc.js?v=vmvtjtq73';
-import { toast } from '../components/theme-switcher.js?v=vmvtjtq73';
-import { streamReveal } from '../components/cc-fx.js?v=vmvtjtq73';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtjvxny';
+import { buildTOC } from '../markdown/toc.js?v=vmvtjvxny';
+import { toast } from '../components/theme-switcher.js?v=vmvtjvxny';
+import { streamReveal } from '../components/cc-fx.js?v=vmvtjvxny';
 
 export default async function render(root, params) {
   const slug = params.slug;
   root.innerHTML = '<p class="muted">加载中…</p>';
 
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtjhmz8')).json(); } catch { index = []; }
+  try { index = await (await fetch('./content-index.json?c=vmvtjvxny')).json(); } catch { index = []; }
   const i = index.findIndex((a) => a.slug === slug);
   const meta = index[i];
 
@@ -22,7 +22,7 @@ export default async function render(root, params) {
   }
 
   let md = '';
-  try { md = await (await fetch('./content/' + slug + '.md?c=vmvtjhmz8')).text(); }
+  try { md = await (await fetch('./content/' + slug + '.md?c=vmvtjvxny')).text(); }
   catch { md = '# ' + meta.title + '\n\n内容加载失败，请检查 content/' + slug + '.md 是否存在。'; }
 
   const out = renderMarkdown(md, { onCopy: toast });
