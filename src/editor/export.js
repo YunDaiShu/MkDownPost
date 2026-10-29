@@ -147,26 +147,33 @@ function loadScriptOnce(src) {
 }
 
 /** 导出 PNG 长图：html2canvas 渲染（与 PDF 同一条管线，避免 foreignObject 在真实浏览器失败） */
-export async function exportPng(container, name = 'draft', { scale = 2 } = {}) {
+export async function exportPng(container, name = 'draft', { scale = 2, width = 714 } = {}) {
   const ok = await loadScriptOnce('./vendor/html2canvas.min.js');
   if (!ok || !window.html2canvas) return false;
   const cs = getComputedStyle(document.documentElement);
   const bg = cs.getPropertyValue('--c-bg').trim() || '#ffffff';
+  const host = document.createElement('div');
+  host.setAttribute('aria-hidden', 'true');
+  host.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + (width + 64) + 'px;padding:32px;background:' + bg + ';box-sizing:border-box';
+  const clone = container.cloneNode(true);
+  clone.style.cssText = 'width:' + width + 'px;max-width:none;max-height:none;overflow:visible;height:auto;';
+  clone.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+  host.appendChild(clone);
+  document.body.appendChild(host);
   try {
-    const canvas = await window.html2canvas(container, { scale, backgroundColor: bg, useCORS: true, logging: false });
+    const canvas = await window.html2canvas(host, { scale, backgroundColor: bg, useCORS: true, logging: false, width: width + 64, windowWidth: width + 64 });
     return await new Promise((resolve) => {
       canvas.toBlob((blob) => {
         if (!blob) { resolve(false); return; }
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
-        a.download = name + '.png';
+        a.href = url; a.download = name + '.png';
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(url), 2000);
         resolve(true);
       }, 'image/png');
     });
-  } catch (e) { return false; }
+  } catch (e) { return false; } finally { host.remove(); }
 }
 export async function exportPdf(container, name = 'draft') {
   const okA = await loadScriptOnce('./vendor/html2canvas.min.js');
@@ -177,50 +184,73 @@ export async function exportPdf(container, name = 'draft') {
 
   const cs = getComputedStyle(document.documentElement);
   const bg = cs.getPropertyValue('--c-bg').trim() || '#ffffff';
+  const textColor = cs.getPropertyValue('--c-text').trim() || '#111111';
 
-  const canvas = await window.html2canvas(container, {
-    scale: 2,
-    backgroundColor: bg,
-    useCORS: true,
-    logging: false,
-    windowWidth: container.scrollWidth
-  });
+  // A4 版心：96dpi 下 A4 宽 794px，左右各留 40px 边距 → 版心 714px
+  const CONTENT_W = 714;
+  const MARGIN_PX = 40;
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
-  const pageW = pdf.internal.pageSize.getWidth();
-  const pageH = pdf.internal.pageSize.getHeight();
+  // 离屏克隆：脱开预览窗的宽度/高度/滚动限制，否则只会截到可见区域
+  const host = document.createElement('div');
+  host.setAttribute('aria-hidden', 'true');
+  host.style.cssText = [
+    'position:fixed', 'left:-10000px', 'top:0',
+    'width:' + (CONTENT_W + MARGIN_PX * 2) + 'px',
+    'padding:' + MARGIN_PX + 'px',
+    'background:' + bg,
+    'color:' + textColor,
+    'box-sizing:border-box',
+    'font:16px/1.8 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif'
+  ].join(';');
 
-  // 图片按页宽缩放后的总高度
-  const imgW = pageW;
-  const imgH = (canvas.height * imgW) / canvas.width;
-  const pageCount = Math.max(1, Math.ceil(imgH / pageH));
+  const clone = container.cloneNode(true);
+  clone.style.cssText = 'width:' + CONTENT_W + 'px;max-width:none;max-height:none;overflow:visible;height:auto;';
+  clone.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+  host.appendChild(clone);
+  document.body.appendChild(host);
 
-  // 逐页裁切：sourceY 对应到 canvas 像素
-  const pxPerPt = canvas.width / imgW;
-  for (let i = 0; i < pageCount; i++) {
-    if (i > 0) pdf.addPage();
-    const sy = Math.round(i * pageH * pxPerPt);
-    const sh = Math.min(Math.round(pageH * pxPerPt), canvas.height - sy);
-    if (sh <= 0) break;
+  try {
+    const canvas = await window.html2canvas(host, {
+      scale: 2, backgroundColor: bg, useCORS: true, logging: false,
+      width: CONTENT_W + MARGIN_PX * 2,
+      windowWidth: CONTENT_W + MARGIN_PX * 2
+    });
 
-    const slice = document.createElement('canvas');
-    slice.width = canvas.width;
-    slice.height = sh;
-    slice.getContext('2d').drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(slice.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, imgW, (sh * imgW) / canvas.width);
+    // 图片整体宽度铺满页宽；一页对应的“源像素高度”按 A4 比例换算
+    const pxPerPt = canvas.width / pageW;
+    const sliceH = Math.floor(pageH * pxPerPt);
+    const pages = Math.max(1, Math.ceil(canvas.height / sliceH));
+
+    for (let i = 0; i < pages; i++) {
+      if (i > 0) pdf.addPage();
+      const sy = i * sliceH;
+      const h = Math.min(sliceH, canvas.height - sy);
+      if (h <= 0) break;
+      const slice = document.createElement('canvas');
+      slice.width = canvas.width;
+      slice.height = h;
+      const ctx = slice.getContext('2d');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, slice.width, slice.height);
+      ctx.drawImage(canvas, 0, sy, canvas.width, h, 0, 0, canvas.width, h);
+      pdf.addImage(slice.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, pageW, (h * pageW) / canvas.width);
+    }
+
+    const blob = pdf.output('blob');
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name + '.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+    return { ok: true, pages, bytes: blob.size };
+  } catch (e) {
+    return { ok: false, reason: String((e && e.message) || e).slice(0, 120) };
+  } finally {
+    host.remove();
   }
-
-  // 用显式 anchor 下载，避免不同浏览器对 jsPDF.save 的差异（个别环境会走打印）
-  const blob = pdf.output('blob');
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name + '.pdf';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 3000);
-  return { ok: true, pages: pageCount, bytes: blob.size };
 }
