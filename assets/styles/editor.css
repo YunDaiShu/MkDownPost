@@ -203,3 +203,17 @@
 @media (max-width: 639px) {
   .editor__split { height: calc(100vh - var(--header-h) - 260px); min-height: 360px; }
 }
+
+/* ===== 字号 / 行宽 分段控件（替代原生 select） ===== */
+.seg { display: inline-flex; align-items: center; padding: 2px; gap: 2px; border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface-2); }
+.seg__btn {
+  min-width: 34px; height: 26px; padding: 0 var(--sp-2);
+  border: 0; border-radius: var(--r-1); background: transparent;
+  color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.seg__btn:hover { background: var(--c-surface); color: var(--c-text); }
+.seg__btn:active { transform: scale(.96); }
+.seg__btn.is-on { background: var(--c-primary); color: var(--c-on-primary); font-weight: 600; box-shadow: var(--shadow-1); }
+.seg__btn:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 1px; }
+@media (max-width: 639px) { .seg__btn { height: 32px; min-width: 40px; } }

@@ -74,3 +74,37 @@
 @media (max-width: 639px) {
   .btn { min-height: 44px; }
 }
+
+/* MOTION_UNIFY：全站交互动效统一 —— 同一组时长/缓动，同一套 hover/press/focus 反馈 */
+:root {
+  --motion-hover: 120ms;
+  --motion-press: 90ms;
+  --motion-enter: 200ms;
+  --motion-exit: 140ms;
+  --motion-ease: cubic-bezier(.16, 1, .3, 1);
+}
+a, button, .btn, .icon-btn, .seg__btn, .tsw__chip, .pcard, .theme-card, .theme-chip, .tab, .tabs__item, .pill, .nav a, .card, .editor__tool {
+  transition:
+    background-color var(--motion-hover) var(--motion-ease),
+    color var(--motion-hover) var(--motion-ease),
+    border-color var(--motion-hover) var(--motion-ease),
+    box-shadow var(--motion-hover) var(--motion-ease),
+    transform var(--motion-press) var(--motion-ease),
+    opacity var(--motion-hover) var(--motion-ease);
+}
+button:active, .btn:active, .icon-btn:active, .seg__btn:active, .tsw__chip:active,
+.pcard:active, .theme-card:active, .theme-chip:active, .tabs__item:active, .pill:active, .editor__tool:active {
+  transform: scale(.97);
+}
+a:active { transform: none; }   /* 文字链接不做缩放，避免抖动 */
+:where(a, button, .btn, .icon-btn, .seg__btn, .tsw__chip, .pcard, .theme-card, .tabs__item, .editor__tool):focus-visible {
+  outline: 2px solid var(--c-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--r-2);
+}
+@media (prefers-reduced-motion: reduce) {
+  a, button, .btn, .icon-btn, .seg__btn, .tsw__chip, .pcard, .theme-card, .theme-chip, .tab, .tabs__item, .pill, .nav a, .card, .editor__tool {
+    transition: none !important;
+  }
+  button:active, .btn:active, .icon-btn:active, .seg__btn:active, .pcard:active, .theme-card:active { transform: none !important; }
+}

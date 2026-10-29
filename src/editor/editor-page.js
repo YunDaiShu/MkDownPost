@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtc0t9n';
-import { initSplitPane } from './split-pane.js?v=vmvtc0t9n';
-import { initShortcuts } from './shortcuts.js?v=vmvtc0t9n';
-import { initAutosave } from './autosave.js?v=vmvtc0t9n';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtc0t9n';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtc0t9n';
-import { toast } from '../components/theme-switcher.js?v=vmvtc0t9n';
-import { mountHighlight } from './highlight-layer.js?v=vmvtc0t9n';
-import { mountMathPreview } from './math-preview.js?v=vmvtc0t9n';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtc0t9n';
-import * as Adapters from '../adapters/index.js?v=vmvtc0t9n';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtdx1zq';
+import { initSplitPane } from './split-pane.js?v=vmvtdx1zq';
+import { initShortcuts } from './shortcuts.js?v=vmvtdx1zq';
+import { initAutosave } from './autosave.js?v=vmvtdx1zq';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtdx1zq';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtdx1zq';
+import { toast } from '../components/theme-switcher.js?v=vmvtdx1zq';
+import { mountHighlight } from './highlight-layer.js?v=vmvtdx1zq';
+import { mountMathPreview } from './math-preview.js?v=vmvtdx1zq';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtdx1zq';
+import * as Adapters from '../adapters/index.js?v=vmvtdx1zq';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -88,12 +88,15 @@ export default function render(root) {
           : '<button class="editor__tool" type="button" data-act="' + t.act + '" aria-label="' + t.label + '" title="' + t.label + '">' + t.icon + '</button>').join('')}
         <input type="file" id="fileInput" accept=".md,.markdown,.txt" class="visually-hidden" />
         <span class="editor__spacer"></span>
-        <label class="editor__sel"><span class="visually-hidden">字号</span>
-          <select id="fontSize" aria-label="字号"><option value="15">小</option><option value="16" selected>中</option><option value="18">大</option></select>
-        </label>
-        <label class="editor__sel"><span class="visually-hidden">行宽</span>
-          <select id="lineWidth" aria-label="行宽"><option value="680" selected>标准</option><option value="820">宽</option></select>
-        </label>
+        <div class="seg" role="group" aria-label="字号">
+          <button class="seg__btn" type="button" data-fs="15">小</button>
+          <button class="seg__btn is-on" type="button" data-fs="16">中</button>
+          <button class="seg__btn" type="button" data-fs="18">大</button>
+        </div>
+        <div class="seg" role="group" aria-label="行宽">
+          <button class="seg__btn is-on" type="button" data-lw="680">标准</button>
+          <button class="seg__btn" type="button" data-lw="820">宽</button>
+        </div>
         <label class="editor__chk"><input type="checkbox" id="syncScroll" checked /> 同步滚动</label>
         <button class="btn" type="button" id="exportBtn" aria-haspopup="menu" aria-expanded="false">导出 ▾</button>
         <div class="editor__menu" id="exportMenu" role="menu" hidden>
@@ -427,19 +430,32 @@ export default function render(root) {
   });
 
   // 字号 / 行宽
-  const fsSel = root.querySelector('#fontSize');
-  const lwSel = root.querySelector('#lineWidth');
   const syncChk = root.querySelector('#syncScroll');
+  const fsBtns = [...root.querySelectorAll('[data-fs]')];
+  const lwBtns = [...root.querySelectorAll('[data-lw]')];
 
   const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; };
   const applyLineWidth = (v) => { preview.style.maxWidth = v + 'px'; preview.style.margin = '0 auto'; };
+  const mark = (btns, attr, val) => btns.forEach((b) => {
+    const on = String(b.getAttribute(attr)) === String(val);
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
 
-  if (prefs.fontSize) { fsSel.value = String(prefs.fontSize); applyFontSize(prefs.fontSize); }
-  if (prefs.lineWidth) { lwSel.value = String(prefs.lineWidth); applyLineWidth(prefs.lineWidth); }
+  const fsInit = prefs.fontSize || 16;
+  const lwInit = prefs.lineWidth || 680;
+  applyFontSize(fsInit); mark(fsBtns, 'data-fs', fsInit);
+  applyLineWidth(lwInit); mark(lwBtns, 'data-lw', lwInit);
   if (typeof prefs.syncScroll === 'boolean') syncChk.checked = prefs.syncScroll;
 
-  fsSel.addEventListener('change', (e) => { applyFontSize(e.target.value); savePrefs({ fontSize: Number(e.target.value) }); });
-  lwSel.addEventListener('change', (e) => { applyLineWidth(e.target.value); savePrefs({ lineWidth: Number(e.target.value) }); });
+  fsBtns.forEach((b) => b.addEventListener('click', () => {
+    const v = Number(b.getAttribute('data-fs'));
+    applyFontSize(v); mark(fsBtns, 'data-fs', v); savePrefs({ fontSize: v });
+  }));
+  lwBtns.forEach((b) => b.addEventListener('click', () => {
+    const v = Number(b.getAttribute('data-lw'));
+    applyLineWidth(v); mark(lwBtns, 'data-lw', v); savePrefs({ lineWidth: v });
+  }));
   syncChk.addEventListener('change', (e) => savePrefs({ syncScroll: e.target.checked }));
 
   // 移动端标签切换
