@@ -33,8 +33,10 @@ export function mountMathPreview(ta, host) {
     const found = findMathAt(ta.value, ta.selectionStart);
     if (!found) { card.hidden = true; return; }
     srcEl.textContent = found.raw;
+    card.hidden = false;                       // 先显示源码，避免"没反应"
+    bodyEl.textContent = '公式库加载中…';
     const katex = await loadKatex();
-    if (!katex) { bodyEl.textContent = '公式库未加载'; card.hidden = false; return; }
+    if (!katex) { bodyEl.textContent = '公式库未加载（可运行 node tools/vendor.mjs）'; return; }
     try {
       bodyEl.innerHTML = katex.renderToString(found.expr, { displayMode: found.display, throwOnError: false });
     } catch (e) {
