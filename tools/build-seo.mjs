@@ -69,6 +69,7 @@ for (const a of index) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="msvalidate.01" content="C30BA0BC89F9D292D21F191114015D76">
 <title>${esc(a.title)} · ${esc(BRAND)}</title>
 <meta name="description" content="${esc(a.excerpt || a.title)}">
 <link rel="canonical" href="${url}">
