@@ -100,3 +100,31 @@
 /* TOOL_DISABLED：撤销/重做不可用时置灰 */
 .editor__tool:disabled { opacity: .35; cursor: not-allowed; background: transparent; }
 .editor__tool:disabled:hover { background: transparent; color: var(--c-text-secondary); }
+
+/* ===== 编辑器语法高亮层 ===== */
+.editor__pane--edit { position: relative; }
+.editor__hl {
+  position: absolute; inset: 0; margin: 0; padding: var(--sp-3);
+  overflow: hidden; pointer-events: none; z-index: 0;
+  font: 15px/1.7 ui-monospace, Menlo, Consolas, monospace;
+  white-space: pre-wrap; word-break: break-word; tab-size: 2;
+  color: var(--c-text); background: transparent;
+  left: 44px;              /* 让开行号槽 */
+}
+.editor__ta--hl { position: relative; z-index: 1; background: transparent; color: transparent; caret-color: var(--c-text); }
+.editor__ta--hl::selection { background: var(--c-selection-bg); color: transparent; }
+.editor__gutter { position: relative; z-index: 2; }
+
+/* token 配色（沿用主题令牌，保证 100 套主题都好看） */
+.editor__hl .tok-h { color: var(--c-primary-text); font-weight: 700; }
+.editor__hl .tok-code { background: var(--c-code-bg); border-radius: var(--r-1); color: var(--c-warning); }
+.editor__hl .tok-bold { color: var(--c-text); font-weight: 700; }
+.editor__hl .tok-em { color: var(--c-text-secondary); font-style: italic; }
+.editor__hl .tok-del { color: var(--c-text-muted); text-decoration: line-through; }
+.editor__hl .tok-link { color: var(--c-link); text-decoration: underline; }
+.editor__hl .tok-url { color: var(--c-text-muted); }
+.editor__hl .tok-quote { color: var(--c-text-secondary); border-left: 2px solid var(--c-primary-soft); padding-left: 6px; display: inline-block; }
+.editor__hl .tok-list { color: var(--c-text-secondary); }
+.editor__hl .tok-hr { color: var(--c-border); }
+.editor__hl .tok-table { color: var(--c-success); }
+@media (max-width: 639px) { .editor__hl { font-size: 16px; left: 0; } }

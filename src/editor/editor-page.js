@@ -5,6 +5,7 @@ import { initShortcuts } from './shortcuts.js';
 import { initAutosave, loadDraft } from './autosave.js';
 import { exportMarkdown, exportInlineHTMLFile, printDoc } from './export.js';
 import { toast } from '../components/theme-switcher.js';
+import { mountHighlight } from './highlight-layer.js';
 import { streamReveal, thinking, noteCards } from '../components/cc-fx.js';
 import * as Adapters from '../adapters/index.js';
 
@@ -204,6 +205,10 @@ export default function render(root) {
       preview.querySelectorAll('img').forEach((img) => { img.style.cursor = 'zoom-in'; });
     }, 180);
   };
+
+  const hl = mountHighlight(ta, ta.parentElement);
+  const paintAll = () => { hl.update(); };
+  ta.addEventListener('input', paintAll);
 
   ta.addEventListener('input', update);
   ta.addEventListener('scroll', () => {
