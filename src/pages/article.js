@@ -45,7 +45,11 @@ export default async function render(root, params) {
     </div>`;
 
   // 挂真实元素（保留事件与异步装饰），而不是 innerHTML
-  root.querySelector('#articleBody').appendChild(out.element);
+  // deDupTitle：正文首个 h1 与页面标题一致时移除，避免同一标题出现两次
+  const bodyEl = out.element;
+  const firstH1 = bodyEl.querySelector('h1');
+  if (firstH1 && firstH1.textContent.trim().replace(/#/g, '').trim() === String(meta.title).trim()) firstH1.remove();
+  root.querySelector('#articleBody').appendChild(bodyEl);
 
   const openBtn = root.querySelector('#openInEditor');
   if (openBtn) openBtn.addEventListener('click', (e) => {
