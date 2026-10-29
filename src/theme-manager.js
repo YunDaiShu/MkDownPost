@@ -3,7 +3,7 @@
    暴露 window.themes 便于控制台调试。 */
 
 import { THEMES, themeMeta } from '../data/themes.js';
-import { clearCustom, reapplyCustomIfActive } from '../theme-custom.js';
+import { clearCustom, reapplyCustomIfActive } from './theme-custom.js';
 
 const KEY_THEME = 'mdp:v1:theme';
 const KEY_MODE = 'mdp:v1:mode';

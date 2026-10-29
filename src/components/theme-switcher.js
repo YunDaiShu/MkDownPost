@@ -2,7 +2,7 @@
    快捷键：T 循环 / Shift+T 反向 / Esc 关闭 */
 
 import { list, get, apply, cycle, exportCSS } from '../theme-manager.js';
-import { applyCustom, readCustom } from '../theme-custom.js';
+import { applyCustom, readCustom } from './theme-custom.js';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具',
