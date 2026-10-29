@@ -133,6 +133,19 @@ export function printDocWithTemplate(container, template = 'brand') {
   setTimeout(() => { w.focus(); w.print(); }, 300);
 }
 
+/** 按需加载本地 vendor 脚本（同一 URL 只加载一次） */
+function loadScriptOnce(src) {
+  return new Promise((resolve) => {
+    if (document.querySelector('script[data-lib="' + src + '"]')) { resolve(true); return; }
+    const el = document.createElement('script');
+    el.src = src;
+    el.dataset.lib = src;
+    el.onload = () => resolve(true);
+    el.onerror = () => resolve(false);
+    document.head.appendChild(el);
+  });
+}
+
 /** 导出 PNG 长图：html2canvas 渲染（与 PDF 同一条管线，避免 foreignObject 在真实浏览器失败） */
 export async function exportPng(container, name = 'draft', { scale = 2 } = {}) {
   const ok = await loadScriptOnce('./vendor/html2canvas.min.js');
