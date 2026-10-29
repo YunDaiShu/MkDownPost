@@ -22,7 +22,7 @@ export default function render(root) {
         <thead><tr><th>平台</th><th>状态</th><th>处理方式</th></tr></thead>
         <tbody>
           ${ads.map((a) => '<tr><td><b>' + a.name + '</b></td><td>' +
-            (a.status === 'stable' ? '稳定' : '实验') + '</td><td>' + (a.desc || '') + '</td></tr>').join('')}
+            (a.status === 'stable' ? '稳定' : '实验') + '</td><td>' + (a.desc || '按平台规则调整结构与样式') + '</td></tr>').join('')}
         </tbody>
       </table>
       <p class="muted">在编辑器「导出 → 平台适配」里选平台，会给出处理说明与可复制的 HTML。</p>

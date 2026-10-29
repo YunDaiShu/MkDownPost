@@ -21,6 +21,7 @@ export default {
   key: 'wechat',
   name: '微信公众号',
   status: 'stable',
+  desc: '全内联样式、字号收敛、图片 max-width、剔除锚点跳转',
   transform(md, { renderMarkdown }) {
     const notes = [];
     const { element } = renderMarkdown(md);

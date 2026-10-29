@@ -3,6 +3,7 @@ export default {
   key: 'xiaoheihe',
   name: '小黑盒',
   status: 'stable',
+  desc: '标题层级降级、链接新窗口、图片限宽',
   transform(md, { renderMarkdown }) {
     const notes = [];
     let src = md;

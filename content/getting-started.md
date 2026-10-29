@@ -2,7 +2,7 @@
 
 这是一篇可以直接在编辑器里改的示例。把左侧内容替换成你的稿子，右侧就是最终排版。
 
-![MkDownPost 示意图](../assets/img/demo.svg)
+![MkDownPost 示意图](assets/img/demo.svg)
 
 *点图片可放大（Esc 关闭）*
 

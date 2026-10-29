@@ -3,6 +3,7 @@ export default {
   key: 'taptap',
   name: 'TapTap',
   status: 'beta',
+  desc: '任务列表降级 ☑/☐、表格转等宽文本',
   transform(md, { renderMarkdown }) {
     const notes = [];
     const { element } = renderMarkdown(md);
