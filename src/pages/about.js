@@ -1,6 +1,6 @@
 /* src/pages/about.js — 关于：定位、平台适配状态表（自动读取适配器）、已知限制、技术栈 */
-import { list as adapterList } from '../adapters/index.js?v=vmvted2h2';
-import { THEMES } from '../../data/themes.js?v=vmvted2h2';
+import { list as adapterList } from '../adapters/index.js?v=vmvtek3z0';
+import { THEMES } from '../../data/themes.js?v=vmvtek3z0';
 
 export default function render(root) {
   const ads = adapterList();
@@ -39,6 +39,17 @@ export default function render(root) {
         <li>公众号编辑器会过滤部分标签与外链，粘贴后请确认图片与表格。</li>
         <li>草稿只存在当前浏览器，换设备/清缓存会丢失（无云端同步是硬性设计）。</li>
         <li>导出的内联 HTML 以当前主题配色为基准，切换主题后需重新导出。</li>
+      </ul>
+
+      <h2>免责声明</h2>
+      <ul>
+        <li>本站是<b>个人非官方工具</b>，与腾讯、微信、小黑盒、TapTap、知乎、掘金、CSDN、哔哩哔哩、简书、GitHub 等平台<b>无任何隶属或合作关系</b>。</li>
+        <li>所有平台名称、标识、商标归各自权利人所有，本站仅用于说明「导出适配对象」。</li>
+        <li>主题配色为<b>近似取色</b>，不代表任何官方品牌规范；如需精确色值请以官方发布为准。</li>
+        <li>导出结果只是排版转换，<b>不保证</b>在目标平台的最终呈现完全一致；发布前请自行核对。</li>
+        <li>本站不提供发布、上传、代发服务，导出的内容与由此产生的一切后果由使用者自行负责。</li>
+        <li>内容仅保存在你本机浏览器（localStorage）；清缓存或换设备会丢失，本站不做备份。</li>
+        <li>若权利人认为某项内容侵犯权益，可在仓库提 issue，我会在核实后调整或移除。</li>
       </ul>
 
       <h2>技术栈</h2>
