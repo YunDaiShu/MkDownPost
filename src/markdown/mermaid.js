@@ -56,8 +56,11 @@ export function preloadMermaid(onProgress) {
 /** 页面空闲时后台预取，避免用户点击后才等 40 秒 */
 export function warmUpMermaid(hasMermaid) {
   if (!hasMermaid) return;
-  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1200));
-  idle(() => { preloadMermaid(); }, { timeout: 3000 });
+  // 3.3MB 会挤占带宽：延迟 12s 且仅在空闲时预取，保证 KaTeX / 高亮等小库先加载
+  setTimeout(() => {
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 500));
+    idle(() => { preloadMermaid(); }, { timeout: 5000 });
+  }, 12000);
 }
 
 const esc = (s) => String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
