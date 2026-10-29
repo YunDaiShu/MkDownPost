@@ -190,3 +190,16 @@
 .editor__chk input[type="checkbox"]:checked { background: var(--c-primary); }
 .editor__chk input[type="checkbox"]:checked::after { transform: translateX(16px); }
 .editor__chk input[type="checkbox"]:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 2px; }
+
+/* SPLIT_HEIGHT：编辑器固定视口高度、内部滚动，同步滚动才有意义 */
+.editor { display: grid; gap: var(--sp-3); }
+.editor__split {
+  height: clamp(420px, calc(100vh - var(--header-h) - 210px), 900px);
+  min-height: 420px;
+}
+.editor__pane { overflow: hidden; }
+.editor__ta { height: 100%; overflow: auto; }
+.editor__pane--preview { overflow: auto; }
+@media (max-width: 639px) {
+  .editor__split { height: calc(100vh - var(--header-h) - 260px); min-height: 360px; }
+}
