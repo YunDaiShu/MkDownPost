@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtevki6';
-import { initSplitPane } from './split-pane.js?v=vmvtevki6';
-import { initShortcuts } from './shortcuts.js?v=vmvtevki6';
-import { initAutosave } from './autosave.js?v=vmvtevki6';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtevki6';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtevki6';
-import { toast } from '../components/theme-switcher.js?v=vmvtevki6';
-import { mountHighlight } from './highlight-layer.js?v=vmvtevki6';
-import { mountMathPreview } from './math-preview.js?v=vmvtevki6';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtevki6';
-import * as Adapters from '../adapters/index.js?v=vmvtevki6';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtf13bp';
+import { initSplitPane } from './split-pane.js?v=vmvtf13bp';
+import { initShortcuts } from './shortcuts.js?v=vmvtf13bp';
+import { initAutosave } from './autosave.js?v=vmvtf13bp';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtf13bp';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtf13bp';
+import { toast } from '../components/theme-switcher.js?v=vmvtf13bp';
+import { mountHighlight } from './highlight-layer.js?v=vmvtf13bp';
+import { mountMathPreview } from './math-preview.js?v=vmvtf13bp';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtf13bp';
+import * as Adapters from '../adapters/index.js?v=vmvtf13bp';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -74,6 +74,7 @@ const TOOLS = [
   { act: 'ul', label: '无序列表', icon: S('<path d="M9 7h11M9 12h11M9 17h11"/><circle cx="5" cy="7" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="17" r="1.4" fill="currentColor" stroke="none"/>') },
   { act: 'ol', label: '有序列表', icon: S('<path d="M10 7h10M10 12h10M10 17h10"/>', '<text x="3" y="9" font-size="7" fill="currentColor" stroke="none">1</text><text x="3" y="14" font-size="7" fill="currentColor" stroke="none">2</text><text x="3" y="19" font-size="7" fill="currentColor" stroke="none">3</text>') },
   { act: 'task', label: '任务列表', icon: S('<rect x="3" y="5" width="6" height="6" rx="1.5"/><path d="M4.5 8l1.5 1.5 2.5-3"/><path d="M12 8h9M12 16h9"/><rect x="3" y="13" width="6" height="6" rx="1.5"/>') },
+  { act: 'hl', label: '语法高亮（默认关闭）', icon: S('<path d="M4 20l6-6"/><path d="M14 4l6 6-6 6-6-6z"/>') },
   { act: 'hr', label: '分隔线', icon: S('<path d="M3 12h18"/><path d="M6 6h12M6 18h12" opacity=".35"/>') }
 ];
 
@@ -295,7 +296,25 @@ export default function render(root) {
     }, 180);
   };
 
-  const hl = mountHighlight(ta, ta.parentElement, (() => { try { return (JSON.parse(localStorage.getItem('mdp:v1:prefs') || '{}').fontSize) || 16; } catch { return 16; } })());
+  /* ---------- 语法高亮：默认关闭，需要时手动开（叠加层有重影风险） ---------- */
+  const HL_KEY = 'mdp:v1:prefs';
+  const readHlPref = () => { try { return JSON.parse(localStorage.getItem(HL_KEY) || '{}').highlight === true; } catch { return false; } };
+  const saveHlPref = (on) => { try { const p = JSON.parse(localStorage.getItem(HL_KEY) || '{}'); localStorage.setItem(HL_KEY, JSON.stringify({ ...p, highlight: on })); } catch { /* 忽略 */ } };
+  let hl = null;
+  const hlBtn = root.querySelector('[data-act="hl"]');
+  const setHlButton = (on) => { if (hlBtn) { hlBtn.classList.toggle('is-on', on); hlBtn.setAttribute('aria-pressed', String(on)); } };
+  function enableHighlight() {
+    if (hl) return;
+    hl = mountHighlight(ta, ta.parentElement, (() => { try { return (JSON.parse(localStorage.getItem(HL_KEY) || '{}').fontSize) || 16; } catch { return 16; } })());
+    if (hl && hl.setFontSize) hl.setFontSize(prefs.fontSize || 16);
+    setHlButton(true);
+  }
+  function disableHighlight() {
+    if (hl && hl.destroy) hl.destroy();
+    hl = null;
+    setHlButton(false);
+  }
+  if (readHlPref()) enableHighlight();
   mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'));
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
@@ -357,6 +376,11 @@ export default function render(root) {
       if (act === 'undo') { doUndo(false); return; }
       if (act === 'redo') { doUndo(true); return; }
       if (act === 'history') { toggleHistoryPanel(); return; }
+      if (act === 'hl') {
+        if (hl) { disableHighlight(); saveHlPref(false); toast('已关闭语法高亮'); }
+        else { enableHighlight(); saveHlPref(true); toast('已开启语法高亮'); }
+        return;
+      }
       if (act === 'h1') return linePrefix('# ');
       if (act === 'h2') return linePrefix('## ');
       if (act === 'h3') return linePrefix('### ');

@@ -248,3 +248,10 @@
 }
 .editor__ta { overflow: auto; }
 .editor__hl { overflow: hidden; }
+
+/* HL_OPTIONAL：高亮是可选叠加层，关闭时文本框用正常文字色（不会重影） */
+.editor__ta { color: var(--c-text); background: transparent; }
+.editor__ta--hl { color: transparent; caret-color: var(--c-text); }
+.editor__tool.is-on { background: var(--c-primary-bg); color: var(--c-primary); }
+.editor__tool.is-on::after { content: ''; position: absolute; }
+.editor__tool[data-act="hl"] { position: relative; }
