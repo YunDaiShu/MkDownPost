@@ -104,3 +104,8 @@
   .app-main { padding-top: var(--sp-4); }
   .hero { padding-top: var(--sp-5); }
 }
+
+@media (min-width: 2000px) {
+  :root { --maxw: 1600px; }
+  .app-main { padding-inline: var(--sp-8); }
+}

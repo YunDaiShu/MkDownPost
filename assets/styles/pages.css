@@ -146,3 +146,10 @@
   .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .theme-strip { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
+
+/* STRIP_6COL：主题条与精选卡分列规则统一 */
+@media (min-width: 1280px) { .theme-strip { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+@media (max-width: 639px) {
+  .theme-strip { grid-template-columns: 1fr 1fr; }
+  .theme-strip .theme-chip:nth-child(n+7) { display: none; }
+}

@@ -60,10 +60,18 @@ async function wsUrl() {
 const ws = new WebSocket(await wsUrl());
 await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
 
+const consoleLogs = [];
 let seq = 0;
 const pending = new Map();
 ws.onmessage = (ev) => {
   const msg = JSON.parse(ev.data);
+  if (msg.method === 'Runtime.consoleAPICalled' && msg.params && msg.params.type === 'error') {
+    consoleLogs.push('console.error: ' + (msg.params.args || []).map((a) => a.value || a.description || '').join(' ').slice(0, 160));
+  }
+  if (msg.method === 'Runtime.exceptionThrown') {
+    const d = (msg.params && msg.params.exceptionDetails) || {};
+    consoleLogs.push('exception: ' + String(d.text || '') + ' ' + String((d.exception && d.exception.description) || '').slice(0, 160));
+  }
   if (msg.id && pending.has(msg.id)) {
     const { resolve, reject } = pending.get(msg.id);
     pending.delete(msg.id);
@@ -90,8 +98,18 @@ await send('Emulation.setDeviceMetricsOverride', {
 }, S);
 await send('Emulation.setVisibleSize', { width, height }, S).catch(() => null);
 
+const waitForSel = (args.find((a) => a.startsWith('--waitFor=')) || '').split('=')[1];
 await send('Page.navigate', { url }, S);
-await sleep(waitMs);
+if (waitForSel) {
+  for (let i = 0; i < 80; i++) {
+    const r = await send('Runtime.evaluate', { expression: '!!document.querySelector(' + JSON.stringify(waitForSel) + ')', returnByValue: true }, S);
+    if (r.result && r.result.value === true) break;
+    await sleep(100);
+  }
+  await sleep(600);
+} else {
+  await sleep(waitMs);
+}
 
 const metrics = await send('Page.getLayoutMetrics', {}, S);
 const size = fullPage
@@ -119,6 +137,7 @@ const probe = await send('Runtime.evaluate', {
 }, S);
 
 console.log(JSON.stringify({
+  logs: consoleLogs.slice(0, 6),
   eval: evalOut,
   ok: true, out: path.resolve(out), bytes: fs.statSync(out).size,
   size, viewport: JSON.parse(probe.result.value)

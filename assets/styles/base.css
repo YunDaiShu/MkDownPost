@@ -65,3 +65,10 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 
 /* 主容器是路由焦点容器：屏蔽程序化聚焦的描边（键盘仍可用 skip-link 跳转） */
 #app, #app:focus, #app:focus-visible { outline: none; }
+
+/* TAP44：移动端所有可点元素 ≥44×44 */
+@media (max-width: 639px) {
+  .icon-btn { width: 44px; height: 44px; }
+  .editor__tool { min-width: 44px; height: 44px; }
+  .btn { min-height: 44px; }
+}
