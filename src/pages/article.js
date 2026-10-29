@@ -1,8 +1,8 @@
 /* src/pages/article.js — 文章详情：Markdown 渲染 + 侧边 TOC + 阅读进度 + 上下篇 */
-import { renderMarkdown } from '../markdown/renderer.js';
-import { buildTOC } from '../markdown/toc.js';
-import { toast } from '../components/theme-switcher.js';
-import { streamReveal } from '../components/cc-fx.js';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtc0t9n';
+import { buildTOC } from '../markdown/toc.js?v=vmvtc0t9n';
+import { toast } from '../components/theme-switcher.js?v=vmvtc0t9n';
+import { streamReveal } from '../components/cc-fx.js?v=vmvtc0t9n';
 
 export default async function render(root, params) {
   const slug = params.slug;
