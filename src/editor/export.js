@@ -74,6 +74,15 @@ export function exportWordHTML(container, name = 'draft', title = '未命名') {
   const v = (k) => cs.getPropertyValue(k).trim();
   const body = container.cloneNode(true);
   body.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+  // Word 打开的是本地文件：相对路径必裂图 → 一律转绝对 URL
+  body.querySelectorAll('img').forEach((img) => {
+    const raw = img.getAttribute('src') || '';
+    try { img.setAttribute('src', new URL(raw, location.href).href); } catch { /* 保留原值 */ }
+    img.removeAttribute('loading');
+    img.setAttribute('style', 'max-width:100%;height:auto;');
+  });
+  // Word 不认识 <span> 包装层，剥掉只留图片
+  body.querySelectorAll('.md-imgwrap').forEach((w) => w.replaceWith(...Array.from(w.childNodes)));
 
   const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
     'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
@@ -188,4 +197,67 @@ export async function exportPng(container, name = 'draft', { width = 750, scale 
     img.onerror = () => { URL.revokeObjectURL(url); resolve(false); };
     img.src = url;
   });
+}
+
+/* ============ 真·PDF 导出（无打印框） ============
+   依赖本地 vendor：html2canvas（DOM → canvas）+ jsPDF（canvas → PDF）
+   思路：把渲染后的内容画成一张长图，再按 A4 高度切片分页。 */
+function loadScriptOnce(src) {
+  return new Promise((resolve) => {
+    if (document.querySelector('script[data-lib="' + src + '"]')) { resolve(true); return; }
+    const s = document.createElement('script');
+    s.src = src;
+    s.dataset.lib = src;
+    s.onload = () => resolve(true);
+    s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+  });
+}
+
+export async function exportPdf(container, name = 'draft') {
+  const okA = await loadScriptOnce('./vendor/html2canvas.min.js');
+  const okB = await loadScriptOnce('./vendor/jspdf.umd.min.js');
+  if (!okA || !okB || !window.html2canvas || !window.jspdf) {
+    return { ok: false, reason: 'PDF 库未就绪（可运行 node tools/vendor.mjs）' };
+  }
+
+  const cs = getComputedStyle(document.documentElement);
+  const bg = cs.getPropertyValue('--c-bg').trim() || '#ffffff';
+
+  const canvas = await window.html2canvas(container, {
+    scale: 2,
+    backgroundColor: bg,
+    useCORS: true,
+    logging: false,
+    windowWidth: container.scrollWidth
+  });
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
+  const pageW = pdf.internal.pageSize.getWidth();
+  const pageH = pdf.internal.pageSize.getHeight();
+
+  // 图片按页宽缩放后的总高度
+  const imgW = pageW;
+  const imgH = (canvas.height * imgW) / canvas.width;
+  const pageCount = Math.max(1, Math.ceil(imgH / pageH));
+
+  // 逐页裁切：sourceY 对应到 canvas 像素
+  const pxPerPt = canvas.width / imgW;
+  for (let i = 0; i < pageCount; i++) {
+    if (i > 0) pdf.addPage();
+    const sy = Math.round(i * pageH * pxPerPt);
+    const sh = Math.min(Math.round(pageH * pxPerPt), canvas.height - sy);
+    if (sh <= 0) break;
+
+    const slice = document.createElement('canvas');
+    slice.width = canvas.width;
+    slice.height = sh;
+    slice.getContext('2d').drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+
+    pdf.addImage(slice.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, imgW, (sh * imgW) / canvas.width);
+  }
+
+  pdf.save(name + '.pdf');
+  return { ok: true, pages: pageCount };
 }

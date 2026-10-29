@@ -3,7 +3,7 @@ import { renderMarkdown } from '../markdown/renderer.js';
 import { initSplitPane } from './split-pane.js';
 import { initShortcuts } from './shortcuts.js';
 import { initAutosave } from './autosave.js';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng } from './export.js';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js';
 import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js';
 import { toast } from '../components/theme-switcher.js';
 import { mountHighlight } from './highlight-layer.js';
@@ -100,8 +100,9 @@ export default function render(root) {
           <button role="menuitem" type="button" data-exp="md">下载 .md</button>
           <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
           <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
-          <button role="menuitem" type="button" data-exp="print">导出 PDF（主题色）</button>
-          <button role="menuitem" type="button" data-exp="print-min">导出 PDF（极简黑白）</button>
+          <button role="menuitem" type="button" data-exp="pdf">导出 PDF（A4 · 无打印框）</button>
+          <button role="menuitem" type="button" data-exp="print">打印 / 另存为 PDF（主题色）</button>
+          <button role="menuitem" type="button" data-exp="print-min">打印 / 另存为 PDF（极简黑白）</button>
           <button role="menuitem" type="button" data-exp="png">导出 PNG 长图</button>
           <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
@@ -413,7 +414,11 @@ export default function render(root) {
     if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
     if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
     if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
-    if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word（.doc）'); }
+    if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
+    if (b.dataset.exp === 'pdf') {
+      toast('正在生成 PDF…');
+      exportPdf(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
+    }
     if (b.dataset.exp === 'png') {
       toast('正在生成长图…');
       exportPng(preview, 'mkdownpost').then((ok) => toast(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
