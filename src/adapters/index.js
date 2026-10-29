@@ -2,8 +2,8 @@ let _renderMarkdown = null;
 const loadRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvtpi2iw'),
-      import('../markdown/renderer.js?v=vmvtpi2iw')
+      import('../markdown/vendor-loader.js?v=vmvtpmrt6'),
+      import('../markdown/renderer.js?v=vmvtpmrt6')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -14,15 +14,15 @@ const loadRenderer = async () => {
    统一接口：transform(md, { renderMarkdown }) → { html, notes[] }
    新增平台只加一个文件并在此注册。 */
 
-import wechat from './wechat.js?v=vmvtpi2iw';
-import xiaoheihe from './xiaoheihe.js?v=vmvtpi2iw';
-import taptap from './taptap.js?v=vmvtpi2iw';
-import zhihu from './zhihu.js?v=vmvtpi2iw';
-import juejin from './juejin.js?v=vmvtpi2iw';
-import csdn from './csdn.js?v=vmvtpi2iw';
-import bilibili from './bilibili.js?v=vmvtpi2iw';
-import jianshu from './jianshu.js?v=vmvtpi2iw';
-import github from './github.js?v=vmvtpi2iw';
+import wechat from './wechat.js?v=vmvtpmrt6';
+import xiaoheihe from './xiaoheihe.js?v=vmvtpmrt6';
+import taptap from './taptap.js?v=vmvtpmrt6';
+import zhihu from './zhihu.js?v=vmvtpmrt6';
+import juejin from './juejin.js?v=vmvtpmrt6';
+import csdn from './csdn.js?v=vmvtpmrt6';
+import bilibili from './bilibili.js?v=vmvtpmrt6';
+import jianshu from './jianshu.js?v=vmvtpmrt6';
+import github from './github.js?v=vmvtpmrt6';
 
 const REGISTRY = new Map();
 
