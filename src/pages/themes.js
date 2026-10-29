@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=vmvtqpnsy';
-import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtqpnsy';
-import { toast } from '../components/theme-switcher.js?v=vmvtqpnsy';
-import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=vmvtqpnsy';
+import { THEMES } from '../../data/themes.js?v=vmvtqw7vc';
+import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtqw7vc';
+import { toast } from '../components/theme-switcher.js?v=vmvtqw7vc';
+import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=vmvtqw7vc';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',

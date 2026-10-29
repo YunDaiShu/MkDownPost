@@ -1,6 +1,6 @@
 /* src/pages/about.js — 关于：定位、平台适配状态表（自动读取适配器）、已知限制、技术栈 */
-import { list as adapterList } from '../adapters/index.js?v=vmvtqpnsy';
-import { THEMES } from '../../data/themes.js?v=vmvtqpnsy';
+import { list as adapterList } from '../adapters/index.js?v=vmvtqw7vc';
+import { THEMES } from '../../data/themes.js?v=vmvtqw7vc';
 
 export default function render(root) {
   const ads = adapterList();
