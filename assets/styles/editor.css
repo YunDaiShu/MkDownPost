@@ -90,3 +90,9 @@
 .editor__preview pre,
 .editor__preview table { max-width: 100%; }
 .editor__preview .md-table { overflow-x: auto; }
+
+/* ICON_FIT：SVG 图标工具栏 */
+.editor__tool { display: inline-grid; place-items: center; width: 34px; padding: 0; color: var(--c-text-secondary); }
+.editor__tool svg { pointer-events: none; }
+.editor__tool:hover { background: var(--c-primary-bg); color: var(--c-primary); }
+@media (max-width: 639px) { .editor__tool { width: 44px; height: 44px; } }

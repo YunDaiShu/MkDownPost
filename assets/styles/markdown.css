@@ -80,3 +80,45 @@
 .toc__item a.is-active { color: var(--c-primary-text); border-left-color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
 .toc__item--l3 a { padding-left: var(--sp-5); }
 .toc__item--l4 a { padding-left: var(--sp-6); font-size: var(--fs-12); }
+
+/* THEME_DECOR：同一套令牌，不同分组有不同的排版装饰（不只换颜色） */
+/* dev 组：等宽感标题 + 深色代码栏 */
+[data-theme-group="dev"] .markdown-body h2 {
+  border-left: 0; padding-left: 0; padding-bottom: var(--sp-1);
+  border-bottom: 1px solid var(--c-border); font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+[data-theme-group="dev"] .markdown-body h3::before { content: '## '; color: var(--c-primary); opacity: .5; }
+[data-theme-group="dev"] .markdown-body blockquote { border-left-width: 2px; border-left-style: dashed; }
+
+/* social 组：居中标题 + 渐变下划线 */
+[data-theme-group="social"] .markdown-body h2 {
+  border-left: 0; padding-left: 0; text-align: center; position: relative; padding-bottom: var(--sp-2);
+}
+[data-theme-group="social"] .markdown-body h2::after {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;
+  width: 56px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--c-primary), transparent);
+}
+[data-theme-group="social"] .markdown-body blockquote { border-radius: var(--r-2); border-left-width: 0; border: 1px solid var(--c-border); }
+
+/* game 组：标题带前缀方块 + 引用右侧色块 */
+[data-theme-group="game"] .markdown-body h2 { border-left: 0; padding-left: var(--sp-5); position: relative; }
+[data-theme-group="game"] .markdown-body h2::before {
+  content: ''; position: absolute; left: 0; top: .28em; width: 10px; height: 10px;
+  background: var(--c-primary); border-radius: 2px; transform: rotate(45deg);
+}
+[data-theme-group="game"] .markdown-body blockquote { border-left-width: 3px; border-right: 3px solid var(--c-primary-soft); }
+
+/* system 组：全宽下划线标题 + 大圆角引用 */
+[data-theme-group="system"] .markdown-body h2 {
+  border-left: 0; padding: 0 0 var(--sp-2); border-bottom: 2px solid var(--c-primary-soft);
+}
+[data-theme-group="system"] .markdown-body blockquote { border-left-width: 0; border-radius: var(--r-3); background: var(--c-surface-2); }
+
+/* cn 组：标题左竖条加粗 + 引用带引号 */
+[data-theme-group="cn"] .markdown-body h2 { border-left-width: 5px; border-radius: 2px; }
+[data-theme-group="cn"] .markdown-body blockquote::before { content: '「'; color: var(--c-primary); font-weight: 700; }
+
+/* 代码块顶栏随分组微调 */
+[data-theme-group="dev"] .md-codebar { background: var(--c-code-bg); }
+[data-theme-group="game"] .md-codebar { background: var(--c-primary-soft); }

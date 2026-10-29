@@ -40,25 +40,37 @@ const SAMPLE = [
   '```'
 ].join('\n');
 
+const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
+
 const TOOLS = [
-  { act: 'undo', label: '撤销', icon: '↺' },
-  { act: 'redo', label: '重做', icon: '↻' },
+  { act: 'new', label: '新建', icon: S('<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>') },
+  { act: 'open', label: '打开 .md', icon: S('<path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>') },
   { sep: 1 },
-  { act: 'h1', label: '一级标题', icon: 'H1' },
-  { act: 'h2', label: '二级标题', icon: 'H2' },
-  { act: 'h3', label: '三级标题', icon: 'H3' },
+  { act: 'undo', label: '撤销', icon: S('<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12H9"/>') },
+  { act: 'redo', label: '重做', icon: S('<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h5"/>') },
   { sep: 1 },
-  { act: 'bold', label: '加粗', icon: 'B' },
-  { act: 'italic', label: '斜体', icon: 'I' },
-  { act: 'strike', label: '删除线', icon: 'S' },
+  { act: 'h1', label: '一级标题', icon: S('<path d="M5 5v14M13 5v14M5 12h8"/>', '<text x="15" y="21" font-size="9" fill="currentColor" stroke="none">1</text>') },
+  { act: 'h2', label: '二级标题', icon: S('<path d="M5 5v14M13 5v14M5 12h8"/>', '<text x="15" y="21" font-size="9" fill="currentColor" stroke="none">2</text>') },
+  { act: 'h3', label: '三级标题', icon: S('<path d="M5 5v14M13 5v14M5 12h8"/>', '<text x="15" y="21" font-size="9" fill="currentColor" stroke="none">3</text>') },
   { sep: 1 },
-  { act: 'ul', label: '无序列表', icon: '•' },
-  { act: 'ol', label: '有序列表', icon: '1.' },
-  { act: 'quote', label: '引用', icon: '❝' },
-  { act: 'code', label: '代码块', icon: '{ }' },
-  { act: 'table', label: '表格', icon: '▦' },
-  { act: 'link', label: '链接', icon: '🔗' },
-  { act: 'image', label: '图片', icon: '🖼' }
+  { act: 'bold', label: '加粗', icon: S('<path d="M7 4h6a4 4 0 010 8H7z"/><path d="M7 12h7a4 4 0 010 8H7z"/>') },
+  { act: 'italic', label: '斜体', icon: S('<path d="M10 4h8M6 20h8M14 4l-4 16"/>') },
+  { act: 'underline', label: '下划线', icon: S('<path d="M6 4v7a6 6 0 0012 0V4"/><path d="M4 20h16"/>') },
+  { act: 'strike', label: '删除线', icon: S('<path d="M4 12h16"/><path d="M8 7a4 4 0 018 0M8 17a4 4 0 008 0"/>') },
+  { act: 'hlt', label: '高亮', icon: S('<path d="M4 20l6-6"/><path d="M14 4l6 6-6 6-6-6z"/>') },
+  { act: 'sup', label: '上标', icon: S('<path d="M4 18l5-10 5 10M6 14h6"/>', '<text x="16" y="10" font-size="8" fill="currentColor" stroke="none">2</text>') },
+  { act: 'sub', label: '下标', icon: S('<path d="M4 16l5-10 5 10M6 12h6"/>', '<text x="16" y="22" font-size="8" fill="currentColor" stroke="none">2</text>') },
+  { sep: 1 },
+  { act: 'quote', label: '引用', icon: S('<path d="M7 7h4v4a4 4 0 01-4 4V7z"/><path d="M15 7h4v4a4 4 0 01-4 4V7z"/>') },
+  { act: 'code', label: '代码块', icon: S('<path d="M9 8l-4 4 4 4"/><path d="M15 8l4 4-4 4"/>') },
+  { act: 'inlinecode', label: '行内代码', icon: S('<path d="M8 9l-3 3 3 3"/><path d="M16 9l3 3-3 3"/><path d="M13 6l-2 12"/>') },
+  { act: 'link', label: '链接', icon: S('<path d="M10 13a4 4 0 006 0l2-2a4 4 0 00-6-6l-1 1"/><path d="M14 11a4 4 0 00-6 0l-2 2a4 4 0 006 6l1-1"/>') },
+  { act: 'image', label: '图片', icon: S('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 16l-5-5-7 7"/>') },
+  { act: 'table', label: '表格', icon: S('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 10v9M15 10v9"/>') },
+  { act: 'ul', label: '无序列表', icon: S('<path d="M9 7h11M9 12h11M9 17h11"/><circle cx="5" cy="7" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="17" r="1.4" fill="currentColor" stroke="none"/>') },
+  { act: 'ol', label: '有序列表', icon: S('<path d="M10 7h10M10 12h10M10 17h10"/>', '<text x="3" y="9" font-size="7" fill="currentColor" stroke="none">1</text><text x="3" y="14" font-size="7" fill="currentColor" stroke="none">2</text><text x="3" y="19" font-size="7" fill="currentColor" stroke="none">3</text>') },
+  { act: 'task', label: '任务列表', icon: S('<rect x="3" y="5" width="6" height="6" rx="1.5"/><path d="M4.5 8l1.5 1.5 2.5-3"/><path d="M12 8h9M12 16h9"/><rect x="3" y="13" width="6" height="6" rx="1.5"/>') },
+  { act: 'hr', label: '分隔线', icon: S('<path d="M3 12h18"/><path d="M6 6h12M6 18h12" opacity=".35"/>') }
 ];
 
 export default function render(root) {
@@ -68,6 +80,7 @@ export default function render(root) {
         ${TOOLS.map((t) => t.sep
           ? '<span class="editor__sep" aria-hidden="true"></span>'
           : '<button class="editor__tool" type="button" data-act="' + t.act + '" aria-label="' + t.label + '" title="' + t.label + '">' + t.icon + '</button>').join('')}
+        <input type="file" id="fileInput" accept=".md,.markdown,.txt" class="visually-hidden" />
         <span class="editor__spacer"></span>
         <label class="editor__sel"><span class="visually-hidden">字号</span>
           <select id="fontSize" aria-label="字号"><option value="15">小</option><option value="16" selected>中</option><option value="18">大</option></select>
@@ -226,7 +239,25 @@ export default function render(root) {
       if (act === 'table') return insert('\n| 列 1 | 列 2 |\n| --- | --- |\n| 值 1 | 值 2 |\n');
       if (act === 'link') return insert('[', '](https://)', '链接文字');
       if (act === 'image') return insert('![', '](https://)', '图片描述');
+      if (act === 'underline') return insert('<u>', '</u>', '下划线');
+      if (act === 'hlt') return insert('==', '==', '高亮');
+      if (act === 'sup') return insert('^', '^', '上标');
+      if (act === 'sub') return insert('~', '~', '下标');
+      if (act === 'inlinecode') return insert('`', '`', '代码');
+      if (act === 'hr') return insert('\n\n---\n\n');
+      if (act === 'task') return linePrefix('- [ ] ');
+      if (act === 'new') { ta.value = ''; ta.dispatchEvent(new Event('input', { bubbles: true })); toast('已新建空白文档'); return; }
+      if (act === 'open') { root.querySelector('#fileInput').click(); return; }
     });
+  });
+
+  root.querySelector('#fileInput').addEventListener('change', async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    ta.value = await f.text();
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    toast('已打开 ' + f.name);
+    e.target.value = '';
   });
 
   // 导出

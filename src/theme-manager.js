@@ -35,6 +35,8 @@ export function apply(key, { silent = false } = {}) {
   // 200ms 颜色过渡（reduced-motion 时由 base.css 全局关断）
   html.style.transition = 'background-color 200ms cubic-bezier(.16,1,.3,1)';
   html.setAttribute('data-theme', k);
+  const meta = themeMeta(k);
+  html.setAttribute('data-theme-group', (meta && meta.group) || 'misc');   // 装饰变体分组
   current = k;
   writeLS(KEY_THEME, k);
 

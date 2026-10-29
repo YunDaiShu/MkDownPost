@@ -58,12 +58,12 @@ node tools/audit-responsive.mjs https://… --shots=shots   # 同时存图
 node tools/shot.mjs "https://…/#/" 1920 1080 out.png '--waitFor=.card' '--eval=probe.js' [--full]
 ```
 
-## 主题（50 套）
+## 主题（100 套）
 
 | 批次 | 数量 | 来源 |
 |---|---|---|
 | 手调 | 8 | deepseek / wechat / taptap / heybox / bilibili / zhihu / xiaohongshu / github |
-| 生成 | 42 | vscode / notion / figma / linear / vercel / nextjs / tailwind / vite / rust / go / python / typescript / apple / material / bootstrap / discord / slack / telegram / youtube / netflix / spotify / steam / playstation / xbox / nintendo / miui / harmonyos / windows / chrome / firefox / safari / dribbble / behance / medium / substack / wordpress / ghost / juejin / csdn / oschina / gitee / cloudflare |
+| 生成 | 92 | vscode / notion / figma / linear / vercel / nextjs / tailwind / vite / rust / go / python / typescript / apple / material / bootstrap / discord / slack / telegram / youtube / netflix / spotify / steam / playstation / xbox / nintendo / miui / harmonyos / windows / chrome / firefox / safari / dribbble / behance / medium / substack / wordpress / ghost / juejin / csdn / oschina / gitee / cloudflare |
 
 > **色值为近似取色，非官方规范**，仅用于识别气质；替换只需改 `data/themes.js`（手调 8 套）或 `tools/gen-themes.mjs` 的 seeds（生成 42 套）后重跑。
 
