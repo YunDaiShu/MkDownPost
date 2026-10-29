@@ -1,7 +1,7 @@
 import { derivePalette } from '../theme-custom.js';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=vmvtkn6y3';
+import { THEMES } from '../../data/themes.js?v=vmvtku1jt';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -35,7 +35,7 @@ function buildChip(t) {
 
 export default async function render(root) {
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtkn6y3')).json(); } catch { index = []; }
+  try { index = await (await fetch('./content-index.json?c=vmvtku1jt')).json(); } catch { index = []; }
   const featured = index.filter((a) => a.featured).slice(0, 9);
 
   root.replaceChildren();
@@ -70,8 +70,8 @@ export default async function render(root) {
   // 精选内容
   const sec = el('section', 'section');
   const head = el('div', 'section__head');
-  const more = el('a', 'section__more', '去写自己的 →');
-  more.href = '#/editor';
+  const more = el('a', 'section__more', '查看全部（' + index.length + ' 篇）→');
+  more.href = '#/articles';
   head.append(el('h2', 'section__title', '精选内容'), more);
   const cards = el('div', 'cards');
   if (featured.length) featured.forEach((a) => cards.appendChild(buildCard(a)));
