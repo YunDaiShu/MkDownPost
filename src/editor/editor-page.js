@@ -1,15 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtkf5rc';
-import { initSplitPane } from './split-pane.js?v=vmvtkf5rc';
-import { initShortcuts } from './shortcuts.js?v=vmvtkf5rc';
-import { initAutosave } from './autosave.js?v=vmvtkf5rc';
+import { initSplitPane } from './split-pane.js?v=vmvtkir4i';
+import { initShortcuts } from './shortcuts.js?v=vmvtkir4i';
+import { initAutosave } from './autosave.js?v=vmvtkir4i';
 import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdfRaster } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtkf5rc';
-import { toast } from '../components/theme-switcher.js?v=vmvtkf5rc';
-import { mountHighlight } from './highlight-layer.js?v=vmvtkf5rc';
-import { mountMathPreview } from './math-preview.js?v=vmvtkf5rc';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtkf5rc';
-import * as Adapters from '../adapters/index.js?v=vmvtkf5rc';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtkir4i';
+import { toast } from '../components/theme-switcher.js?v=vmvtkir4i';
+import { mountHighlight } from './highlight-layer.js?v=vmvtkir4i';
+import { mountMathPreview } from './math-preview.js?v=vmvtkir4i';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtkir4i';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -77,6 +75,17 @@ const TOOLS = [
   { act: 'hl', label: '语法高亮（默认关闭）', icon: S('<path d="M4 20l6-6"/><path d="M14 4l6 6-6 6-6-6z"/>') },
   { act: 'hr', label: '分隔线', icon: S('<path d="M3 12h18"/><path d="M6 6h12M6 18h12" opacity=".35"/>') }
 ];
+
+let _renderMarkdown = null;
+const loadMarkdownRenderer = async () => {
+  if (!_renderMarkdown) _renderMarkdown = (await import('../markdown/renderer.js?v=vmvtkir4i')).renderMarkdown;
+  return _renderMarkdown;
+};
+let _Adapters = null;
+const loadAdapters = async () => {
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtkir4i');
+  return _Adapters;
+};
 
 const afterPaintMount = (fn) => {
   if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => setTimeout(fn, 0));
@@ -293,7 +302,11 @@ export default function render(root) {
     readTime.textContent = '约 ' + Math.max(1, Math.round(chars / 350)) + ' 分钟';
 
     clearTimeout(timer);
-    timer = setTimeout(() => {
+    timer = setTimeout(async () => {
+      let renderMarkdown = _renderMarkdown;
+      if (!renderMarkdown) {
+        try { renderMarkdown = await loadMarkdownRenderer(); } catch (e) { return; }
+      }
       const out = renderMarkdown(val, { onCopy: toast });
       // 用真实元素替换：保留 Mermaid/KaTeX/灯箱/复制按钮的事件与异步装饰
       preview.replaceChildren(out.element);
@@ -556,8 +569,9 @@ export default function render(root) {
   const panel = root.querySelector('#ccPanel');
   let activePlat = null;
 
-  function openPlatformPanel() {
+  async function openPlatformPanel() {
     panel.hidden = false;
+    const Adapters = await loadAdapters();
     const ads = Adapters.list();
     panel.innerHTML = [
       '<div class="cc-panel">',
@@ -587,12 +601,13 @@ export default function render(root) {
     const result = panel.querySelector('#ccResult');
     panel.querySelectorAll('[data-plat]').forEach((c) => c.classList.toggle('is-on', c === chip));
     result.innerHTML = '';
+    const Adapters = await loadAdapters();
     const ad = Adapters.get(key);
     const stop = thinking(result, '正在适配 ' + ad.name);
     await new Promise((r) => setTimeout(r, 260));
     stop();
 
-    const out = Adapters.run(key, ta.value);
+    const out = await Adapters.run(key, ta.value);
     activePlat = { name: ad.name, html: out.html };
 
     const cards = noteCards(out.notes, { title: ad.name + ' · 处理说明' });
