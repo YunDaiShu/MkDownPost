@@ -72,6 +72,14 @@ ws.onmessage = (ev) => {
     const d = (msg.params && msg.params.exceptionDetails) || {};
     consoleLogs.push('exception: ' + String(d.text || '') + ' ' + String((d.exception && d.exception.description) || '').slice(0, 160));
   }
+  if (msg.method === 'Log.entryAdded' && msg.params && msg.params.entry) {
+    const e = msg.params.entry;
+    if (e.level === 'error') consoleLogs.push('log.' + e.source + ': ' + String(e.text).slice(0, 200));
+  }
+  if (msg.method === 'Network.responseReceived' && msg.params && msg.params.response) {
+    const r0 = msg.params.response;
+    if (r0.status >= 400) consoleLogs.push('http ' + r0.status + ' ' + String(r0.url).split('/MkDownPost/')[1]);
+  }
   if (msg.id && pending.has(msg.id)) {
     const { resolve, reject } = pending.get(msg.id);
     pending.delete(msg.id);
@@ -93,6 +101,8 @@ const S = sessionId;
 
 try { await send('Page.enable', {}, S); } catch (e) { console.error('Page.enable', e.message); }
 await send('Runtime.enable', {}, S);
+try { await send('Log.enable', {}, S); } catch { /* 忽略 */ }
+try { await send('Network.enable', {}, S); } catch { /* 忽略 */ }
 await send('Emulation.setDeviceMetricsOverride', {
   width, height, deviceScaleFactor: 1, mobile: false
 }, S);

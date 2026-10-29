@@ -1,5 +1,5 @@
 /* src/markdown/images.js — 图片：骨架占位、懒加载、失败兜底、尺寸防抖、灯箱绑定 */
-import { openLightbox } from '../components/lightbox.js?v=vmvtek3z0';
+import { openLightbox } from '../components/lightbox.js?v=vmvtekctt';
 
 const FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="100%" height="100%" fill="#e9edf2"/>' +
