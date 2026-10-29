@@ -28,8 +28,13 @@ export function decorateCodeBlocks(root, { copy } = {}) {
     btn.className = 'md-copy';
     btn.textContent = '复制';
     btn.addEventListener('click', async () => {
+      let done = false;
       try {
-      await navigator.clipboard.writeText(code.textContent);
+      await Promise.race([
+        navigator.clipboard.writeText(code.textContent),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('clipboard-timeout')), 700))
+      ]);
+      done = true;
       if (typeof copy === 'function') copy('已复制代码');
     } catch {
       // 剪贴板被拒（http、权限）时给出可操作提示，而不是静默失败
@@ -44,10 +49,10 @@ export function decorateCodeBlocks(root, { copy } = {}) {
         if (typeof copy === 'function') copy('复制失败，请手动选择代码');
       }
     }
-      btn.textContent = '已复制';
+      btn.textContent = done ? '已复制' : '已选中';
       btn.classList.add('is-done');
       setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('is-done'); }, 1500);
-      copy && copy('已复制代码');
+      if (!done) btn.blur();
     });
     bar.appendChild(btn);
 
