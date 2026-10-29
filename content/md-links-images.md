@@ -4,28 +4,28 @@
 
 ## 行内式
 
-~~~markdown
+```markdown
 [文字](https://example.com "可选标题")
 ![图片说明](https://example.com/a.png)
-~~~
+```
 
 ## 参考式（长文推荐）
 
-~~~markdown
+```markdown
 看 [官网][1] 与 [文档][2]。
 
 [1]: https://example.com
 [2]: https://example.com/docs
-~~~
+```
 
 好处：链接集中在文末，改地址只改一处。
 
 ## 自动链接
 
-~~~markdown
+```markdown
 尖括号包住完整地址 → 自动变成链接
 直接写 https 开头的地址 → GFM 下也可点
-~~~
+```
 
 ## 路径的三种写法
 

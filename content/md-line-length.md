@@ -19,29 +19,29 @@
 
 **不要**。源文件里的换行不等于渲染后的换行：
 
-~~~markdown
+```markdown
 这一行很短
 这一行也很短
-~~~
+```
 
 上面两行会被渲染成**同一段**。想让渲染后断行，要么空行分段，要么行尾两空格。
 
 ## 代码块的行长
 
-~~~js
+```js
 // 太长会被横向滚动，阅读体验差
 const result = await fetchData({ page: 1, size: 20, sort: 'created_at', order: 'desc' });
-~~~
+```
 
 改写成多行更友好：
 
-~~~js
+```js
 const result = await fetchData({
   page: 1,
   size: 20,
   sort: 'created_at'
 });
-~~~
+```
 
 ## 小结
 

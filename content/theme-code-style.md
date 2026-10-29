@@ -19,19 +19,19 @@
 
 ## 长代码的处理
 
-~~~js
+```js
 // 超过 80 字符会被横向滚动
 const value = await api.get('/very/long/path/with/many/segments', { withCredentials: true });
-~~~
+```
 
 建议主动换行：
 
-~~~js
+```js
 const value = await api.get(
   '/very/long/path/with/many/segments',
   { withCredentials: true }
 );
-~~~
+```
 
 ## 导出到各平台
 

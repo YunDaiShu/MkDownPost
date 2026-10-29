@@ -4,22 +4,22 @@
 
 ## 命名规则
 
-~~~text
+```text
 yyyy-mm-主题-关键词.md
 2026-10-markdown-表格语法.md
-~~~
+```
 
 三条约束：**可排序、可搜索、无空格**。
 
 ## 目录结构
 
-~~~text
+```text
 content/
   markdown-基础/
   markdown-进阶/
   平台适配/
   写作方法/
-~~~
+```
 
 ## 索引文件
 

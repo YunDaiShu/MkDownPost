@@ -4,10 +4,10 @@
 
 ## 基本写法
 
-~~~markdown
+```markdown
 ![构建状态](https://img.shields.io/badge/build-passing-brightgreen)
 ![许可证](https://img.shields.io/badge/license-MIT-blue)
-~~~
+```
 
 本质就是一个图片链接，指向动态生成的 SVG。
 
@@ -31,11 +31,11 @@
 
 用纯文本表达状态，稳定且可搜索：
 
-~~~markdown
+```markdown
 状态：稳定
 许可证：MIT
 构建：GitHub Actions 每次 push 自动检查
-~~~
+```
 
 ## 什么时候该用
 

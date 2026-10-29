@@ -4,7 +4,7 @@ Markdown 覆盖不了所有排版需求，HTML 是它的逃生舱。
 
 ## 可以混写
 
-~~~markdown
+```markdown
 <details>
   <summary>点开看更多</summary>
   折叠内容写在这里。
@@ -13,7 +13,7 @@ Markdown 覆盖不了所有排版需求，HTML 是它的逃生舱。
 <br>
 
 <sup>上标</sup> 与 <sub>下标</sub>
-~~~
+```
 
 ## 常见用途
 
@@ -30,13 +30,13 @@ Markdown 覆盖不了所有排版需求，HTML 是它的逃生舱。
 1. **HTML 块内的 Markdown 默认不解析**，要解析就在块内首尾各留一个空行
 2. **块级 HTML 必须顶格**，缩进会被当成代码
 
-~~~markdown
+```markdown
 <div>
 
 **这段会被解析成加粗**
 
 </div>
-~~~
+```
 
 ## 安全提醒
 
