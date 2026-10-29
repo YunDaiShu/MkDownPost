@@ -156,3 +156,35 @@ MIT，见 `LICENSE`。
 | zhihu | #0084FF | 知乎蓝 |
 | xiaohongshu | #FF2442 | 小红书珊瑚红 |
 | github | #0969DA | GitHub 蓝 |
+
+## 仓库自检与自动化
+
+无需安装任何依赖（零构建），但仓库自带 7 个检查脚本：
+
+| 命令 | 作用 |
+|---|---|
+| `npm run check` | 校验 42 个模块的相对导入全部有效（防白屏） |
+| `npm run lint:color` | 扫组件样式里是否残留硬编码颜色 |
+| `npm run check:md` | Markdown 解析器冒烟测试（14 项断言） |
+| `npm run audit` | 5 档分辨率 × 5 个页面的响应式回归（25 项） |
+| `npm run shot -- <url> 1920 1080 out.png` | 任意视口截图 + 页内取数 |
+| `npm run themes:gen` | 重新生成 92 套派生主题（含 AA 对比度校验） |
+| `npm run serve` | 本地静态服务器（`http://localhost:5173`） |
+
+**GitHub Actions**（`.github/workflows/site-health.yml`）：
+- 每次 push 到 main 跑离线三项检查（导入完整性 / 颜色 lint / 解析冒烟）
+- 每天定时检查线上 5 个路由是否 200 且未出现「页面加载失败」
+
+## 仓库结构速览
+
+```
+index.html            单页外壳（所有 CSS 链接带 ?v= 版本戳，避免缓存）
+src/                  42 个 ES 模块（router / 页面 / 编辑器 / 渲染管线 / 适配器）
+assets/styles/        10 个 CSS（令牌 → 主题 → 布局 → 组件 → 页面）
+assets/img/demo.svg   唯一图片（其余全部文字/渐变绘制）
+content/              6 篇示例 Markdown
+data/                 100 套主题元数据（8 手调 + 92 生成）
+tools/                8 个零依赖脚本（serve / shot / audit / vendor / gen-themes / lint / smoke / check-imports）
+vendor/               本地第三方库（运行时不联网）
+.github/workflows/    自动化检查
+```

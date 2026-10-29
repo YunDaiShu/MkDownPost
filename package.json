@@ -1,0 +1,25 @@
+{
+  "name": "mkdownpost",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MkDownPost 码稿 — 面向公众号/小黑盒/TapTap 等平台的 Markdown 写作与排版工作台",
+  "scripts": {
+    "serve": "node tools/serve.mjs",
+    "check": "node tools/check-imports.mjs",
+    "audit": "node tools/audit-responsive.mjs",
+    "shot": "node tools/shot.mjs",
+    "check:md": "node tools/smoke-md.mjs",
+    "vendor:update": "node tools/vendor.mjs",
+    "themes:gen": "node tools/gen-themes.mjs",
+    "lint:color": "node tools/lint-hardcoded-color.mjs"
+  },
+  "keywords": [
+    "markdown",
+    "wechat",
+    "taptap",
+    "xiaoheihe",
+    "static-site",
+    "zero-build"
+  ],
+  "license": "MIT"
+}
