@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>页面不存在 · MkDownPost 码稿</title>
+<style>
+  html,body{height:100%}body{margin:0;display:grid;place-items:center;background:#f7f9fb;color:#171b21;
+  font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .box{text-align:center;padding:24px}
+  h1{font-size:28px;margin:0 0 8px}p{color:#5b6570;margin:0 0 20px}
+  a{display:inline-block;margin:0 6px;padding:10px 18px;border-radius:10px;text-decoration:none;
+  background:#2563eb;color:#fff}a.ghost{background:#eef2f7;color:#2563eb}
+</style>
+<script>
+  /* 保留原路径，转到 SPA 的 404 路由 */
+  (function () {
+    var p = location.pathname.replace(/^\/MkDownPost/, '');
+    if (p && p !== '/') sessionStorage.setItem('mdp:404-from', p);
+    setTimeout(function () { location.replace('/MkDownPost/#/'); }, 800);
+  })();
+</script>
+</head>
+<body>
+  <div class="box">
+    <h1>没有这个页面</h1>
+    <p>地址可能输错了，或者页面已被移动。正在带你回首页…</p>
+    <a href="/MkDownPost/#/">回首页</a>
+    <a class="ghost" href="/MkDownPost/#/articles">看全部文章</a>
+  </div>
+</body>
+</html>
