@@ -63,3 +63,9 @@
   .editor__menu button { min-height: 44px; }
   .cc-panel__foot .btn { min-height: 44px; }
 }
+
+/* TAP44_FINAL：移动端图标按钮 44×44（必须晚于 layout.css） */
+@media (max-width: 639px) {
+  .icon-btn, .nav-toggle { width: 44px; height: 44px; }
+  .editor__tool { min-width: 44px; height: 44px; }
+}
