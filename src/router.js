@@ -19,6 +19,17 @@ export function setNotFound(loader, title) {
   notFoundHandler = { loader, title };
 }
 
+/** 预取路由模块（hover 时调用，切换页面更快） */
+export function prefetchRoute(hash) {
+  const raw = String(hash || '').replace(/^#/, '') || '/';
+  const path = raw.split('?')[0] || '/';
+  for (const r of routes) {
+    const m = path.match(r.pattern);
+    if (m) { try { r.loader(); } catch (e) { /* 忽略预取失败 */ } return true; }
+  }
+  return false;
+}
+
 /** 解析 hash → { path, params } */
 function parseHash() {
   const raw = location.hash.replace(/^#/, '') || '/';

@@ -33,9 +33,15 @@ function card(a) {
   return c;
 }
 
-export default async function render(root) {
+let __indexCache = null;
+
+export default async function render(root, params) {
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtlrsbw')).json(); } catch { index = []; }
+  if (__indexCache) index = __indexCache;
+  else {
+    try { index = await (await fetch('./content-index.json?c=vmvtm546n')).json(); __indexCache = index; } catch { index = []; }
+  }
+  const wantGroup = params && params.query && params.query.get ? params.query.get('g') : null;
 
   root.replaceChildren();
   const sec = el('section', 'section');
@@ -68,10 +74,26 @@ export default async function render(root) {
 
       const details = document.createElement('details');
       details.className = 'article-group';
-      details.open = !!query || gi === 0;      // 搜索时全展开；默认展开第一组
+      details.dataset.group = g.key;
+      details.open = !!query || (wantGroup ? wantGroup === g.key : gi === 0);
 
       const summary = document.createElement('summary');
       summary.className = 'article-group__head';
+      // 点击折叠时加动画（原生 details 是瞬间切换）
+      summary.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const grid = details.querySelector('.cards');
+        if (details.open) {
+          if (grid) grid.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 140, easing: 'ease-out' });
+          setTimeout(() => { details.open = false; }, 120);
+        } else {
+          details.open = true;
+          if (grid) grid.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 180, easing: 'ease-out' });
+        }
+      });
+      const anchor = el('a', 'article-group__anchor', '#');
+      anchor.href = '#/articles?g=' + g.key;
+      anchor.setAttribute('aria-label', '定位到 ' + g.name + ' 分组');
       summary.append(
         el('span', 'article-group__name', g.name),
         el('span', 'article-group__count', list.length + ' 篇'),
@@ -92,5 +114,14 @@ export default async function render(root) {
 
   search.addEventListener('input', () => paint(search.value));
   paint('');
+
+  // 锚点：?g=syntax 打开对应分组并滚动过去
+  if (wantGroup) {
+    const target = wrap.querySelector('.article-group[data-group="' + wantGroup + '"]');
+    if (target) {
+      target.open = true;
+      requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'smooth' }));
+    }
+  }
   root.append(sec);
 }

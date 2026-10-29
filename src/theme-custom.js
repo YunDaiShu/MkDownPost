@@ -19,7 +19,12 @@ const NEUTRAL = {
   dark: { bg: '#0F1318', surface: '#161B22', surface2: '#1C232C', text: '#E7EBF0', text2: '#AEB6BF', muted: '#828C96', border: '#263039', divider: '#1E262E', codeBg: '#11161C', codeBar: '#1A2129' }
 };
 
+const __paletteCache = new Map();
+
 export function derivePalette(hex, mode = 'light') {
+  const __key = String(hex) + '|' + mode;
+  const __hit = __paletteCache.get(__key);
+  if (__hit) return __hit;
   const dark = mode === 'dark';
   const n = NEUTRAL[dark ? 'dark' : 'light'];
   const primary = hex.toUpperCase();
@@ -124,4 +129,16 @@ export async function importThemeJson(file) {
   html.setAttribute('data-theme', 'custom');
   document.dispatchEvent(new CustomEvent('theme:change', { detail: { key: 'custom' } }));
   return { ok: applied > 0, applied, name: payload.name || '' };
+}
+
+/* 记忆化包装：同一 hex+mode 只算一次（主题库 100 张卡显著提速） */
+const __deriveRaw = derivePalette;
+export function derivePaletteCached(hex, mode = 'light') {
+  const key = String(hex) + '|' + mode;
+  const hit = __paletteCache.get(key);
+  if (hit) return hit;
+  const val = __deriveRaw(hex, mode);
+  if (__paletteCache.size > 400) __paletteCache.clear();
+  __paletteCache.set(key, val);
+  return val;
 }

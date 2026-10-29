@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvtlrsbw';
-import { initShortcuts } from './shortcuts.js?v=vmvtlrsbw';
-import { initAutosave } from './autosave.js?v=vmvtlrsbw';
+import { initSplitPane } from './split-pane.js?v=vmvtm546n';
+import { initShortcuts } from './shortcuts.js?v=vmvtm546n';
+import { initAutosave } from './autosave.js?v=vmvtm546n';
 import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdfRaster } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtlrsbw';
-import { toast } from '../components/theme-switcher.js?v=vmvtlrsbw';
-import { mountHighlight } from './highlight-layer.js?v=vmvtlrsbw';
-import { mountMathPreview } from './math-preview.js?v=vmvtlrsbw';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtlrsbw';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtm546n';
+import { toast } from '../components/theme-switcher.js?v=vmvtm546n';
+import { mountHighlight } from './highlight-layer.js?v=vmvtm546n';
+import { mountMathPreview } from './math-preview.js?v=vmvtm546n';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtm546n';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -80,8 +80,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvtlrsbw'),
-      import('../markdown/renderer.js?v=vmvtlrsbw')
+      import('../markdown/vendor-loader.js?v=vmvtm546n'),
+      import('../markdown/renderer.js?v=vmvtm546n')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -90,7 +90,7 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtlrsbw');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtm546n');
   return _Adapters;
 };
 

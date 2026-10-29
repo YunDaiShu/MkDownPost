@@ -1,16 +1,19 @@
 /* src/pages/article.js — 文章详情：Markdown 渲染 + 侧边 TOC + 阅读进度 + 上下篇 */
-import { ensureRenderers } from '../markdown/vendor-loader.js?v=vmvtlrsbw';
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtlrsbw';
-import { buildTOC } from '../markdown/toc.js?v=vmvtlrsbw';
-import { toast } from '../components/theme-switcher.js?v=vmvtlrsbw';
-import { streamReveal } from '../components/cc-fx.js?v=vmvtlrsbw';
+import { ensureRenderers } from '../markdown/vendor-loader.js?v=vmvtm546n';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtm546n';
+import { buildTOC } from '../markdown/toc.js?v=vmvtm546n';
+import { toast } from '../components/theme-switcher.js?v=vmvtm546n';
+import { streamReveal } from '../components/cc-fx.js?v=vmvtm546n';
+
+const __mdCache = new Map();   /* slug → markdown 文本（同一会话内不重复请求） */
+const __htmlCache = new Map();
 
 export default async function render(root, params) {
   const slug = params.slug;
   root.innerHTML = '<p class="muted">加载中…</p>';
 
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtlrsbw')).json(); } catch { index = []; }
+  try { index = await (await fetch('./content-index.json?c=vmvtm546n')).json(); } catch { index = []; }
   const i = index.findIndex((a) => a.slug === slug);
   const meta = index[i];
 
@@ -23,7 +26,10 @@ export default async function render(root, params) {
   }
 
   let md = '';
-  try { md = await (await fetch('./content/' + slug + '.md?c=vmvtlrsbw')).text(); }
+  try {
+    if (__mdCache.has(slug)) md = __mdCache.get(slug);
+    else { md = await (await fetch('./content/' + slug + '.md?c=vmvtm546n')).text(); __mdCache.set(slug, md); }
+  }
   catch { md = '# ' + meta.title + '\n\n内容加载失败，请检查 content/' + slug + '.md 是否存在。'; }
 
   await ensureRenderers();
