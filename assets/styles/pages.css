@@ -258,3 +258,21 @@
 /* 主题库卡片描述（与首页主题墙一致的气质词） */
 .theme-card__desc { display: block; margin-top: 2px; font-size: var(--fs-12); color: var(--c-text-muted); }
 .theme-card__head { align-items: flex-start; }
+
+/* 全部内容页：分组折叠 */
+.article-groups { display: grid; gap: var(--sp-4); }
+.article-group { border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); overflow: hidden; }
+.article-group__head {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); cursor: pointer; list-style: none;
+  transition: background-color 120ms var(--ease);
+}
+.article-group__head::-webkit-details-marker { display: none; }
+.article-group__head:hover { background: var(--c-surface-2); }
+.article-group__head::after { content: '▾'; margin-left: auto; color: var(--c-text-muted); transition: transform 160ms var(--ease); }
+.article-group[open] .article-group__head::after { transform: rotate(180deg); }
+.article-group__name { font-weight: 700; font-size: var(--fs-16); }
+.article-group__count { font-size: var(--fs-12); color: var(--c-text-secondary); background: var(--c-surface-2); padding: 2px 8px; border-radius: 999px; }
+.article-group__hint { font-size: var(--fs-12); color: var(--c-text-muted); }
+.article-group .cards { padding: var(--sp-4); border-top: 1px solid var(--c-divider); }
+@media (max-width: 639px) { .article-group__hint { display: none; } }

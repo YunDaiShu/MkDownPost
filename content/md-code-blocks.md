@@ -4,15 +4,15 @@
 
 ## 两种形态
 
-```markdown
+````markdown
 行内：使用 console.log() 输出（两侧各一个反引号）。
 
 块级：
 ```js
 const price = 12;
 console.log(price);
-```
-```
+````
+````
 
 ## 为什么一定要标语言
 
@@ -33,7 +33,7 @@ console.log(price);
 内层：三个反引号加 js
 再内层：三行代码
 收尾：三个反引号，然后四个反引号
-```
+````
 
 ## 行内代码的用途
 
