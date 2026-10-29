@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=vmvtf13bp';
-import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtf13bp';
-import { toast } from '../components/theme-switcher.js?v=vmvtf13bp';
-import { derivePalette } from '../theme-custom.js?v=vmvtf13bp';
+import { THEMES } from '../../data/themes.js?v=vmvtf9v5a';
+import { apply, get, exportCSS } from '../theme-manager.js?v=vmvtf9v5a';
+import { toast } from '../components/theme-switcher.js?v=vmvtf9v5a';
+import { derivePalette } from '../theme-custom.js?v=vmvtf9v5a';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
@@ -93,8 +93,12 @@ export default function render(root, params) {
       const k = cardEl.dataset.key;
       apply(k);
       toast('已应用 ' + k);
-      // 只允许一张卡是选中态：统一走 paint，避免手动 toggle 出现双高亮
-      paint(false);
+      // 原地切换：绝不重绘网格（否则 100 张卡的入场动画会全部重播、hover 状态丢失）
+      root.querySelectorAll('.theme-card').forEach((c) => {
+        const on = c.dataset.key === k;
+        c.classList.toggle('is-on', on);
+        c.setAttribute('aria-current', String(on));
+      });
       return;
     }
     const chip = e.target.closest('[data-g]');

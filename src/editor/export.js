@@ -212,6 +212,15 @@ export async function exportPdf(container, name = 'draft') {
     pdf.addImage(slice.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, imgW, (sh * imgW) / canvas.width);
   }
 
-  pdf.save(name + '.pdf');
-  return { ok: true, pages: pageCount };
+  // 用显式 anchor 下载，避免不同浏览器对 jsPDF.save 的差异（个别环境会走打印）
+  const blob = pdf.output('blob');
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name + '.pdf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  return { ok: true, pages: pageCount, bytes: blob.size };
 }

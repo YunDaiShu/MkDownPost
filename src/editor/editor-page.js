@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtf13bp';
-import { initSplitPane } from './split-pane.js?v=vmvtf13bp';
-import { initShortcuts } from './shortcuts.js?v=vmvtf13bp';
-import { initAutosave } from './autosave.js?v=vmvtf13bp';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtf13bp';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtf13bp';
-import { toast } from '../components/theme-switcher.js?v=vmvtf13bp';
-import { mountHighlight } from './highlight-layer.js?v=vmvtf13bp';
-import { mountMathPreview } from './math-preview.js?v=vmvtf13bp';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtf13bp';
-import * as Adapters from '../adapters/index.js?v=vmvtf13bp';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtf9v5a';
+import { initSplitPane } from './split-pane.js?v=vmvtf9v5a';
+import { initShortcuts } from './shortcuts.js?v=vmvtf9v5a';
+import { initAutosave } from './autosave.js?v=vmvtf9v5a';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtf9v5a';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtf9v5a';
+import { toast } from '../components/theme-switcher.js?v=vmvtf9v5a';
+import { mountHighlight } from './highlight-layer.js?v=vmvtf9v5a';
+import { mountMathPreview } from './math-preview.js?v=vmvtf9v5a';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtf9v5a';
+import * as Adapters from '../adapters/index.js?v=vmvtf9v5a';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -105,8 +105,8 @@ export default function render(root) {
           <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
           <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
           <button role="menuitem" type="button" data-exp="pdf">导出 PDF（A4 · 无打印框）</button>
-          <button role="menuitem" type="button" data-exp="print">打印 / 另存为 PDF（主题色）</button>
-          <button role="menuitem" type="button" data-exp="print-min">打印 / 另存为 PDF（极简黑白）</button>
+          <button role="menuitem" type="button" data-exp="print">打印预览（主题色）</button>
+          <button role="menuitem" type="button" data-exp="print-min">打印预览（极简黑白）</button>
           <button role="menuitem" type="button" data-exp="png">导出 PNG 长图</button>
           <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
         </div>
@@ -439,7 +439,7 @@ export default function render(root) {
     exportBtn.setAttribute('aria-expanded', 'false');
     if (b.dataset.exp === 'md') { exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
     if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
-    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
+    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); toast('已打开打印预览：在「打印机」里选「另存为 PDF」才保存文件'); }
     if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
     if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
     if (b.dataset.exp === 'pdf') {
