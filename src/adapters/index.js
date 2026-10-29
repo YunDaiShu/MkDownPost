@@ -1,16 +1,16 @@
 /* src/adapters/index.js — 平台适配器注册表
    统一接口：transform(md, { renderMarkdown }) → { html, notes[] }
    新增平台只加一个文件并在此注册。 */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtk96di';
-import wechat from './wechat.js?v=vmvtk96di';
-import xiaoheihe from './xiaoheihe.js?v=vmvtk96di';
-import taptap from './taptap.js?v=vmvtk96di';
-import zhihu from './zhihu.js?v=vmvtk96di';
-import juejin from './juejin.js?v=vmvtk96di';
-import csdn from './csdn.js?v=vmvtk96di';
-import bilibili from './bilibili.js?v=vmvtk96di';
-import jianshu from './jianshu.js?v=vmvtk96di';
-import github from './github.js?v=vmvtk96di';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtkbrjc';
+import wechat from './wechat.js?v=vmvtkbrjc';
+import xiaoheihe from './xiaoheihe.js?v=vmvtkbrjc';
+import taptap from './taptap.js?v=vmvtkbrjc';
+import zhihu from './zhihu.js?v=vmvtkbrjc';
+import juejin from './juejin.js?v=vmvtkbrjc';
+import csdn from './csdn.js?v=vmvtkbrjc';
+import bilibili from './bilibili.js?v=vmvtkbrjc';
+import jianshu from './jianshu.js?v=vmvtkbrjc';
+import github from './github.js?v=vmvtkbrjc';
 
 const REGISTRY = new Map();
 
