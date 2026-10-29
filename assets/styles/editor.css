@@ -112,7 +112,11 @@
   left: 44px;              /* 让开行号槽 */
 }
 .editor__ta--hl { position: relative; z-index: 1; background: transparent; color: transparent; caret-color: var(--c-text); }
-.editor__ta--hl::selection { background: var(--c-selection-bg); color: transparent; }
+.editor__ta--hl::selection {
+  background: var(--c-selection-bg);
+  color: var(--c-text);
+  -webkit-text-fill-color: var(--c-text);   /* 选中时恢复可见，避免"只有色块没有字" */
+}
 .editor__gutter { position: relative; z-index: 2; }
 
 /* token 配色（沿用主题令牌，保证 100 套主题都好看） */
@@ -217,3 +221,11 @@
 .seg__btn.is-on { background: var(--c-primary); color: var(--c-on-primary); font-weight: 600; box-shadow: var(--shadow-1); }
 .seg__btn:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 1px; }
 @media (max-width: 639px) { .seg__btn { height: 32px; min-width: 40px; } }
+
+/* SELECTION_VISIBLE：高亮层存在时的选区必须可读 */
+.editor__ta--hl::selection,
+.editor__ta--hl::-moz-selection {
+  background: var(--c-selection-bg);
+  color: var(--c-text);
+  -webkit-text-fill-color: var(--c-text);
+}

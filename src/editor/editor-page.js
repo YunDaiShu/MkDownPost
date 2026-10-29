@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvten6lc';
-import { initSplitPane } from './split-pane.js?v=vmvten6lc';
-import { initShortcuts } from './shortcuts.js?v=vmvten6lc';
-import { initAutosave } from './autosave.js?v=vmvten6lc';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvten6lc';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvten6lc';
-import { toast } from '../components/theme-switcher.js?v=vmvten6lc';
-import { mountHighlight } from './highlight-layer.js?v=vmvten6lc';
-import { mountMathPreview } from './math-preview.js?v=vmvten6lc';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvten6lc';
-import * as Adapters from '../adapters/index.js?v=vmvten6lc';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtetp3h';
+import { initSplitPane } from './split-pane.js?v=vmvtetp3h';
+import { initShortcuts } from './shortcuts.js?v=vmvtetp3h';
+import { initAutosave } from './autosave.js?v=vmvtetp3h';
+import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js?v=vmvtetp3h';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtetp3h';
+import { toast } from '../components/theme-switcher.js?v=vmvtetp3h';
+import { mountHighlight } from './highlight-layer.js?v=vmvtetp3h';
+import { mountMathPreview } from './math-preview.js?v=vmvtetp3h';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtetp3h';
+import * as Adapters from '../adapters/index.js?v=vmvtetp3h';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
