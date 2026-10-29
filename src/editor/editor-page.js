@@ -1,13 +1,10 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvtm9v92';
-import { initShortcuts } from './shortcuts.js?v=vmvtm9v92';
-import { initAutosave } from './autosave.js?v=vmvtm9v92';
-import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdfRaster } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtm9v92';
-import { toast } from '../components/theme-switcher.js?v=vmvtm9v92';
-import { mountHighlight } from './highlight-layer.js?v=vmvtm9v92';
-import { mountMathPreview } from './math-preview.js?v=vmvtm9v92';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtm9v92';
+import { initSplitPane } from './split-pane.js?v=vmvtmftew';
+import { initShortcuts } from './shortcuts.js?v=vmvtmftew';
+import { initAutosave } from './autosave.js?v=vmvtmftew';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtmftew';
+import { toast } from '../components/theme-switcher.js?v=vmvtmftew';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtmftew';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
@@ -80,8 +77,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvtm9v92'),
-      import('../markdown/renderer.js?v=vmvtm9v92')
+      import('../markdown/vendor-loader.js?v=vmvtmftew'),
+      import('../markdown/renderer.js?v=vmvtmftew')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -90,8 +87,24 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtm9v92');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvtmftew');
   return _Adapters;
+};
+
+let _exportMod = null;
+const loadExport = async () => {
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvtmftew');
+  return _exportMod;
+};
+let _highlightMod = null;
+const loadHighlight = async () => {
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvtmftew');
+  return _highlightMod;
+};
+let _mathMod = null;
+const loadMathPreview = async () => {
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvtmftew');
+  return _mathMod;
 };
 
 const afterPaintMount = (fn) => {
@@ -328,8 +341,9 @@ export default function render(root) {
   let hl = null;
   const hlBtn = root.querySelector('[data-act="hl"]');
   const setHlButton = (on) => { if (hlBtn) { hlBtn.classList.toggle('is-on', on); hlBtn.setAttribute('aria-pressed', String(on)); } };
-  function enableHighlight() {
+  async function enableHighlight() {
     if (hl) return;
+    const { mountHighlight } = await loadHighlight();
     hl = mountHighlight(ta, ta.parentElement, (() => { try { return (JSON.parse(localStorage.getItem(HL_KEY) || '{}').fontSize) || 16; } catch { return 16; } })());
     if (hl && hl.setFontSize) hl.setFontSize(prefs.fontSize || 16);
     setHlButton(true);
@@ -340,7 +354,7 @@ export default function render(root) {
     setHlButton(false);
   }
   if (readHlPref()) enableHighlight();
-  afterPaintMount(() => mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit')));
+  afterPaintMount(() => { loadMathPreview().then((m) => m.mountMathPreview(ta, ta.parentElement.closest('.editor__pane--edit'))).catch(() => {}); });
   const paintAll = () => { hl.update(); };
   ta.addEventListener('input', paintAll);
   ta.addEventListener('input', () => { persist(); });
@@ -457,23 +471,23 @@ export default function render(root) {
     if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
   });
 
-  exportMenu.addEventListener('click', (e) => {
+  exportMenu.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-exp]');
     if (!b) return;
     exportMenu.hidden = true;
     exportBtn.setAttribute('aria-expanded', 'false');
-    if (b.dataset.exp === 'md') { exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
-    if (b.dataset.exp === 'html') { exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
-    if (b.dataset.exp === 'print') { printDocWithTemplate(preview, 'brand'); toast('已打开打印预览：在「打印机」里选「另存为 PDF」才保存文件'); }
-    if (b.dataset.exp === 'print-min') { printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
-    if (b.dataset.exp === 'word') { exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
+    if (b.dataset.exp === 'md') { (await loadExport()).exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
+    if (b.dataset.exp === 'html') { (await loadExport()).exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
+    if (b.dataset.exp === 'print') { (await loadExport()).printDocWithTemplate(preview, 'brand'); toast('已打开打印预览：在「打印机」里选「另存为 PDF」才保存文件'); }
+    if (b.dataset.exp === 'print-min') { (await loadExport()).printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
+    if (b.dataset.exp === 'word') { (await loadExport()).exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
     if (b.dataset.exp === 'pdf') {
       toast('正在生成 PDF…');
-      exportPdfRaster(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
+      (await loadExport()).exportPdfRaster(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
     }
     if (b.dataset.exp === 'png') {
       toast('正在生成长图…');
-      exportPng(preview, 'mkdownpost').then((ok) => toast(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
+      (await loadExport()).exportPng(preview, 'mkdownpost').then((ok) => toast(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
     }
     if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
