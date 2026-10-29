@@ -34,7 +34,7 @@ export default async function render(root, params) {
         <nav class="crumbs" aria-label="面包屑"><a href="#/">首页</a><span>›</span><span class="crumbs__cur">${meta.title}</span></nav>
         <h1 class="article__title">${meta.title}</h1>
         <p class="article__meta">${meta.date || ''} · ${(meta.tags || []).join(' / ')} · ${meta.readingTime || 3} 分钟</p>
-        <div class="article__body" id="articleBody">${out.html}</div>
+        <div class="article__body" id="articleBody"></div>
         <nav class="article__nav" aria-label="上下篇">
           ${prev ? '<a class="btn" href="#/article/' + prev.slug + '">‹ ' + prev.title + '</a>' : '<span></span>'}
           ${next ? '<a class="btn" href="#/article/' + next.slug + '">' + next.title + ' ›</a>' : '<span></span>'}
@@ -42,6 +42,9 @@ export default async function render(root, params) {
       </article>
       <aside class="article__side"><div class="toc" id="tocHost"></div></aside>
     </div>`;
+
+  // 挂真实元素（保留事件与异步装饰），而不是 innerHTML
+  root.querySelector('#articleBody').appendChild(out.element);
 
   buildTOC(out.headings, root.querySelector('#tocHost'), { onNavigate: () => {} });
 

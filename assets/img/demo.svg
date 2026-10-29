@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="MkDownPost 示意图">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#4A7CF7"/><stop offset="100%" stop-color="#07C160"/>
+  </linearGradient></defs>
+  <rect width="960" height="540" fill="url(#g)" rx="16"/>
+  <g font-family="-apple-system, 'PingFang SC', sans-serif" fill="#fff">
+    <text x="60" y="150" font-size="52" font-weight="700">MkDownPost</text>
+    <text x="60" y="206" font-size="26" opacity=".85">写 Markdown，导出各平台可用排版</text>
+    <text x="60" y="300" font-size="20" opacity=".75">50 套主题 · 零构建 · 无后端 · 不使用任何 AI</text>
+  </g>
+  <g transform="translate(60,340)" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3">
+    <rect x="0" y="0" width="380" height="140" rx="12"/><rect x="400" y="0" width="380" height="140" rx="12"/>
+    <path d="M24 46h150M24 76h220M24 106h120M424 46h150M424 76h220M424 106h120" stroke-linecap="round"/>
+  </g>
+</svg>

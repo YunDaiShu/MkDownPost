@@ -10,6 +10,11 @@ export function decorateCodeBlocks(root, { copy } = {}) {
     if (pre.parentElement && pre.parentElement.classList.contains('md-codeblock')) return;
 
     const lang = (code.className.match(/language-([\w+-]+)/) || [])[1] || 'text';
+
+    // 语法高亮：vendor 未下载时跳过，不影响内容
+    if (window.hljs && lang !== 'mermaid' && lang !== 'mm') {
+      try { window.hljs.highlightElement(code); } catch { /* 忽略 */ }
+    }
     const lines = code.textContent.split('\n').length;
 
     const wrap = document.createElement('div');

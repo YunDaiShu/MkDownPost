@@ -157,7 +157,8 @@ export default function render(root) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       const out = renderMarkdown(val, { onCopy: toast });
-      preview.innerHTML = out.html;
+      // 用真实元素替换：保留 Mermaid/KaTeX/灯箱/复制按钮的事件与异步装饰
+      preview.replaceChildren(out.element);
       preview.querySelectorAll('img').forEach((img) => { img.style.cursor = 'zoom-in'; });
     }, 180);
   };

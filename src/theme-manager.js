@@ -51,6 +51,8 @@ export function toggleDark(force) {
     ? (force ? 'dark' : 'light')
     : (getMode() === 'dark' ? 'light' : 'dark');
   document.documentElement.setAttribute('data-mode', next);
+  const darkSheet = document.getElementById('hljsDark');
+  if (darkSheet) darkSheet.media = next === 'dark' ? 'all' : 'not all';
   writeLS(KEY_MODE, next);
   document.dispatchEvent(new CustomEvent('theme:change', { detail: { key: get(), mode: next } }));
   return next;
