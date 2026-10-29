@@ -42,11 +42,11 @@ function groups() {
 
 function filtered() {
   const q = state.q.trim().toLowerCase();
-  return list().filter((t) => {
-    if (state.group !== 'all' && (t.group || 'misc') !== state.group) return false;
-    if (!q) return true;
-    return (t.name + ' ' + t.key + ' ' + (t.note || '')).toLowerCase().includes(q);
-  });
+  // 有搜索词时跨分组搜索（否则用户会以为"搜不到"）
+  if (q) {
+    return list().filter((t) => (t.name + ' ' + t.key + ' ' + (t.note || '')).toLowerCase().includes(q));
+  }
+  return list().filter((t) => state.group === 'all' || (t.group || 'misc') === state.group);
 }
 
 function renderBody() {

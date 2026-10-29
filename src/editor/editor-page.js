@@ -165,7 +165,8 @@ export default function render(root) {
     syncHistoryBtn();
   }
   const initHistory = () => {
-    ta.addEventListener('input', () => { clearTimeout(history.timer); history.timer = setTimeout(pushHistory, 400); });
+    ta.addEventListener('input', () => { clearTimeout(history.timer); history.timer = setTimeout(pushHistory, 250); });
+    ta.addEventListener('blur', () => { clearTimeout(history.timer); pushHistory(); });
     syncHistoryBtn();
   };
   initHistory();
