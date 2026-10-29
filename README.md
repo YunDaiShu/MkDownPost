@@ -41,6 +41,23 @@ node tools/serve.mjs        # 零依赖静态服务器
 node tools/vendor.mjs
 ```
 
+## 响应式回归检查（自带，一条命令）
+
+```bash
+node tools/audit-responsive.mjs                     # 跑 5 档 × 5 页 = 25 项
+node tools/audit-responsive.mjs http://localhost:5173/
+node tools/audit-responsive.mjs https://… --shots=shots   # 同时存图
+```
+
+检查项：渲染是否成功 / 控制台报错 / 横向溢出 / 移动端点击区 ≥44px / 页头与内容左边缘对齐 / 栅格列数。
+**有失败时退出码为 1**，可直接接入 CI。
+
+单页截图工具：
+
+```bash
+node tools/shot.mjs "https://…/#/" 1920 1080 out.png '--waitFor=.card' '--eval=probe.js' [--full]
+```
+
 ## 主题（50 套）
 
 | 批次 | 数量 | 来源 |

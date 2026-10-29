@@ -18,6 +18,7 @@
    node tools/smoke-md.mjs
    node tools/lint-hardcoded-color.mjs
    node tools/gen-themes.mjs     # 若改了 seeds
+   node tools/audit-responsive.mjs   # 响应式回归（5 档 × 5 页，必须 0 失败）
    ```
 4. 在 PR 描述里写：改了什么、为什么、如何验证、有没有未完成项
 
