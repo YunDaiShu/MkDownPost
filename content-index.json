@@ -7,7 +7,7 @@
       "入门",
       "教程"
     ],
-    "readingTime": 6,
+    "readingTime": 4,
     "date": "2026-10-10",
     "order": 1,
     "featured": true
@@ -20,7 +20,7 @@
       "入门",
       "说明"
     ],
-    "readingTime": 7,
+    "readingTime": 4,
     "date": "2026-10-11",
     "order": 2,
     "featured": true
@@ -33,7 +33,7 @@
       "速查",
       "参考"
     ],
-    "readingTime": 2,
+    "readingTime": 3,
     "date": "2026-10-12",
     "order": 3,
     "featured": true
@@ -46,7 +46,7 @@
       "入门",
       "公众号"
     ],
-    "readingTime": 4,
+    "readingTime": 3,
     "date": "2026-10-13",
     "order": 4,
     "featured": true
@@ -59,7 +59,7 @@
       "公众号",
       "实战"
     ],
-    "readingTime": 10,
+    "readingTime": 4,
     "date": "2026-10-14",
     "order": 5,
     "featured": true
@@ -72,7 +72,7 @@
       "方法",
       "效率"
     ],
-    "readingTime": 11,
+    "readingTime": 5,
     "date": "2026-11-06",
     "order": 6,
     "featured": true
@@ -85,7 +85,7 @@
       "导出",
       "平台"
     ],
-    "readingTime": 5,
+    "readingTime": 3,
     "date": "2026-10-15",
     "order": 7,
     "featured": true
@@ -98,7 +98,7 @@
       "图片",
       "平台"
     ],
-    "readingTime": 10,
+    "readingTime": 5,
     "date": "2026-11-08",
     "order": 8,
     "featured": true
@@ -111,23 +111,10 @@
       "概念",
       "历史"
     ],
-    "readingTime": 9,
+    "readingTime": 7,
     "date": "2026-10-16",
     "order": 9,
     "featured": true
-  },
-  {
-    "slug": "markdown-syntax-guide",
-    "title": "Markdown 语法全解（含示例与坑）",
-    "excerpt": "14 类语法示例 + 嵌套规则 + 换行写法 + 常见坑表，可直接抄。",
-    "tags": [
-      "语法",
-      "速查"
-    ],
-    "readingTime": 13,
-    "date": "2026-10-17",
-    "order": 10,
-    "featured": false
   },
   {
     "slug": "commonmark-edge-cases",
@@ -137,9 +124,119 @@
       "进阶",
       "规范"
     ],
-    "readingTime": 12,
+    "readingTime": 6,
+    "date": "2026-11-11",
+    "order": 10,
+    "featured": false
+  },
+  {
+    "slug": "export-batch-workflow",
+    "title": "批量发布：一份稿子发四个平台的流程",
+    "excerpt": "固定流程能省掉每次的犹豫。",
+    "tags": [
+      "导出",
+      "方法"
+    ],
+    "readingTime": 3,
     "date": "2026-11-11",
     "order": 11,
+    "featured": false
+  },
+  {
+    "slug": "export-inline-html",
+    "title": "导出内联样式 HTML：粘贴即用的关键",
+    "excerpt": "这是本站最重要的导出，没有之一。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-12",
+    "order": 12,
+    "featured": false
+  },
+  {
+    "slug": "export-markdown-file",
+    "title": "导出 .md 文件：把源码带走",
+    "excerpt": "最不起眼但最有用的导出：原始 Markdown。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-13",
+    "order": 13,
+    "featured": false
+  },
+  {
+    "slug": "export-pdf-limits",
+    "title": "导出的 PDF：能做什么、有什么限制",
+    "excerpt": "本站的 PDF 是**图片型**：视觉与屏幕一致，但文字不可选中。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-14",
+    "order": 14,
+    "featured": false
+  },
+  {
+    "slug": "export-png",
+    "title": "导出 PNG 长图：一张图发完一篇文章",
+    "excerpt": "长图适合群分享、社交平台预览、快速归档。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-15",
+    "order": 15,
+    "featured": false
+  },
+  {
+    "slug": "export-print",
+    "title": "打印与另存为 PDF：两个模板",
+    "excerpt": "浏览器打印是\"可获得可搜索 PDF\"的官方路径。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-16",
+    "order": 16,
+    "featured": false
+  },
+  {
+    "slug": "export-troubleshoot",
+    "title": "导出排错：九种现象与对应原因",
+    "excerpt": "导出出问题，先按现象定位。",
+    "tags": [
+      "导出",
+      "排错"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-17",
+    "order": 17,
+    "featured": false
+  },
+  {
+    "slug": "export-word",
+    "title": "导出 Word：交付与二次编辑",
+    "excerpt": ".wdoc 格式适合\"给对方改\"的场景。",
+    "tags": [
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-18",
+    "order": 18,
+    "featured": false
+  },
+  {
+    "slug": "local-first",
+    "title": "本地优先：你的稿子不上传",
+    "excerpt": "草稿只存在浏览器：断网能写、没有账号、也不会被上传。",
+    "tags": [
+      "隐私"
+    ],
+    "readingTime": 3,
+    "date": "2026-10-21",
+    "order": 19,
     "featured": false
   },
   {
@@ -150,22 +247,355 @@
       "生态",
       "平台"
     ],
-    "readingTime": 11,
+    "readingTime": 8,
     "date": "2026-10-18",
-    "order": 12,
+    "order": 20,
     "featured": false
   },
   {
-    "slug": "theme-system",
-    "title": "主题系统是怎么做到一键换色的",
-    "excerpt": "令牌层 + 主题层两层结构：一处改色，全站联动。",
+    "slug": "markdown-syntax-guide",
+    "title": "Markdown 语法全解（含示例与坑）",
+    "excerpt": "14 类语法示例 + 嵌套规则 + 换行写法 + 常见坑表，可直接抄。",
     "tags": [
-      "主题",
-      "CSS"
+      "语法",
+      "速查"
     ],
-    "readingTime": 5,
-    "date": "2026-10-19",
-    "order": 13,
+    "readingTime": 8,
+    "date": "2026-10-17",
+    "order": 21,
+    "featured": false
+  },
+  {
+    "slug": "md-badges-shields",
+    "title": "徽章（badges）：README 的门面",
+    "excerpt": "徽章是 README 顶部那排小图标，用来一眼说明项目状态。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-22",
+    "order": 22,
+    "featured": false
+  },
+  {
+    "slug": "md-blockquote-usage",
+    "title": "引用块：不只是摘抄",
+    "excerpt": "引用块在技术写作里有三种更实用的用法。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-23",
+    "order": 23,
+    "featured": false
+  },
+  {
+    "slug": "md-code-blocks",
+    "title": "代码块：语言标记、行内代码与高亮",
+    "excerpt": "技术写作里，代码块的正确率直接决定可读性。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-24",
+    "order": 24,
+    "featured": false
+  },
+  {
+    "slug": "md-commonmark-why",
+    "title": "为什么需要 CommonMark：把边界情况定死",
+    "excerpt": "原始 Markdown 只给了语法说明，没定义边界，于是每个实现都不同。",
+    "tags": [
+      "原理",
+      "规范"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-25",
+    "order": 25,
+    "featured": false
+  },
+  {
+    "slug": "md-definition-lists",
+    "title": "定义列表与术语表：Markdown 没有，但可以模拟",
+    "excerpt": "标准 Markdown 没有定义列表，技术文档却经常需要\"术语加解释\"。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-26",
+    "order": 26,
+    "featured": false
+  },
+  {
+    "slug": "md-emoji-symbols",
+    "title": "符号与 emoji：克制、一致、跨平台",
+    "excerpt": "符号能让长文透气，但用多了会显廉价。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-27",
+    "order": 27,
+    "featured": false
+  },
+  {
+    "slug": "md-emphasis-rules",
+    "title": "强调：加粗、斜体、删除线的正确用法",
+    "excerpt": "强调是语气，不是装饰。滥用会让重点彻底失效。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-28",
+    "order": 28,
+    "featured": false
+  },
+  {
+    "slug": "md-faq-top20",
+    "title": "Markdown 常见问题 20 问",
+    "excerpt": "写作者最常问的 20 个问题，按频率排序。",
+    "tags": [
+      "FAQ"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-01",
+    "order": 29,
+    "featured": false
+  },
+  {
+    "slug": "md-footnotes",
+    "title": "脚注：语法、平台差异与替代方案",
+    "excerpt": "脚注适合放\"不影响主线、但需要交代\"的信息：出处、补充说明、延伸阅读。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-02",
+    "order": 30,
+    "featured": false
+  },
+  {
+    "slug": "md-gfm-vs-cm",
+    "title": "GFM 与 CommonMark 的差别：一张表说清",
+    "excerpt": "GFM 是 GitHub 在 CommonMark 上加的扩展集。",
+    "tags": [
+      "原理",
+      "规范"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-03",
+    "order": 31,
+    "featured": false
+  },
+  {
+    "slug": "md-glossary",
+    "title": "术语表：Markdown 写作常用词",
+    "excerpt": "按字母与主题混合排序，方便检索。",
+    "tags": [
+      "FAQ",
+      "速查"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-04",
+    "order": 32,
+    "featured": false
+  },
+  {
+    "slug": "md-heading-levels",
+    "title": "标题的层级与用法：从 h1 到 h6",
+    "excerpt": "标题是文章结构的骨架。用不好，读者在第 3 屏就迷路。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-05",
+    "order": 33,
+    "featured": false
+  },
+  {
+    "slug": "md-hr-escape",
+    "title": "分隔线与转义：小符号，大坑",
+    "excerpt": "两个最容易被忽略的语法：分隔线与反斜杠。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-06",
+    "order": 34,
+    "featured": false
+  },
+  {
+    "slug": "md-html-in-markdown",
+    "title": "在 Markdown 里混写 HTML：能做什么、别做什么",
+    "excerpt": "Markdown 覆盖不了所有排版需求，HTML 是它的逃生舱。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-07",
+    "order": 35,
+    "featured": false
+  },
+  {
+    "slug": "md-inline-vs-block",
+    "title": "行内元素与块级元素：为什么排版会错位",
+    "excerpt": "理解这两类元素的区别，就理解了大部分 Markdown 排版问题。",
+    "tags": [
+      "语法",
+      "原理"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-08",
+    "order": 36,
+    "featured": false
+  },
+  {
+    "slug": "md-line-length",
+    "title": "行长控制：为什么左右都别太满",
+    "excerpt": "行太长，眼睛会跳错行；行太短，节奏会碎。",
+    "tags": [
+      "进阶",
+      "排版"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-09",
+    "order": 37,
+    "featured": false
+  },
+  {
+    "slug": "md-links-images",
+    "title": "链接与图片：行内式、参考式与路径陷阱",
+    "excerpt": "链接写错是点不动，图片写错是裂图，两者都很难自查。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-10",
+    "order": 38,
+    "featured": false
+  },
+  {
+    "slug": "md-lists-mastery",
+    "title": "列表：无序、有序、嵌套与任务列表",
+    "excerpt": "列表是长文里最提效的结构，前提是别写错。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-11",
+    "order": 39,
+    "featured": false
+  },
+  {
+    "slug": "md-math-katex",
+    "title": "数学公式：行内、块级与 KaTeX 渲染",
+    "excerpt": "公式在技术文里很常见，但它也是最容易\"在 A 平台好看、在 B 平台乱码\"的内容。",
+    "tags": [
+      "进阶",
+      "公式"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-12",
+    "order": 40,
+    "featured": false
+  },
+  {
+    "slug": "md-mermaid-diagrams",
+    "title": "用 Mermaid 画流程图与时序图",
+    "excerpt": "不用打开绘图工具，用文字就能画出流程图——这是 Mermaid 最大的价值。",
+    "tags": [
+      "进阶",
+      "图表"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-13",
+    "order": 41,
+    "featured": false
+  },
+  {
+    "slug": "md-nesting-limits",
+    "title": "嵌套的边界：多深算过深",
+    "excerpt": "嵌套能表达层级，但手机屏幕只有 375 像素宽。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-14",
+    "order": 42,
+    "featured": false
+  },
+  {
+    "slug": "md-paragraph-breaks",
+    "title": "段落、换行与空白：最容易被忽略的规则",
+    "excerpt": "九成的排版莫名其妙问题，源头都是空行。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-15",
+    "order": 43,
+    "featured": false
+  },
+  {
+    "slug": "md-parser-how",
+    "title": "解析器是怎么把 Markdown 变成 HTML 的",
+    "excerpt": "理解解析流程，很多\"为什么这里不生效\"就有答案了。",
+    "tags": [
+      "原理"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-16",
+    "order": 44,
+    "featured": false
+  },
+  {
+    "slug": "md-tables-guide",
+    "title": "表格：语法、对齐与降级",
+    "excerpt": "表格是 Markdown 里看起来最强、实际最脆的结构。",
+    "tags": [
+      "语法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-17",
+    "order": 45,
+    "featured": false
+  },
+  {
+    "slug": "md-task-list-faq",
+    "title": "任务列表：各平台表现与替代方案",
+    "excerpt": "任务列表是 GFM 扩展，不是原始语法，所以跨平台时最容易丢样式。",
+    "tags": [
+      "语法",
+      "平台"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-18",
+    "order": 46,
+    "featured": false
+  },
+  {
+    "slug": "md-toc-anchors",
+    "title": "目录与锚点：让长文可跳读",
+    "excerpt": "一篇 3000 字的文章，没有目录等于劝退。",
+    "tags": [
+      "进阶"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-19",
+    "order": 47,
+    "featured": false
+  },
+  {
+    "slug": "md-whitespace-tabs",
+    "title": "Tab 与空格：看不见的排版杀手",
+    "excerpt": "缩进用 Tab 还是空格，决定了你的 Markdown 在别人机器上长什么样。",
+    "tags": [
+      "进阶",
+      "排错"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-20",
+    "order": 48,
     "featured": false
   },
   {
@@ -176,22 +606,401 @@
       "图表",
       "公式"
     ],
-    "readingTime": 5,
+    "readingTime": 3,
     "date": "2026-10-20",
-    "order": 14,
+    "order": 49,
     "featured": false
   },
   {
-    "slug": "local-first",
-    "title": "本地优先：你的稿子不上传",
-    "excerpt": "草稿只存在浏览器：断网能写、没有账号、也不会被上传。",
+    "slug": "platform-taptap",
+    "title": "TapTap 发布：容器窄，结构要降级",
+    "excerpt": "TapTap 的阅读容器比公众号更窄，同样的内容更容易溢出。",
     "tags": [
-      "隐私",
-      "设计"
+      "平台"
     ],
     "readingTime": 3,
-    "date": "2026-10-21",
-    "order": 15,
+    "date": "2026-11-22",
+    "order": 50,
+    "featured": false
+  },
+  {
+    "slug": "platform-wechat",
+    "title": "公众号发布：从粘贴到自检",
+    "excerpt": "公众号是最挑剔的平台，但也有规律。",
+    "tags": [
+      "平台"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-23",
+    "order": 51,
+    "featured": false
+  },
+  {
+    "slug": "platform-xiaoheihe",
+    "title": "小黑盒发布：标题层级与图片规则",
+    "excerpt": "小黑盒偏社区风格，排版要\"轻\"。",
+    "tags": [
+      "平台"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-24",
+    "order": 52,
+    "featured": false
+  },
+  {
+    "slug": "platform-zhihu-juejin-csdn",
+    "title": "知乎、掘金、CSDN：技术平台的差异",
+    "excerpt": "三个平台都偏技术，但排版细节不同。",
+    "tags": [
+      "平台"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-25",
+    "order": 53,
+    "featured": false
+  },
+  {
+    "slug": "site-a11y",
+    "title": "无障碍：让键盘与读屏也能用",
+    "excerpt": "无障碍不是额外功能，是基本质量。",
+    "tags": [
+      "本站",
+      "无障碍"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-26",
+    "order": 54,
+    "featured": false
+  },
+  {
+    "slug": "site-architecture",
+    "title": "本站结构：零构建静态站是怎么组织的",
+    "excerpt": "没有打包器，没有后端，只有 HTML、CSS 与 ES 模块。",
+    "tags": [
+      "本站"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-27",
+    "order": 55,
+    "featured": false
+  },
+  {
+    "slug": "site-perf-budget",
+    "title": "性能预算：首屏该在多少毫秒内出内容",
+    "excerpt": "优化要有目标，否则会陷入无止境的折腾。",
+    "tags": [
+      "本站",
+      "性能"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-28",
+    "order": 56,
+    "featured": false
+  },
+  {
+    "slug": "site-storage-local-first",
+    "title": "本地优先：草稿存在哪、什么时候会丢",
+    "excerpt": "本站没有服务器，所有草稿都在你自己的浏览器里。",
+    "tags": [
+      "本站",
+      "隐私"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-01",
+    "order": 57,
+    "featured": false
+  },
+  {
+    "slug": "theme-100-how",
+    "title": "100 套主题是怎么来的",
+    "excerpt": "不是手写一百遍，而是八套手调加九十二套生成。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-02",
+    "order": 58,
+    "featured": false
+  },
+  {
+    "slug": "theme-anatomy",
+    "title": "一套主题的解剖：23 个颜色令牌",
+    "excerpt": "本站的主题不是一堆颜色，而是 23 个有明确分工的令牌。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-03",
+    "order": 59,
+    "featured": false
+  },
+  {
+    "slug": "theme-code-style",
+    "title": "代码块样式：底色、语言条与复制按钮",
+    "excerpt": "代码块出现频率高，样式没做好会很刺眼。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-04",
+    "order": 60,
+    "featured": false
+  },
+  {
+    "slug": "theme-colors-aa",
+    "title": "对比度与可读性：4.5 比 1 这条线",
+    "excerpt": "文字看不清，再美的配色也没用。",
+    "tags": [
+      "主题",
+      "无障碍"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-05",
+    "order": 61,
+    "featured": false
+  },
+  {
+    "slug": "theme-custom-color",
+    "title": "自定义主色：换一个颜色，全站跟着变",
+    "excerpt": "不想用 100 套里的任何一套？只改主色就够了。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-06",
+    "order": 62,
+    "featured": false
+  },
+  {
+    "slug": "theme-export-consistency",
+    "title": "导出后为什么看着不一样：六类差异来源",
+    "excerpt": "同一篇稿子，屏幕上是 A，粘到公众号变成 B。原因有六类。",
+    "tags": [
+      "主题",
+      "导出"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-07",
+    "order": 63,
+    "featured": false
+  },
+  {
+    "slug": "theme-light-dark",
+    "title": "明暗双色：一套主题的两个面孔",
+    "excerpt": "每套主题都有浅色与深色两组值，切到深色不只是\"反色\"。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-08",
+    "order": 64,
+    "featured": false
+  },
+  {
+    "slug": "theme-quote-style",
+    "title": "引用样式：左侧竖条与浅底的分工",
+    "excerpt": "引用块的样式决定了提醒能不能被一眼识别。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-09",
+    "order": 65,
+    "featured": false
+  },
+  {
+    "slug": "theme-spacing-rhythm",
+    "title": "间距节奏：让页面呼吸一致",
+    "excerpt": "间距不统一，页面就会显得乱，但很难说出哪里乱。",
+    "tags": [
+      "主题",
+      "排版"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-10",
+    "order": 66,
+    "featured": false
+  },
+  {
+    "slug": "theme-system",
+    "title": "主题系统是怎么做到一键换色的",
+    "excerpt": "令牌层 + 主题层两层结构：一处改色，全站联动。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-10-19",
+    "order": 67,
+    "featured": false
+  },
+  {
+    "slug": "theme-table-style",
+    "title": "表格样式：表头、斑马纹与限宽",
+    "excerpt": "表格样式做不好，数据会变成一片灰。",
+    "tags": [
+      "主题"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-12",
+    "order": 68,
+    "featured": false
+  },
+  {
+    "slug": "theme-typography-cn",
+    "title": "中文排版：字号、行高与字距",
+    "excerpt": "中文和英文的排版规则不同，直接套西文参数会显得挤或散。",
+    "tags": [
+      "主题",
+      "排版"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-13",
+    "order": 69,
+    "featured": false
+  },
+  {
+    "slug": "write-archive-system",
+    "title": "归档系统：三个月后还能找到",
+    "excerpt": "写得多不如找得到。归档系统的核心是命名与索引。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-14",
+    "order": 70,
+    "featured": false
+  },
+  {
+    "slug": "write-draft-fast",
+    "title": "一气呵成写初稿：不许回头改",
+    "excerpt": "初稿的唯一目标是**存在**，不是好看。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-15",
+    "order": 71,
+    "featured": false
+  },
+  {
+    "slug": "write-edit-cuts",
+    "title": "删减：好文章是改出来的",
+    "excerpt": "初稿写完，真正的工作才开始。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-16",
+    "order": 72,
+    "featured": false
+  },
+  {
+    "slug": "write-examples",
+    "title": "例子与数据：让抽象落地",
+    "excerpt": "没有例子的技术文，读者只能\"理解\"，不能\"照做\"。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-17",
+    "order": 73,
+    "featured": false
+  },
+  {
+    "slug": "write-inbox",
+    "title": "灵感收集：写不出来时该做什么",
+    "excerpt": "写作卡住，往往不是能力问题，是**输入断了**。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-18",
+    "order": 74,
+    "featured": false
+  },
+  {
+    "slug": "write-opinion",
+    "title": "写观点：结论先行，理由跟上",
+    "excerpt": "技术文章也需要观点，否则只是资料搬运。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-19",
+    "order": 75,
+    "featured": false
+  },
+  {
+    "slug": "write-outline-first",
+    "title": "先写提纲：把\"想不清\"挡在动笔之前",
+    "excerpt": "写不出来，多数时候不是没内容，而是没想清楚结构。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-20",
+    "order": 76,
+    "featured": false
+  },
+  {
+    "slug": "write-reader-question",
+    "title": "回答读者提问：把一次答疑变成一篇文章",
+    "excerpt": "答疑是最省力的选题：需求已被验证。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-21",
+    "order": 77,
+    "featured": false
+  },
+  {
+    "slug": "write-review-checklist",
+    "title": "发布前自检清单：二十项逐条打勾",
+    "excerpt": "发布前花十分钟，省掉发布后十次修改。",
+    "tags": [
+      "方法",
+      "自检"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-22",
+    "order": 78,
+    "featured": false
+  },
+  {
+    "slug": "write-series",
+    "title": "系列文章：把一个主题拆成可持续的产量",
+    "excerpt": "单篇爆款靠运气，系列靠结构。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-23",
+    "order": 79,
+    "featured": false
+  },
+  {
+    "slug": "write-titles",
+    "title": "标题写法：让人在两秒内决定点开",
+    "excerpt": "标题决定打开率，副标题决定读完率。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-24",
+    "order": 80,
+    "featured": false
+  },
+  {
+    "slug": "write-voice-tone",
+    "title": "语气：写给\"一个人\"看",
+    "excerpt": "技术文最容易写成说明书。加一点人称，立刻好读。",
+    "tags": [
+      "方法"
+    ],
+    "readingTime": 3,
+    "date": "2026-11-25",
+    "order": 81,
     "featured": false
   }
 ]

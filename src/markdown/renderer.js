@@ -2,13 +2,13 @@
    md → 引擎(marked 或内置) → sanitize → 后处理(标题锚点/代码块/表格/图片/懒加载占位)
    返回 { html, headings }；Mermaid/KaTeX 在 M4 接入，此处先留占位钩子。 */
 
-import { sanitize } from './sanitize.js?v=vmvtkyvi2';
-import { parse as builtinParse } from './builtin-md.js?v=vmvtkyvi2';
-import { decorateHeadings } from './heading-anchors.js?v=vmvtkyvi2';
-import { decorateCodeBlocks } from './code-blocks.js?v=vmvtkyvi2';
-import { decorateImages } from './images.js?v=vmvtkyvi2';
-import { upgradeMermaid } from './mermaid.js?v=vmvtkyvi2';
-import { upgradeMath } from './katex.js?v=vmvtkyvi2';
+import { sanitize } from './sanitize.js?v=vmvtlcmwo';
+import { parse as builtinParse } from './builtin-md.js?v=vmvtlcmwo';
+import { decorateHeadings } from './heading-anchors.js?v=vmvtlcmwo';
+import { decorateCodeBlocks } from './code-blocks.js?v=vmvtlcmwo';
+import { decorateImages } from './images.js?v=vmvtlcmwo';
+import { upgradeMermaid } from './mermaid.js?v=vmvtlcmwo';
+import { upgradeMath } from './katex.js?v=vmvtlcmwo';
 
 /** 引擎选择：优先 marked（若 vendor 存在），否则内置解析器 —— 两者输出均经 sanitize */
 function engineReady() {

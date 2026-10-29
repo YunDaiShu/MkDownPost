@@ -18,7 +18,7 @@ function card(a) {
 
 export default async function render(root) {
   let index = [];
-  try { index = await (await fetch('./content-index.json?c=vmvtkyvi2')).json(); } catch { index = []; }
+  try { index = await (await fetch('./content-index.json?c=vmvtlcmwo')).json(); } catch { index = []; }
 
   root.replaceChildren();
   const sec = el('section', 'section');
