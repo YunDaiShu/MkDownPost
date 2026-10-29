@@ -306,8 +306,12 @@ export default function render(root) {
     const max = ta.scrollHeight - ta.clientHeight;
     if (max <= 0) return;
     const p = ta.scrollTop / max;
+    // 真正滚动的是右侧容器（#preview 只是内容），别对着内容设 scrollTop
+    const pane = preview.closest('.editor__pane--preview') || preview;
+    const pMax = pane.scrollHeight - pane.clientHeight;
+    if (pMax <= 0) return;
     syncing = true;
-    preview.scrollTop = p * Math.max(0, preview.scrollHeight - preview.clientHeight);
+    pane.scrollTop = p * pMax;
     requestAnimationFrame(() => { syncing = false; });
   });
   ta.addEventListener('keyup', () => {
