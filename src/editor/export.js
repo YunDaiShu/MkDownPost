@@ -258,6 +258,8 @@ export async function exportPdfRaster(container, name = 'draft') {
 
 /* ============ 真·文本 PDF（pdf-lib + 子集字体，含 ToUnicode，可选中/搜索） ============ */
 export async function exportPdf(container, name = 'draft') {
+  try {
+
   const okA = await loadScriptOnce('./vendor/pdf-lib.min.js');
   const okB = await loadScriptOnce('./vendor/fontkit.umd.min.js');
   if (!okA || !okB || !window.PDFLib) return { ok: false, reason: 'PDF 库未就绪（运行 node tools/vendor.mjs）' };
@@ -438,4 +440,7 @@ export async function exportPdf(container, name = 'draft') {
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 3000);
   return { ok: true, pages: pdf.getPageCount(), bytes: blob.size, text: true, timing: pdfTiming };
+  } catch (e) {
+    return { ok: false, reason: 'PDF 整体失败: ' + String((e && e.message) || e).slice(0, 140) };
+  }
 }

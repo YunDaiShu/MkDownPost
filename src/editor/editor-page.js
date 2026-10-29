@@ -1,15 +1,15 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { renderMarkdown } from '../markdown/renderer.js?v=vmvtgt26r';
-import { initSplitPane } from './split-pane.js?v=vmvtgt26r';
-import { initShortcuts } from './shortcuts.js?v=vmvtgt26r';
-import { initAutosave } from './autosave.js?v=vmvtgt26r';
+import { renderMarkdown } from '../markdown/renderer.js?v=vmvtgvlhg';
+import { initSplitPane } from './split-pane.js?v=vmvtgvlhg';
+import { initShortcuts } from './shortcuts.js?v=vmvtgvlhg';
+import { initAutosave } from './autosave.js?v=vmvtgvlhg';
 import { exportMarkdown, exportInlineHTMLFile, printDoc, exportWordHTML, printDocWithTemplate, exportPng, exportPdf } from './export.js';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtgt26r';
-import { toast } from '../components/theme-switcher.js?v=vmvtgt26r';
-import { mountHighlight } from './highlight-layer.js?v=vmvtgt26r';
-import { mountMathPreview } from './math-preview.js?v=vmvtgt26r';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtgt26r';
-import * as Adapters from '../adapters/index.js?v=vmvtgt26r';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvtgvlhg';
+import { toast } from '../components/theme-switcher.js?v=vmvtgvlhg';
+import { mountHighlight } from './highlight-layer.js?v=vmvtgvlhg';
+import { mountMathPreview } from './math-preview.js?v=vmvtgvlhg';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvtgvlhg';
+import * as Adapters from '../adapters/index.js?v=vmvtgvlhg';
 
 const SAMPLE = [
   '# 在公众号里也能好看的排版',
