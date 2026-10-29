@@ -62,3 +62,6 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
     scroll-behavior: auto !important;
   }
 }
+
+/* 主容器是路由焦点容器：屏蔽程序化聚焦的描边（键盘仍可用 skip-link 跳转） */
+#app, #app:focus, #app:focus-visible { outline: none; }
