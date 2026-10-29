@@ -7,7 +7,7 @@
       "公众号"
     ],
     "featured": true,
-    "excerpt": "这是一篇可以直接在编辑器里改的示例。把左侧内容替换成你的稿子，右侧就是最终排版。",
+    "excerpt": "这是一篇可以直接在编辑器里改的示例。把左侧内容换成你的稿子，右侧就是最终排版。",
     "date": "2026-10-20",
     "readingTime": 2
   },
@@ -19,7 +19,7 @@
       "参考"
     ],
     "featured": true,
-    "excerpt": "  - 第二层",
+    "excerpt": "常用写法一页看完：标题、列表、任务、表格、引用、代码块。",
     "date": "2026-10-21",
     "readingTime": 2
   },
@@ -31,7 +31,7 @@
       "CSS"
     ],
     "featured": true,
-    "excerpt": "1. 令牌层（:root）：语义化变量，全站唯一颜色来源",
+    "excerpt": "令牌层 + 主题层两层结构：一处改色，全站联动。",
     "date": "2026-10-22",
     "readingTime": 2
   },
@@ -43,7 +43,7 @@
       "公式"
     ],
     "featured": true,
-    "excerpt": "flowchart LR",
+    "excerpt": "流程图、时序图与行内/块级公式，写进 Markdown 就能渲染。",
     "date": "2026-10-23",
     "readingTime": 2
   },
@@ -55,7 +55,7 @@
       "平台"
     ],
     "featured": true,
-    "excerpt": "公众号编辑器会过滤掉 <style 标签，所以必须把样式写到每个元素上。",
+    "excerpt": "公众号要全内联样式，小黑盒看标题与图片，TapTap 需降级表格。",
     "date": "2026-10-24",
     "readingTime": 2
   },
@@ -67,7 +67,7 @@
       "设计"
     ],
     "featured": true,
-    "excerpt": "好处：",
+    "excerpt": "草稿只存在浏览器：断网能写、没有账号，也不会被上传。",
     "date": "2026-10-25",
     "readingTime": 2
   }
