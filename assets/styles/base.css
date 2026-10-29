@@ -1,0 +1,64 @@
+/* base.css — reset、排版基线、无障碍基础样式 */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+  font-size: var(--fs-14);
+  line-height: 1.65;
+  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--c-link); text-decoration: none; }
+a:hover { color: var(--c-link-hover); text-decoration: underline; text-underline-offset: 2px; }
+img { max-width: 100%; height: auto; display: block; }
+button { font: inherit; color: inherit; }
+code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+
+::selection { background: var(--c-selection-bg); color: var(--c-text); }
+
+:focus-visible {
+  outline: 2px solid var(--c-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+
+/* 滚动条滑块走主题变量 */
+* { scrollbar-color: var(--c-border) transparent; scrollbar-width: thin; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: var(--r-2); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+.skip-link {
+  position: absolute; left: var(--sp-4); top: -48px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-surface); color: var(--c-text);
+  border: 1px solid var(--c-border); border-radius: var(--r-2);
+  transition: top var(--dur-fast) var(--ease);
+  z-index: 100;
+}
+.skip-link:focus { top: var(--sp-3); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.muted { color: var(--c-text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

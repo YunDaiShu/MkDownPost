@@ -1,0 +1,80 @@
+/* tokens.css — 设计令牌唯一来源（颜色/间距/圆角/字号/时长/阴影）
+   规则：组件样式只允许使用本文件定义的变量，禁止写死 hex / px 字号。 */
+
+:root {
+  color-scheme: light;
+
+  /* —— 颜色令牌（默认亮色） —— */
+  --c-primary: #4A7CF7;
+  --c-primary-text: #2E5BD0;
+  --c-primary-soft: #DCE6FF;
+  --c-primary-bg: #F2F6FF;
+  --c-text: #1B1F24;
+  --c-text-secondary: #4A5158;
+  --c-text-muted: #7C848C;
+  --c-bg: #FBFCFD;
+  --c-surface: #FFFFFF;
+  --c-surface-2: #F4F6F8;
+  --c-border: #E3E7EB;
+  --c-divider: #EDF0F2;
+  --c-code-bg: #F6F8FA;
+  --c-code-bar: #EEF1F4;
+  --c-quote-bar: #4A7CF7;
+  --c-link: #3A6AE0;
+  --c-link-hover: #2453C4;
+  --c-selection-bg: #D8E3FF;
+  --c-focus-ring: #4A7CF7;
+  --c-on-primary: #FFFFFF;
+  --c-scrim: rgba(0,0,0,.44);
+  --c-overlay: rgba(0,0,0,.78);
+  --c-on-overlay: rgba(255,255,255,.16);
+  --c-on-overlay-hover: rgba(255,255,255,.28);
+  --c-success: #12A150;
+  --c-warning: #C77700;
+  --c-danger: #D93025;
+
+  /* —— 间距（只允许这 8 档） —— */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+  /* —— 圆角（只允许这 4 档） —— */
+  --r-1: 4px; --r-2: 8px; --r-3: 12px; --r-4: 16px;
+
+  /* —— 字号 —— */
+  --fs-12: 12px; --fs-13: 13px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px;
+  --fs-20: 20px; --fs-24: 24px; --fs-30: 30px; --fs-36: 36px;
+
+  /* —— 时长与缓动 —— */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+
+  /* —— 阴影 —— */
+  --shadow-1: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);
+  --shadow-2: 0 4px 12px rgba(16,24,40,.10);
+
+  /* —— 布局 —— */
+  --maxw: 1120px;
+  --header-h: 56px;
+}
+
+/* 默认主题的暗色（8 套精修主题的明暗覆盖见 M2 的 themes.css） */
+[data-mode="dark"] {
+  color-scheme: dark;
+  --c-text: #E7EBF0;
+  --c-text-secondary: #AEB6BF;
+  --c-text-muted: #7F8892;
+  --c-bg: #0F1318;
+  --c-surface: #161B22;
+  --c-surface-2: #1C232C;
+  --c-border: #263039;
+  --c-divider: #1E262E;
+  --c-code-bg: #11161C;
+  --c-code-bar: #1A2129;
+  --c-primary-bg: #131C2E;
+  --c-primary-text: #2E5BD0;
+  --c-primary-soft: #1E2C4A;
+  --c-selection-bg: #24365C;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-2: 0 6px 18px rgba(0,0,0,.5);
+}

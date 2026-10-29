@@ -1,0 +1,82 @@
+/* markdown.css — 渲染结果样式（全部走主题变量，零硬编码颜色） */
+
+.markdown-body { color: var(--c-text); font-size: var(--fs-16); line-height: 1.8; word-wrap: break-word; }
+.markdown-body > *:first-child { margin-top: 0; }
+.markdown-body > *:last-child { margin-bottom: 0; }
+
+/* ===== 标题：主题色 + h2 左侧竖线 ===== */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 { color: var(--c-primary-text); font-weight: 600; margin: var(--sp-6) 0 var(--sp-3); scroll-margin-top: calc(var(--header-h) + var(--sp-4)); position: relative; }
+.markdown-body h1 { font-size: var(--fs-30); }
+.markdown-body h2 { font-size: var(--fs-24); padding-left: var(--sp-3); border-left: 3px solid var(--c-primary); }
+.markdown-body h3 { font-size: var(--fs-20); }
+.markdown-body h4 { font-size: var(--fs-16); }
+
+/* 锚点按钮：hover 显示 */
+.md-anchor {
+  margin-left: var(--sp-2); padding: 0 var(--sp-1); border: 0; background: transparent;
+  color: var(--c-text-muted); font-size: var(--fs-14); cursor: pointer; opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.markdown-body h1:hover .md-anchor,
+.markdown-body h2:hover .md-anchor,
+.markdown-body h3:hover .md-anchor,
+.markdown-body h4:hover .md-anchor,
+.md-anchor:focus-visible { opacity: 1; }
+.md-anchor:hover { color: var(--c-primary); }
+
+/* ===== 段落 / 列表 ===== */
+.markdown-body p { margin: var(--sp-3) 0; }
+.markdown-body ul, .markdown-body ol { margin: var(--sp-3) 0; padding-left: var(--sp-6); }
+.markdown-body li { margin: var(--sp-1) 0; }
+.markdown-body li::marker { color: var(--c-primary-text); }
+.markdown-body ul.task-list { list-style: none; padding-left: var(--sp-4); }
+.markdown-body input[type="checkbox"] { accent-color: var(--c-primary); width: 14px; height: 14px; margin-right: var(--sp-1); vertical-align: -1px; }
+
+/* ===== 链接：主题色 + 下划线动画 ===== */
+.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.markdown-body a:hover { color: var(--c-link-hover); background-size: 100% 1px; }
+
+/* ===== 引用：主色竖条 + 主色浅底 ===== */
+.markdown-body blockquote { margin: var(--sp-4) 0; padding: var(--sp-2) var(--sp-4); border-left: 3px solid var(--c-quote-bar); background: var(--c-primary-bg); border-radius: 0 var(--r-2) var(--r-2) 0; color: var(--c-text-secondary); }
+.markdown-body blockquote p { margin: var(--sp-1) 0; }
+
+/* ===== 表格：表头主色浅底 + 主题衍生边框 + 横向滚动 ===== */
+.md-table { overflow-x: auto; margin: var(--sp-4) 0; border-radius: var(--r-2); border: 1px solid var(--c-border); }
+.markdown-body table { width: 100%; border-collapse: collapse; font-size: var(--fs-14); }
+.markdown-body th, .markdown-body td { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--c-divider); text-align: left; }
+.markdown-body thead th { background: var(--c-primary-soft); color: var(--c-text); font-weight: 600; }
+.markdown-body tbody tr:last-child td { border-bottom: 0; }
+.markdown-body tbody tr:hover { background: var(--c-surface-2); }
+
+/* ===== 代码：行内 + 代码块 ===== */
+.markdown-body :not(pre) > code { background: var(--c-code-bg); border: 1px solid var(--c-border); border-radius: var(--r-1); padding: .1em .35em; font-size: .92em; color: var(--c-text); }
+.md-codeblock { margin: var(--sp-4) 0; border: 1px solid var(--c-border); border-radius: var(--r-2); overflow: hidden; }
+.md-codebar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-3); background: var(--c-code-bar); border-bottom: 1px solid var(--c-border); font-size: var(--fs-12); color: var(--c-text-muted); }
+.md-lang { font-weight: 600; }
+.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.md-copy:hover { color: var(--c-primary); border-color: var(--c-primary); }
+.md-copy.is-done { color: var(--c-success); border-color: var(--c-success); }
+.md-codeblock pre { margin: 0; padding: var(--sp-3); background: var(--c-code-bg); overflow: auto; font-size: var(--fs-13); line-height: 1.7; }
+.md-codeblock.is-long pre { max-height: 480px; }
+
+/* ===== 图片 / 分隔线 / 标记 ===== */
+.md-img { border-radius: var(--r-2); margin: var(--sp-3) 0; background: var(--c-surface-2); }
+.markdown-body hr { border: 0; height: 1px; background: var(--c-divider); margin: var(--sp-6) 0; }
+.markdown-body mark { background: var(--c-primary-soft); color: var(--c-text); padding: 0 2px; border-radius: 2px; }
+.markdown-body kbd { border: 1px solid var(--c-border); border-bottom-width: 2px; border-radius: var(--r-1); padding: 0 4px; font-size: var(--fs-12); background: var(--c-surface-2); }
+
+/* ===== TOC ===== */
+.toc { position: sticky; top: calc(var(--header-h) + var(--sp-4)); font-size: var(--fs-13); }
+.toc__head { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+.toc__title { font-weight: 600; color: var(--c-text); }
+.toc__toggle { margin-left: auto; border: 0; background: transparent; color: var(--c-text-muted); font-size: var(--fs-12); cursor: pointer; }
+.toc__toggle:hover { color: var(--c-primary); }
+.toc__list { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--c-divider); }
+.toc__item a { display: block; padding: var(--sp-1) var(--sp-3); color: var(--c-text-secondary); border-left: 2px solid transparent; margin-left: -1px; }
+.toc__item a:hover { color: var(--c-primary); text-decoration: none; }
+.toc__item a.is-active { color: var(--c-primary-text); border-left-color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
+.toc__item--l3 a { padding-left: var(--sp-5); }
+.toc__item--l4 a { padding-left: var(--sp-6); font-size: var(--fs-12); }

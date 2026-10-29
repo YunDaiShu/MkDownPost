@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="deepseek" data-mode="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MkDownPost · 码稿</title>
+<meta name="description" content="MkDownPost 码稿：面向公众号、小黑盒、TapTap 创作者的 Markdown 写作与排版工作台。写一份 Markdown，导出各平台可用的排版结果。" />
+<meta property="og:title" content="MkDownPost · 码稿" />
+<meta property="og:description" content="写 Markdown，导出公众号 / 小黑盒 / TapTap 可用排版。" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234A7CF7'/%3E%3Cpath d='M8 22V10h3.2l4.8 7 4.8-7H24v12h-3v-7l-4 6h-1l-4-6v7z' fill='white'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./assets/styles/tokens.css" />
+<link rel="stylesheet" href="./assets/styles/base.css" />
+<link rel="stylesheet" href="./assets/styles/layout.css" />
+<link rel="stylesheet" href="./assets/styles/components.css" />
+<link rel="stylesheet" href="./assets/styles/themes.css" />
+<link rel="stylesheet" href="./assets/styles/markdown.css" />
+<link rel="stylesheet" href="./assets/styles/editor.css" />
+<link rel="stylesheet" href="./assets/styles/pages.css" />
+</head>
+<body>
+  <a class="skip-link" href="#app">跳到主内容</a>
+
+  <div class="shell">
+    <header class="app-header">
+      <a class="brand" href="#/" aria-label="MkDownPost 首页">
+        <span class="brand__mark" aria-hidden="true">M</span>
+        <span class="brand__text">MkDownPost<span class="brand__sub">码稿</span></span>
+      </a>
+
+      <button class="icon-btn nav-toggle" id="navToggle" type="button"
+              aria-label="打开导航菜单" aria-expanded="false" aria-controls="primaryNav">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </button>
+
+      <nav class="nav" id="primaryNav" aria-label="主导航">
+        <a href="#/" data-route="/">首页</a>
+        <a href="#/editor" data-route="/editor">编辑器</a>
+        <a href="#/themes" data-route="/themes">主题</a>
+        <a href="#/about" data-route="/about">关于</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换主题（快捷键 T）" title="切换主题（T）">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 4v16" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="icon-btn" id="modeBtn" type="button" aria-label="切换明亮/暗夜模式" title="明亮/暗夜（Shift+D）">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="i-sun"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="app-main" id="app" tabindex="-1"></main>
+
+    <footer class="app-footer">
+      <p>MkDownPost · 码稿 — 写 Markdown，导出各平台可用排版。</p>
+      <p class="muted">不使用任何 AI、不上传你的内容、无账号系统。内容仅保存在本机浏览器。</p>
+    </footer>
+  </div>
+
+  <div class="drawer-scrim" id="navScrim" hidden></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

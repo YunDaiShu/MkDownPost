@@ -1,0 +1,80 @@
+/* editor.css — 编辑器布局（主题变量驱动） */
+.editor { display: grid; gap: var(--sp-3); }
+.editor__bar {
+  display: flex; align-items: center; gap: var(--sp-1); flex-wrap: wrap;
+  padding: var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); position: relative;
+}
+.editor__tool {
+  min-width: 34px; height: 34px; padding: 0 var(--sp-2);
+  border: 1px solid transparent; border-radius: var(--r-1);
+  background: transparent; color: var(--c-text-secondary); cursor: pointer;
+  font-size: var(--fs-13); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.editor__tool:hover { background: var(--c-surface-2); color: var(--c-text); }
+.editor__tool:active { transform: scale(.97); }
+.editor__sep { width: 1px; height: 18px; background: var(--c-divider); margin: 0 var(--sp-1); }
+.editor__spacer { flex: 1; }
+.editor__sel select { height: 32px; border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text); font-size: var(--fs-12); }
+.editor__chk { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-12); color: var(--c-text-secondary); }
+.editor__chk input { accent-color: var(--c-primary); }
+.editor__menu {
+  position: absolute; right: var(--sp-2); top: calc(100% + 4px); z-index: 20;
+  display: grid; min-width: 200px; padding: var(--sp-1);
+  background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-2); box-shadow: var(--shadow-2);
+}
+.editor__menu[hidden] { display: none; }
+.editor__menu button {
+  text-align: left; padding: var(--sp-2); border: 0; border-radius: var(--r-1);
+  background: transparent; color: var(--c-text); font-size: var(--fs-13); cursor: pointer;
+}
+.editor__menu button:hover { background: var(--c-surface-2); }
+
+.editor__split { display: flex; gap: var(--sp-2); align-items: stretch; min-height: 60vh; }
+.editor__pane { position: relative; min-width: 0; border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface); overflow: hidden; }
+.editor__pane--edit { flex: 0 0 50%; display: flex; }
+.editor__pane--preview { flex: 1 1 0; overflow: auto; padding: var(--sp-4); }
+.editor__gutter {
+  flex: none; width: 44px; padding: var(--sp-3) var(--sp-2); overflow: hidden;
+  background: var(--c-surface-2); border-right: 1px solid var(--c-divider);
+  color: var(--c-text-muted); font: var(--fs-12)/1.7 ui-monospace, Menlo, Consolas, monospace; text-align: right;
+  user-select: none;
+}
+.editor__gutter span { display: block; }
+.editor__ta {
+  flex: 1; min-width: 0; resize: none; border: 0; outline: 0; padding: var(--sp-3);
+  background: transparent; color: var(--c-text); font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
+  tab-size: 2;
+}
+.editor__empty {
+  position: absolute; inset: auto 0 var(--sp-4) 0; padding: var(--sp-4); text-align: center;
+  color: var(--c-text-muted); font-size: var(--fs-13); pointer-events: none;
+}
+.editor__empty[hidden] { display: none; }
+.editor__keys { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-12); }
+
+.editor__splitter { flex: none; width: 8px; cursor: col-resize; border-radius: var(--r-1); background: transparent; position: relative; }
+.editor__splitter::before { content: ''; position: absolute; inset: 0 3px; border-radius: 2px; background: var(--c-divider); transition: background-color var(--dur-fast) var(--ease); }
+.editor__splitter:hover::before, .editor__splitter.is-active::before { background: var(--c-primary); }
+
+.editor__status {
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-1) var(--sp-2); font-size: var(--fs-12); color: var(--c-text-muted);
+}
+.editor__saved { color: var(--c-success); }
+.editor__tabs { display: none; }
+
+@media (max-width: 1023px) {
+  .editor__pane--preview { padding: var(--sp-3); }
+}
+@media (max-width: 639px) {
+  .editor__tabs { display: flex; gap: var(--sp-1); }
+  .editor__tab { flex: 1; min-height: 44px; border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); }
+  .editor__tab.is-on { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
+  .editor__split { display: block; min-height: auto; }
+  .editor__pane { min-height: 60vh; }
+  .editor__splitter { display: none; }
+  .editor[data-tab="edit"] .editor__pane--preview { display: none; }
+  .editor[data-tab="preview"] .editor__pane--edit { display: none; }
+  .editor__ta { font-size: 16px; }
+}

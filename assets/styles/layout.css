@@ -1,0 +1,76 @@
+/* layout.css — 外壳、页头、导航、抽屉、页脚、断点 */
+
+.shell { min-height: 100%; display: flex; flex-direction: column; }
+
+/* 页头 */
+.app-header {
+  position: sticky; top: 0; z-index: 40;
+  height: var(--header-h);
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: 0 var(--sp-5);
+  background: color-mix(in srgb, var(--c-surface) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-bottom: 1px solid var(--c-border);
+}
+.brand { display: flex; align-items: center; gap: var(--sp-2); color: var(--c-text); }
+.brand:hover { text-decoration: none; color: var(--c-text); }
+.brand__mark {
+  width: 28px; height: 28px; border-radius: var(--r-2);
+  background: var(--c-primary); color: var(--c-on-primary);
+  display: grid; place-items: center; font-weight: 700; font-size: var(--fs-14);
+}
+.brand__text { font-weight: 600; font-size: var(--fs-16); display: flex; align-items: baseline; gap: var(--sp-2); }
+.brand__sub { font-size: var(--fs-12); color: var(--c-text-muted); font-weight: 400; }
+
+.nav { display: flex; gap: var(--sp-1); margin-left: var(--sp-4); }
+.nav a {
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--r-2);
+  color: var(--c-text-secondary); font-size: var(--fs-14);
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.nav a:hover { background: var(--c-surface-2); color: var(--c-text); text-decoration: none; }
+.nav a[aria-current="page"] { color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
+
+.header-actions { margin-left: auto; display: flex; gap: var(--sp-2); }
+.icon-btn {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); color: var(--c-text-secondary); cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.icon-btn:hover { color: var(--c-text); border-color: var(--c-primary); }
+.icon-btn:active { transform: scale(.97); }
+.nav-toggle { display: none; }
+
+/* 主体 */
+.app-main { flex: 1; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: var(--sp-6) var(--sp-5) var(--sp-8); }
+.page { animation: pageIn var(--dur-base) var(--ease) both; }
+@keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* 页脚 */
+.app-footer {
+  border-top: 1px solid var(--c-border);
+  padding: var(--sp-5); text-align: center; font-size: var(--fs-12); color: var(--c-text-muted);
+  display: grid; gap: var(--sp-1);
+}
+
+/* 移动端抽屉 */
+.drawer-scrim { position: fixed; inset: 0; background: var(--c-scrim); z-index: 45; }
+.drawer-scrim[hidden] { display: none; }
+
+@media (max-width: 639px) {
+  .app-header { padding: 0 var(--sp-4); gap: var(--sp-2); }
+  .nav-toggle { display: grid; order: 3; }
+  .header-actions { margin-left: auto; }
+  .nav {
+    position: fixed; inset: var(--header-h) 0 auto 0; z-index: 46;
+    flex-direction: column; gap: 0; margin: 0; padding: var(--sp-3);
+    background: var(--c-surface); border-bottom: 1px solid var(--c-border);
+    transform: translateY(-8px); opacity: 0; pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+  .nav.is-open { opacity: 1; transform: none; pointer-events: auto; }
+  .nav a { padding: var(--sp-3); min-height: 44px; display: flex; align-items: center; }
+  .app-main { padding: var(--sp-5) var(--sp-4) var(--sp-7); }
+}

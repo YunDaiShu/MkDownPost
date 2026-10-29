@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>对比度自检 · MkDownPost</title>
+<link rel="stylesheet" href="../assets/styles/tokens.css"><link rel="stylesheet" href="../assets/styles/themes.css">
+<link rel="stylesheet" href="../assets/styles/themes.generated.css">
+<style>body{font:14px/1.6 -apple-system,sans-serif;margin:32px;color:#111}h1{font-size:20px}
+table{border-collapse:collapse;margin-top:16px}td,th{border:1px solid #ddd;padding:6px 10px;text-align:left}
+.pass{color:#0B7A3B;font-weight:600}.fail{color:#B01B1B;font-weight:600}</style></head>
+<body>
+<h1>主题对比度自检（WCAG AA 要求 ≥ 4.5:1）</h1>
+<p>正文 / 标题（--c-primary-text）/ 链接 对各自背景的对比度。此页在浏览器打开即计算，不联网。</p>
+<div id="out">计算中…</div>
+<script>
+const lum = (hex) => { const n = hex.replace('#',''); const v = [0,2,4].map(i => parseInt(n.slice(i,i+2),16)/255)
+  .map(c => c <= 0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4)); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; };
+const ratio = (a,b) => { const L1=lum(a),L2=lum(b); const hi=Math.max(L1,L2),lo=Math.min(L1,L2); return (hi+0.05)/(lo+0.05); };
+const probe = document.createElement('div');
+const keys = [];
+for (const sheet of document.styleSheets) {
+  try { for (const rule of sheet.cssRules) {
+    const m = rule.selectorText && rule.selectorText.match(/^\[data-theme="([^"]+)"\](?:\[data-mode="dark"\]|:not\(\[data-mode="dark"\]\))$/);
+    if (m) keys.push({ theme: m[1], dark: rule.selectorText.includes('[data-mode="dark"]'), css: rule.style });
+  } } catch (e) {}
+}
+document.body.appendChild(probe);
+const rows = keys.map(({theme, dark, css}) => {
+  probe.setAttribute('data-theme', theme);
+  probe.setAttribute('data-mode', dark ? 'dark' : 'light');
+  const cs = getComputedStyle(probe);
+  const get = (k) => (css.getPropertyValue(k) || cs.getPropertyValue(k)).trim();
+  const bg = get('--c-bg'), text = get('--c-text'), pt = get('--c-primary-text'), link = get('--c-link');
+  const r1 = ratio(text,bg), r2 = ratio(pt,bg), r3 = ratio(link,bg);
+  return { theme, mode: dark?'dark':'light', r1, r2, r3 };
+});
+const fmt = (r) => '<span class="' + (r>=4.5?'pass':'fail') + '">' + r.toFixed(2) + '</span>';
+document.getElementById('out').innerHTML = '<p>共 ' + rows.length + ' 组（主题 × 明暗）</p><table><thead><tr><th>主题</th><th>模式</th><th>正文</th><th>标题</th><th>链接</th></tr></thead><tbody>' +
+  rows.map(r => '<tr><td>'+r.theme+'</td><td>'+r.mode+'</td><td>'+fmt(r.r1)+'</td><td>'+fmt(r.r2)+'</td><td>'+fmt(r.r3)+'</td></tr>').join('') + '</tbody></table>' +
+  '<p>全部 ≥ 4.5 即为通过。</p>';
+</script>
+</body></html>

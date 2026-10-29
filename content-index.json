@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "getting-started",
+    "title": "从零写第一篇公众号排版",
+    "tags": [
+      "入门",
+      "公众号"
+    ],
+    "featured": true,
+    "excerpt": "这是一篇可以直接在编辑器里改的示例。把左侧内容替换成你的稿子，右侧就是最终排版。",
+    "date": "2026-10-20",
+    "readingTime": 2
+  },
+  {
+    "slug": "markdown-cheatsheet",
+    "title": "Markdown 速查（含任务列表与表格）",
+    "tags": [
+      "速查",
+      "参考"
+    ],
+    "featured": true,
+    "excerpt": "  - 第二层",
+    "date": "2026-10-21",
+    "readingTime": 2
+  },
+  {
+    "slug": "theme-system",
+    "title": "主题系统是怎么做到一键换色的",
+    "tags": [
+      "主题",
+      "CSS"
+    ],
+    "featured": true,
+    "excerpt": "1. 令牌层（:root）：语义化变量，全站唯一颜色来源",
+    "date": "2026-10-22",
+    "readingTime": 2
+  },
+  {
+    "slug": "mermaid-and-math",
+    "title": "图表与公式：Mermaid 和 KaTeX",
+    "tags": [
+      "图表",
+      "公式"
+    ],
+    "featured": true,
+    "excerpt": "flowchart LR",
+    "date": "2026-10-23",
+    "readingTime": 2
+  },
+  {
+    "slug": "export-to-platforms",
+    "title": "三个平台的导出差异（附对照）",
+    "tags": [
+      "导出",
+      "平台"
+    ],
+    "featured": true,
+    "excerpt": "公众号编辑器会过滤掉 <style 标签，所以必须把样式写到每个元素上。",
+    "date": "2026-10-24",
+    "readingTime": 2
+  },
+  {
+    "slug": "local-first",
+    "title": "本地优先：你的稿子不上传",
+    "tags": [
+      "隐私",
+      "设计"
+    ],
+    "featured": false,
+    "excerpt": "好处：",
+    "date": "2026-10-25",
+    "readingTime": 2
+  }
+]
