@@ -95,3 +95,12 @@
 .app-header { padding-inline: max(var(--sp-5), calc((100vw - var(--maxw)) / 2)); }
 @media (min-width: 1280px) { .app-header { padding-inline: max(var(--sp-6), calc((100vw - var(--maxw)) / 2)); } }
 @media (min-width: 1600px) { .app-header { padding-inline: max(var(--sp-7), calc((100vw - var(--maxw)) / 2)); } }
+
+/* HERO_TIGHT：大屏首屏上移，一屏内能看到精选内容 */
+@media (min-width: 1280px) {
+  .app-main { padding-top: var(--sp-5); }
+}
+@media (min-width: 1600px) {
+  .app-main { padding-top: var(--sp-4); }
+  .hero { padding-top: var(--sp-5); }
+}
