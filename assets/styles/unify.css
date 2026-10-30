@@ -1,0 +1,80 @@
+/* ===== 统一交互层（最后加载，专门修正历史遗留的分裂规则） =====
+   规范：
+   1. 有边框的可点元素：hover → 边框变主色 + 前景加深（不换底色、不缩放）
+   2. 组内按钮 / 文字导航（无独立边框）：hover → 淡底 + 前景加深
+   3. 键盘焦点：所有可点元素统一 2px 主色描边 + 2px 偏移
+   4. 按下：统一轻微缩放 .97（仅按钮类，卡片用各自位移）
+*/
+
+/* --- 1. 边框族：hover 一律「边框主色 + 前景加深」 --- */
+.icon-btn:hover,
+.btn:hover,
+.tsw__chip:hover,
+.editor__tool:hover,
+.sheet__close:hover,
+.tabs__add:hover,
+.card:hover,
+.theme-card:hover {
+  border-color: var(--c-primary);
+}
+
+.icon-btn:hover,
+.btn:hover,
+.tsw__chip:hover,
+.editor__tool:hover,
+.sheet__close:hover,
+.tabs__add:hover,
+.card:hover,
+.theme-card:hover {
+  color: var(--c-text);
+}
+
+/* 图标按钮不再用「主色文字 + 淡蓝底」，与顶栏保持同一套语言 */
+.editor__tool:hover {
+  background: transparent;
+}
+
+/* 卡片保留各自的位移/阴影，只把边框色拉齐（原先 theme-card 用的是更浅的 soft） */
+.theme-card:hover {
+  box-shadow: var(--shadow-2, 0 6px 20px rgba(0, 0, 0, .10));
+}
+
+/* --- 2. 组内按钮 / 文字导航：淡底 + 前景加深（它们没有被边框包裹的空间） --- */
+.seg__btn:hover,
+.nav a:hover,
+.editor__menu button:hover {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+}
+
+/* --- 3. 键盘焦点：统一描边 --- */
+.icon-btn:focus-visible,
+.btn:focus-visible,
+.card:focus-visible,
+.theme-card:focus-visible,
+.nav a:focus-visible,
+.tsw__chip:focus-visible,
+.editor__tool:focus-visible,
+.seg__btn:focus-visible,
+.tabs__item:focus-visible,
+.tabs__add:focus-visible,
+.sheet__close:focus-visible {
+  outline: 2px solid var(--c-focus-ring);
+  outline-offset: 2px;
+}
+
+/* --- 4. 过渡：所有上面这些元素统一使用同一组时长/缓动 --- */
+.icon-btn,
+.btn,
+.tsw__chip,
+.editor__tool,
+.card,
+.theme-card,
+.seg__btn {
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}

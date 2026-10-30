@@ -14,7 +14,7 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const S = path.join(ROOT, 'assets/styles');
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css'];
+const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css'];
 
 const read = (f) => '/* ===== ' + f + ' ===== */\n' + fs.readFileSync(path.join(S, f), 'utf8').trimEnd() + '\n';
 const expectCritical = CRITICAL.map(read).join('\n');

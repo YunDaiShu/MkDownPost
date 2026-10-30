@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css'];
+const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css'];
 
 const read = (f) => {
   const p = path.join(ROOT, 'assets/styles', f);
@@ -32,7 +32,14 @@ if (!html.includes('<style id="critical">')) {
 const stampMatch = html.match(/rest\.css\?v=([a-z0-9]+)/);
 const stamp = stampMatch ? stampMatch[1] : 'stamp0';
 html = html.replace(/<link rel="stylesheet" href="\.\/assets\/styles\/rest\.css[^>]*>/, '');
-html = html.replace('<style id="critical">', '<link rel="stylesheet" href="./assets/styles/rest.css?v=' + stamp + '" media="print" onload="this.media=\'all\'">\n  <style id="critical">');
+// 关键样式必须在前、功能样式在后，否则 components.css 会盖掉 pages/editor 的同类规则（层叠反了）
+const critOpen = html.indexOf('<style id="critical">');
+const critClose = html.indexOf('</style>', critOpen);
+if (critOpen >= 0 && critClose > critOpen) {
+  html = html.slice(0, critClose + 8) +
+    '\n  <link rel="stylesheet" href="./assets/styles/rest.css?v=' + stamp + '" media="print" onload="this.media=\'all\'">' +
+    html.slice(critClose + 8);
+}
 
 fs.writeFileSync(htmlPath, html, 'utf8');
 console.log('critical ' + Math.round(criticalCss.length / 1024) + 'KB 内联；rest ' + Math.round(restCss.length / 1024) + 'KB 非阻塞');
