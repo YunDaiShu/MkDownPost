@@ -1,5 +1,5 @@
 /* src/editor/shortcuts.js — 编辑器快捷键（走 keymap，可自定义）+ Tab 缩进 */
-import { match } from './keymap.js?v=vmvu7gd13';
+import { match } from './keymap.js?v=vmvub4npf';
 
 export function initShortcuts(ta, { onSave, onInsertCode, onUndo, onAction } = {}) {
   const wrap = (before, after, placeholder) => {
