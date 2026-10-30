@@ -19,15 +19,11 @@ jobs:
         run: node tools/check-imports.mjs
       - name: 硬编码颜色 lint
         run: node tools/lint-hardcoded-color.mjs
-      - name: CSS 产物是否最新（critical / rest / index 内联块）
+      - name: 构建产物一致性（CSS / 静态页 / sitemap）
         run: |
           node tools/bundle-css.mjs
           node tools/build-seo.mjs
-          if ! git diff --quiet -- assets/styles/critical.css assets/styles/rest.css index.html sitemap.xml sitemap.txt 'a/'; then
-            echo "构建产物已过期：请本地运行 node tools/bundle-css.mjs && node tools/build-seo.mjs 后提交"
-            git --no-pager diff --stat
-            exit 1
-          fi
+          node tools/check-artifacts.mjs
       - name: Markdown 解析冒烟
         run: node tools/smoke-md.mjs
 
