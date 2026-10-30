@@ -66,6 +66,7 @@
   --c-bg: #FBFCFD;
   --c-surface: #FFFFFF;
   --c-surface-2: #F4F6F8;
+  --c-hover-bg: #E9EEF4;
   --c-border: #E3E7EB;
   --c-divider: #EDF0F2;
   --c-code-bg: #F6F8FA;
@@ -118,6 +119,7 @@
   --c-bg: #0F1318;
   --c-surface: #161B22;
   --c-surface-2: #1C232C;
+  --c-hover-bg: rgba(122, 162, 255, 0.22);
   --c-border: #263039;
   --c-divider: #1E262E;
   --c-code-bg: #11161C;
@@ -476,7 +478,9 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .pcard__dots i + i { margin-left: -8px; }
 .pcard__dots i:last-child { box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 3px var(--c-border); }
 </style>
-  <link rel="stylesheet" href="./assets/styles/rest.css?v=vmvv74cnl" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="./assets/styles/rest.css?v=vmvv7ek7d" media="print" onload="this.media='all'">
+  
+  
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"MkDownPost 码稿","applicationCategory":"WritingApplication","operatingSystem":"Web","url":"https://yundaishu.github.io/MkDownPost/","description":"面向公众号、小黑盒、TapTap 创作者的 Markdown 写作与排版工作台：100 套主题、9 个平台适配、导出 PDF/Word/PNG。","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"author":{"@type":"Person","name":"YunDaiShu","url":"https://github.com/YunDaiShu"}}</script>
   <link rel="alternate" type="application/rss+xml" title="MkDownPost 更新" href="https://yundaishu.github.io/MkDownPost/feed.xml" />
 </head>
@@ -505,10 +509,10 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
       <div class="header-actions">
         <a class="icon-btn" id="ghBtn" href="https://github.com/YunDaiShu/MkDownPost" target="_blank" rel="noopener noreferrer"
            aria-label="在 GitHub 上查看 MkDownPost 源码（新窗口打开）" title="GitHub 源码">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
         </a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换主题（快捷键 T）" title="切换主题（T）">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 4v16" stroke="currentColor" stroke-width="2"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2.2" fill="none"/><path d="M12 4v16" stroke="currentColor" stroke-width="2.2"/></svg>
         </button>
         <button class="icon-btn" id="modeBtn" type="button" aria-label="切换明亮/暗夜模式" title="明亮/暗夜（Shift+D）">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="i-sun"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -531,7 +535,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   
 <link rel="stylesheet" href="./vendor/github.min.css" />
 <link rel="stylesheet" href="./vendor/github-dark.min.css" media="(prefers-color-scheme: dark)" id="hljsDark" />
-<link rel="modulepreload" href="./src/main.js?v=vmvv74cnl">
-  <script type="module" src="./src/main.js?v=vmvv74cnl"></script>
+<link rel="modulepreload" href="./src/main.js?v=vmvv7ek7d">
+  <script type="module" src="./src/main.js?v=vmvv7ek7d"></script>
 </body>
 </html>

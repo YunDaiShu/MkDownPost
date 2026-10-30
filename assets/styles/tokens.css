@@ -15,6 +15,7 @@
   --c-bg: #FBFCFD;
   --c-surface: #FFFFFF;
   --c-surface-2: #F4F6F8;
+  --c-hover-bg: #E9EEF4;
   --c-border: #E3E7EB;
   --c-divider: #EDF0F2;
   --c-code-bg: #F6F8FA;
@@ -67,6 +68,7 @@
   --c-bg: #0F1318;
   --c-surface: #161B22;
   --c-surface-2: #1C232C;
+  --c-hover-bg: rgba(122, 162, 255, 0.22);
   --c-border: #263039;
   --c-divider: #1E262E;
   --c-code-bg: #11161C;

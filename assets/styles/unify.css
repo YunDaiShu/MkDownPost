@@ -42,8 +42,10 @@
 /* --- 2. 组内按钮 / 文字导航：淡底 + 前景加深（它们没有被边框包裹的空间） --- */
 .seg__btn:hover,
 .nav a:hover,
-.editor__menu button:hover {
-  background: var(--c-surface-2);
+.editor__menu button:hover,
+.editor__chk:hover {
+  /* 用专用 hover 底色：暗色下是主色淡染，避免「几乎看不见」（实测原来只有 1.09:1） */
+  background: var(--c-hover-bg, var(--c-surface-2));
   color: var(--c-text);
 }
 

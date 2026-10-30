@@ -24,6 +24,8 @@ jobs:
           node tools/bundle-css.mjs
           node tools/build-seo.mjs
           node tools/check-artifacts.mjs
+      - name: 交互规范校验（层叠顺序 / hover 两族 / 焦点 / 图标配平 / 明暗对比度）
+        run: node tools/check-interaction.mjs
       - name: Markdown 解析冒烟
         run: node tools/smoke-md.mjs
 
