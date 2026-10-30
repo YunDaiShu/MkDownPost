@@ -656,6 +656,58 @@ body:has(.editor) { overflow: hidden; }
 body:has(.editor) .app-footer { display: none; }
 @media (max-width: 900px) { body:has(.editor) { overflow: auto; } }
 
+/* ===== 工具栏：分组容器 =====
+   桌面用 display:contents，让两个包装层"透明"，布局与加包装前完全一致；
+   移动端变成两条可横向滑动的单行，工具栏总高度从 294px 降到约 90px。 */
+.editor__tools-wrap, .editor__controls { display: contents; }
+
+/* 菜单项的两行式（12px 灰色描述） */
+.editor__menu-name { display: block; }
+.editor__menu-hint {
+  display: block; margin-top: 2px;
+  font-size: 12px; line-height: 1.35;
+  color: var(--c-text-muted, #6b7280);
+}
+.editor__menu button { padding: var(--sp-2) var(--sp-2); }
+
+@media (max-width: 639px) {
+  /* MOBILE_BAR：图标一行可横滑 + 控件一行可横滑，整体不再叠成 5 行 */
+  .editor__bar {
+    flex-wrap: wrap; align-items: center; gap: 4px;
+    padding: 6px; overflow: visible;   /* 不能 hidden，否则绝对定位的下拉菜单会被裁掉 */
+  }
+  .editor__tools-wrap {
+    display: flex; align-items: center; gap: 2px;
+    flex: 1 0 100%; min-width: 0;      /* 图标独占一行 */
+    overflow-x: auto; overflow-y: hidden;
+    scrollbar-width: none; -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .editor__controls {
+    display: flex; align-items: center; gap: 2px;
+    flex: 1 1 0; min-width: 0;         /* 与导出共处第二行：占剩余宽度 */
+    overflow-x: auto; overflow-y: hidden;
+    scrollbar-width: none; -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .editor__tools-wrap::-webkit-scrollbar, .editor__controls::-webkit-scrollbar { display: none; }
+  .editor__tools-wrap > *, .editor__controls > * { flex: 0 0 auto; }
+  .editor__spacer { display: none; }
+  .editor__bar > .visually-hidden { position: absolute; left: -9999px; }   /* 文件输入不占行 */
+  .editor__tool { width: 40px; height: 40px; }
+  .seg__btn { min-width: 32px; height: 32px; }
+  .editor__chk { font-size: 12px; gap: 4px; white-space: nowrap; }
+  .editor__chk-text { display: none; }        /* 移动端只留开关，省出宽度给「示例」 */
+  #sampleBtn { padding: 0 10px; height: 32px; font-size: 12px; }
+  /* EXPORT_PIN：导出是主操作，固定在行尾，不参与横向滚动 */
+  .editor__bar > #exportBtn { flex: 0 0 auto; padding: 0 12px; height: 32px; font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .editor__tools-wrap, .editor__controls { min-width: 0; }
+  #sampleBtn, #exportBtn { padding: 0 8px; }
+}
+
 /* ===== pages.css ===== */
 /* pages.css — 首页 / 文章 / 主题墙 / 关于 / 404 */
 

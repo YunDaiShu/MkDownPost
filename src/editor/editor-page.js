@@ -1,12 +1,12 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvutv6bi';
-import { initShortcuts } from './shortcuts.js?v=vmvutv6bi';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvutv6bi';
-import { initAutosave } from './autosave.js?v=vmvutv6bi';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvutv6bi';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvutv6bi';
-import { toast } from '../components/theme-switcher.js?v=vmvutv6bi';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvutv6bi';
+import { initSplitPane } from './split-pane.js?v=vmvuufnog';
+import { initShortcuts } from './shortcuts.js?v=vmvuufnog';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvuufnog';
+import { initAutosave } from './autosave.js?v=vmvuufnog';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvuufnog';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvuufnog';
+import { toast } from '../components/theme-switcher.js?v=vmvuufnog';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvuufnog';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -50,8 +50,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvutv6bi'),
-      import('../markdown/renderer.js?v=vmvutv6bi')
+      import('../markdown/vendor-loader.js?v=vmvuufnog'),
+      import('../markdown/renderer.js?v=vmvuufnog')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -60,28 +60,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvutv6bi');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvuufnog');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvutv6bi');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvuufnog');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvutv6bi');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvuufnog');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvutv6bi');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvuufnog');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvutv6bi');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvuufnog');
   return _mathMod;
 };
 
@@ -96,11 +96,14 @@ export default function render(root) {
       <div class="tabs" role="tablist" aria-label="草稿标签" id="tabBar"></div>
 
       <div class="editor__bar" role="toolbar" aria-label="编辑工具栏">
+        <div class="editor__tools-wrap">
         ${TOOLS.map((t) => t.sep
           ? '<span class="editor__sep" aria-hidden="true"></span>'
           : '<button class="editor__tool" type="button" data-act="' + t.act + '" aria-label="' + t.label + '" title="' + t.label + '">' + t.icon + '</button>').join('')}
+        </div>
         <input type="file" id="fileInput" accept=".md,.markdown,.txt" class="visually-hidden" />
         <span class="editor__spacer"></span>
+        <div class="editor__controls">
         <div class="seg" role="group" aria-label="字号">
           <button class="seg__btn" type="button" data-fs="15">小</button>
           <button class="seg__btn is-on" type="button" data-fs="16">中</button>
@@ -110,14 +113,15 @@ export default function render(root) {
           <button class="seg__btn is-on" type="button" data-lw="680">标准</button>
           <button class="seg__btn" type="button" data-lw="820">宽</button>
         </div>
-        <label class="editor__chk"><input type="checkbox" id="syncScroll" checked /> 同步滚动</label>
+        <label class="editor__chk"><input type="checkbox" id="syncScroll" checked aria-label="同步滚动" /><span class="editor__chk-text">同步滚动</span></label>
         <button class="btn" type="button" id="sampleBtn" aria-haspopup="menu" aria-expanded="false">示例 ▾</button>
         <div class="editor__menu" id="sampleMenu" role="menu" hidden>
-          <button role="menuitem" type="button" data-sample="main">主范文（详细版）</button>
-          <button role="menuitem" type="button" data-sample="table">表格专项</button>
-          <button role="menuitem" type="button" data-sample="diagram">图表与公式专项</button>
-          <button role="menuitem" type="button" data-sample="wechat">公众号排版专项</button>
-          <button role="menuitem" type="button" data-sample="cheatsheet">语法速查</button>
+          <button role="menuitem" type="button" data-sample="main"><span class="editor__menu-name">主范文（详细版）</span><span class="editor__menu-hint">186 行 · 三段式 · 全语法覆盖</span></button>
+          <button role="menuitem" type="button" data-sample="table"><span class="editor__menu-name">表格专项</span><span class="editor__menu-hint">对齐 / 竖线转义 / 列数上限</span></button>
+          <button role="menuitem" type="button" data-sample="diagram"><span class="editor__menu-name">图表与公式专项</span><span class="editor__menu-hint">Mermaid 流程图 + KaTeX 公式</span></button>
+          <button role="menuitem" type="button" data-sample="wechat"><span class="editor__menu-name">公众号排版专项</span><span class="editor__menu-hint">版心 / 图片 / 粘贴自检清单</span></button>
+          <button role="menuitem" type="button" data-sample="cheatsheet"><span class="editor__menu-name">语法速查</span><span class="editor__menu-hint">30 行看完常用语法</span></button>
+        </div>
         </div>
         <button class="btn" type="button" id="exportBtn" aria-haspopup="menu" aria-expanded="false">导出 ▾</button>
         <div class="editor__menu" id="exportMenu" role="menu" hidden>
