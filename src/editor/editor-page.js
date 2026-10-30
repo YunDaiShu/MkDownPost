@@ -1,12 +1,12 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvuufnog';
-import { initShortcuts } from './shortcuts.js?v=vmvuufnog';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvuufnog';
-import { initAutosave } from './autosave.js?v=vmvuufnog';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvuufnog';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvuufnog';
-import { toast } from '../components/theme-switcher.js?v=vmvuufnog';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvuufnog';
+import { initSplitPane } from './split-pane.js?v=vmvv6rggd';
+import { initShortcuts } from './shortcuts.js?v=vmvv6rggd';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvv6rggd';
+import { initAutosave } from './autosave.js?v=vmvv6rggd';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvv6rggd';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvv6rggd';
+import { toast } from '../components/theme-switcher.js?v=vmvv6rggd';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvv6rggd';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -50,8 +50,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvuufnog'),
-      import('../markdown/renderer.js?v=vmvuufnog')
+      import('../markdown/vendor-loader.js?v=vmvv6rggd'),
+      import('../markdown/renderer.js?v=vmvv6rggd')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -60,28 +60,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvuufnog');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvv6rggd');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvuufnog');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvv6rggd');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvuufnog');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvv6rggd');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvuufnog');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvv6rggd');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvuufnog');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvv6rggd');
   return _mathMod;
 };
 
