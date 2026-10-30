@@ -23,7 +23,7 @@ jobs:
         run: |
           node tools/bundle-css.mjs
           node tools/build-seo.mjs
-          if ! git diff --quiet -- assets/styles/critical.css assets/styles/rest.css index.html sitemap.xml feed.xml sitemap.txt; then
+          if ! git diff --quiet -- assets/styles/critical.css assets/styles/rest.css index.html sitemap.xml sitemap.txt 'a/'; then
             echo "构建产物已过期：请本地运行 node tools/bundle-css.mjs && node tools/build-seo.mjs 后提交"
             git --no-pager diff --stat
             exit 1

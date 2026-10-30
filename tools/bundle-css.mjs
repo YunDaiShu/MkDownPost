@@ -28,8 +28,11 @@ if (!html.includes('<style id="critical">')) {
   html = html.replace(/<link rel="stylesheet" href="\.\/assets\/styles\/bundle\.css[^>]*>/, '');
   html = html.replace('</head>', '  <style id="critical">\n' + criticalCss + '</style>\n</head>');
 }
+// 保留已有的 ?v= 版本戳（没有才用 stamp0），避免每次构建都改写 index.html
+const stampMatch = html.match(/rest\.css\?v=([a-z0-9]+)/);
+const stamp = stampMatch ? stampMatch[1] : 'stamp0';
 html = html.replace(/<link rel="stylesheet" href="\.\/assets\/styles\/rest\.css[^>]*>/, '');
-html = html.replace('<style id="critical">', '<link rel="stylesheet" href="./assets/styles/rest.css?v=stamp0" media="print" onload="this.media=\'all\'">\n  <style id="critical">');
+html = html.replace('<style id="critical">', '<link rel="stylesheet" href="./assets/styles/rest.css?v=' + stamp + '" media="print" onload="this.media=\'all\'">\n  <style id="critical">');
 
 fs.writeFileSync(htmlPath, html, 'utf8');
 console.log('critical ' + Math.round(criticalCss.length / 1024) + 'KB 内联；rest ' + Math.round(restCss.length / 1024) + 'KB 非阻塞');
