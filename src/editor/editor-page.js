@@ -1,45 +1,16 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvuba978';
-import { initShortcuts } from './shortcuts.js?v=vmvuba978';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvuba978';
-import { initAutosave } from './autosave.js?v=vmvuba978';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvuba978';
-import { toast } from '../components/theme-switcher.js?v=vmvuba978';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvuba978';
-
-const SAMPLE = [
-  '# 在公众号里也能好看的排版',
-  '',
-  '这是一段正文，包含 **加粗**、*斜体*、~~删除线~~、`行内代码`，以及一个[链接](https://example.com)。',
-  '',
-  '## 二级标题会自动带主题色竖线',
-  '',
-  '- 支持无序列表',
-  '- [x] 支持任务列表',
-  '- [ ] 勾选状态走主题色',
-  '',
-  '| 平台 | 状态 | 备注 |',
-  '| --- | --- | --- |',
-  '| 公众号 | 稳定 | 全内联样式 |',
-  '| 小黑盒 | 稳定 | 标题/图片规则 |',
-  '',
-  '> 引用块：左侧主色竖条 + 主色浅底。',
-  '',
-  '```js',
-  'const price = 12;',
-  'console.log(\'复制按钮在右上角\', price);',
-  '```',
-  '',
-  '$$a^2 + b^2 = c^2$$',
-  '',
-  '```mermaid',
-  'flowchart LR',
-  '  A[写 Markdown] --> B[实时预览]',
-  '  B --> C[导出各平台]',
-  '```'
-].join('\n');
+import { initSplitPane } from './split-pane.js?v=vmvutv6bi';
+import { initShortcuts } from './shortcuts.js?v=vmvutv6bi';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvutv6bi';
+import { initAutosave } from './autosave.js?v=vmvutv6bi';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvutv6bi';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvutv6bi';
+import { toast } from '../components/theme-switcher.js?v=vmvutv6bi';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvutv6bi';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
+
+const SAMPLE = SAMPLE_MAIN;
 
 const TOOLS = [
   { act: 'new', label: '新建', icon: S('<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>') },
@@ -74,12 +45,13 @@ const TOOLS = [
   { act: 'hr', label: '分隔线', icon: S('<path d="M3 12h18"/><path d="M6 6h12M6 18h12" opacity=".35"/>') }
 ];
 
+
 let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvuba978'),
-      import('../markdown/renderer.js?v=vmvuba978')
+      import('../markdown/vendor-loader.js?v=vmvutv6bi'),
+      import('../markdown/renderer.js?v=vmvutv6bi')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -88,23 +60,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvuba978');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvutv6bi');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvuba978');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvutv6bi');
   return _exportMod;
+};
+let _samplesMod = null;
+const loadSamples = async () => {
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvutv6bi');
+  return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvuba978');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvutv6bi');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvuba978');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvutv6bi');
   return _mathMod;
 };
 
@@ -134,6 +111,14 @@ export default function render(root) {
           <button class="seg__btn" type="button" data-lw="820">宽</button>
         </div>
         <label class="editor__chk"><input type="checkbox" id="syncScroll" checked /> 同步滚动</label>
+        <button class="btn" type="button" id="sampleBtn" aria-haspopup="menu" aria-expanded="false">示例 ▾</button>
+        <div class="editor__menu" id="sampleMenu" role="menu" hidden>
+          <button role="menuitem" type="button" data-sample="main">主范文（详细版）</button>
+          <button role="menuitem" type="button" data-sample="table">表格专项</button>
+          <button role="menuitem" type="button" data-sample="diagram">图表与公式专项</button>
+          <button role="menuitem" type="button" data-sample="wechat">公众号排版专项</button>
+          <button role="menuitem" type="button" data-sample="cheatsheet">语法速查</button>
+        </div>
         <button class="btn" type="button" id="exportBtn" aria-haspopup="menu" aria-expanded="false">导出 ▾</button>
         <div class="editor__menu" id="exportMenu" role="menu" hidden>
           <button role="menuitem" type="button" data-exp="md">下载 .md</button>
@@ -470,6 +455,56 @@ export default function render(root) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !exportMenu.hidden) closeExportMenu();
     if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
+  });
+
+  // 示例下拉：空标签直接填入；已有内容则新建标签，绝不覆盖用户稿子
+  const sampleBtn = root.querySelector('#sampleBtn');
+  const sampleMenu = root.querySelector('#sampleMenu');
+  const closeSampleMenu = () => { sampleMenu.hidden = true; sampleBtn.setAttribute('aria-expanded', 'false'); };
+  sampleBtn.addEventListener('click', () => {
+    const open = sampleMenu.hidden;
+    sampleMenu.hidden = !open;
+    sampleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) closeExportMenu();
+  });
+  document.addEventListener('click', (e) => {
+    if (!sampleMenu.hidden && !e.target.closest('#sampleMenu') && !e.target.closest('#sampleBtn')) closeSampleMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sampleMenu.hidden) closeSampleMenu();
+  });
+
+  sampleMenu.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-sample]');
+    if (!b) return;
+    const key = b.dataset.sample;
+    closeSampleMenu();
+    closeExportMenu();
+
+    let text = SAMPLE;
+    let label = '主范文';
+    if (key !== 'main') {
+      try {
+        const mod = await loadSamples();
+        const hit = mod.SAMPLES.find((x) => x.key === key);
+        if (hit) { text = hit.text; label = hit.name; }
+      } catch { toast('示例加载失败，请重试'); return; }
+    }
+
+    if (!ta.value.trim()) {
+      ta.value = text;
+    } else {
+      const r = addTab(tabs, label);
+      tabs = r.tabs;
+      activeTab = r.active;
+      tabs = updateText(tabs, activeTab, text);
+      paintTabs();
+      ta.value = text;
+    }
+    saveAll(tabs, activeTab);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    ta.focus({ preventScroll: true });
+    toast('已载入示例：' + label);
   });
 
   exportMenu.addEventListener('click', async (e) => {

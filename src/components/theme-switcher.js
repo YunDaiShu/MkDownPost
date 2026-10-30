@@ -1,8 +1,8 @@
 /* src/components/theme-switcher.js — 配色面板（色点卡片 / 分组 / 搜索 / 自定义主色 / 复制变量）
    卡片用 4 个重叠色点表达该主题的配色：主色 / 底色 / 文字 / 强调。 */
 
-import { list, get, apply, cycle, exportCSS } from '../theme-manager.js?v=vmvuba978';
-import { applyCustom, readCustom, derivePalette, exportThemeJson, importThemeJson } from '../theme-custom.js?v=vmvuba978';
+import { list, get, apply, cycle, exportCSS } from '../theme-manager.js?v=vmvutv6bi';
+import { applyCustom, readCustom, derivePalette, exportThemeJson, importThemeJson } from '../theme-custom.js?v=vmvutv6bi';
 
 const GROUP_LABEL = {
   ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
