@@ -1,10 +1,10 @@
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
 import { defineRoute, setNotFound, startRouter , prefetchRoute } from './router.js';
-import * as Themes from './theme-manager.js?v=vmvwmkw85';
-import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvwmkw85';
-import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvwmkw85';
-import { cycle as cycleTheme } from './theme-manager.js?v=vmvwmkw85';
+import * as Themes from './theme-manager.js?v=vmvwmqclp';
+import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=vmvwmqclp';
+import { bindShortcutSheet } from './components/shortcut-sheet.js?v=vmvwmqclp';
+import { cycle as cycleTheme } from './theme-manager.js?v=vmvwmqclp';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -25,13 +25,13 @@ function applyMode(pref) {
 }
 
 /* ---------- 路由表（页面模块在 M6 补全，当前为占位） ---------- */
-defineRoute('/', () => import('./pages/home.js?v=vmvwmkw85'), () => 'MkDownPost · 码稿');
-defineRoute('/editor', () => import('./pages/editor.js?v=vmvwmkw85'), () => '编辑器 · MkDownPost');
-defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvwmkw85'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
-defineRoute('/themes', () => import('./pages/themes.js?v=vmvwmkw85'), () => '主题库 · MkDownPost');
-defineRoute('/articles', () => import('./pages/articles.js?v=vmvwmkw85'), () => '全部内容 · MkDownPost');
-defineRoute('/about', () => import('./pages/about.js?v=vmvwmkw85'), () => '关于 · MkDownPost');
-setNotFound(() => import('./pages/notfound.js?v=vmvwmkw85'), '页面不存在 · MkDownPost');
+defineRoute('/', () => import('./pages/home.js?v=vmvwmqclp'), () => 'MkDownPost · 码稿');
+defineRoute('/editor', () => import('./pages/editor.js?v=vmvwmqclp'), () => '编辑器 · MkDownPost');
+defineRoute('/article/:slug', () => import('./pages/article.js?v=vmvwmqclp'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+defineRoute('/themes', () => import('./pages/themes.js?v=vmvwmqclp'), () => '主题库 · MkDownPost');
+defineRoute('/articles', () => import('./pages/articles.js?v=vmvwmqclp'), () => '全部内容 · MkDownPost');
+defineRoute('/about', () => import('./pages/about.js?v=vmvwmqclp'), () => '关于 · MkDownPost');
+setNotFound(() => import('./pages/notfound.js?v=vmvwmqclp'), '页面不存在 · MkDownPost');
 
 /* ---------- 启动 ---------- */
 function boot() {
@@ -109,7 +109,7 @@ idle(() => {
 });
 
 /* ---------- Service Worker：离线与秒开（第二次访问起静态资源走本地缓存） ---------- */
-import { initSpotlight } from './fx/spotlight.js?v=vmvwmkw85';
+import { initSpotlight } from './fx/spotlight.js?v=vmvwmqclp';
 
 const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 if (!isDev && 'serviceWorker' in navigator && location.protocol === 'https:') {

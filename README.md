@@ -117,6 +117,72 @@ MkDownPost/
 └── vendor/           可选：marked / highlight.js / mermaid / katex
 ```
 
+## 动效规范
+
+全站动效只有 **两档来源**：CSS 令牌（零体积）与三个可复用效果（按需加载）。新增动效请先读这一节。
+
+### 1. 时长分档（`assets/styles/tokens.css`）
+
+| 令牌 | 值 | 用在哪 | 例子 |
+| --- | --- | --- | --- |
+| `--dur-1` | 120ms | 微交互：hover、焦点、按下 | 图标按钮、链接、导航项 |
+| `--dur-2` | 180ms | 控件状态变化 | 复选框、主题卡位移、toast |
+| `--dur-3` | 240ms | 卡片与浮层进出 | 卡片入场、抽屉、消息流 |
+| `--dur-4` | 320ms | 面板与页面级 | 编辑器浮层、路由转场 |
+
+> 例外：阅读进度条 `.readbar__fill` 保留 `80ms linear` —— 进度必须线性且跟手。
+
+### 2. 缓动语义
+
+| 令牌 | 曲线 | 语义 |
+| --- | --- | --- |
+| `--ease-out` | `cubic-bezier(.16,1,.3,1)` | **进入**：元素出现、面板展开 |
+| `--ease-in` | `cubic-bezier(.4,0,1,1)` | **退出**：元素消失、旧页面淡出 |
+| `--ease-spring` | `cubic-bezier(.34,1.56,.64,1)` | **强调**：toast 回弹、箭头翻转 |
+
+选择原则：**出现用 out、消失用 in、需要手感才用 spring**。弹跳感滥用会让界面显得廉价。
+
+### 3. 三个可复用效果
+
+| 效果 | 文件 | 成本 | 用法 |
+| --- | --- | --- | --- |
+| 导出确认（光环 + 粒子） | `src/fx/confirm.js` | 光环 0KB（CSS）；粒子 41KB 懒加载 | `confirmFlash(anchor)` |
+| 卡片 / 代码块光斑 | `src/fx/spotlight.js` | **1.4KB** | 自动挂载，匹配 `.card` `.pcard` `.theme-card` `.md-codeblock` |
+| 标题扫光 | `assets/styles/unify.css` | 0KB | 类名 `.hero__accent` |
+
+**确认动效是渐进增强的**：光环由 CSS keyframes 当帧出现（不等任何下载），anime.js 只在浏览器空闲时预取，到位后才补粒子；拿不到就只留光环。
+
+### 4. 降级规则（四条，缺一不可）
+
+| 场景 | 处理 | 位置 |
+| --- | --- | --- |
+| `prefers-reduced-motion: reduce` | 全站 animation/transition 压到 `.001ms`；转场与光斑额外单独关闭 | `base.css` 全局守卫 + 各效果内判断 |
+| 触屏 / 无精确指针 | 光斑不挂监听，伪元素 `display: none` | `spotlight.js` + `unify.css` |
+| 浏览器不支持 View Transitions | 直接挂载页面，不转场 | `router.js` 的 `useVT` 判断 |
+| 离线 / 动态 import 失败 | 静默跳过硬效果，功能不受影响 | `confirm.js` 的 `catch` |
+
+### 5. 禁止事项
+
+- ❌ **不引入需要构建或框架的动画方案**（React/Vue 组件库、需要 Vite 的插件）—— 它会把零构建架构拉垮。参考案例：`react-bits` 依赖 React 19 + Tailwind + GSAP + three.js，**不可直接安装**，只能把单个效果移植成原生实现。
+- ❌ **不做会触发布局的动画**：只动 `transform` / `opacity`，不动 `width/height/top/left`（进度条除外）。
+- ❌ **不写魔法数字**：新增时长一律用 `--dur-*`，缓动一律用 `--ease-*`。
+- ❌ **不给同一元素叠两套入场动画**：走 View Transitions 时页面容器加 `.page--vt` 关闭自身 `pageIn`。
+
+### 6. CI 会挡住的回归（`tools/check-interaction.mjs`）
+
+| 断言 | 意义 |
+| --- | --- |
+| `<style id="critical">` 早于 `rest.css` | 层叠顺序反了会出现「改了半天不生效」 |
+| 边框族 hover = 边框主色 + 前景加深 | 防止两种 hover 语言混用 |
+| 组内族 hover = `--c-hover-bg` + 前景加深 | 同上 |
+| 关键元素都有 `2px var(--c-focus-ring)` 焦点框 | 键盘可访问性 |
+| 顶栏图标 `stroke-width` = 1.8 / 2.2 / 2 | 光学重量配平（覆盖率差 ≤2%） |
+| 明暗两套令牌对比度下限 | hover 底 ≥1.15 / 1.35、hover 边框与焦点环 ≥3:1、正文 ≥7:1 |
+
+```bash
+node tools/check-interaction.mjs   # 本地自查，CI 每个 PR 都跑
+```
+
 ## 已知限制
 
 | 限制 | 原因 | 替代方案 |
