@@ -30,7 +30,7 @@ export function initSpotlight() {
   if (bound || reduced() || !finePointer()) return false;
   bound = true;
 
-  const TARGET = '.card, .pcard, .theme-card';
+  const TARGET = '.card, .pcard, .theme-card, .md-codeblock';
 
   document.addEventListener('pointermove', (e) => {
     const el = e.target && e.target.closest ? e.target.closest(TARGET) : null;

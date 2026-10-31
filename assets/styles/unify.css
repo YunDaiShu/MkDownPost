@@ -150,3 +150,52 @@
 @media (prefers-reduced-motion: reduce), (hover: none) {
   .card::before, .pcard::before, .theme-card::before { display: none; }
 }
+
+/* ===== 首页大标题扫光（只作用于高亮片段，纯 CSS，零依赖） =====
+   用 background-clip:text 让渐变成为文字颜色；扫光靠 background-position 位移，
+   因此不改字号/行高/布局，也不影响文本选择与复制 */
+.hero__accent {
+  background-image: linear-gradient(
+    100deg,
+    var(--c-primary) 0%,
+    var(--c-primary) 42%,
+    color-mix(in srgb, var(--c-primary) 65%, var(--c-text)) 50%,
+    var(--c-primary) 58%,
+    var(--c-primary) 100%
+  );
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shiny-sweep 6.5s var(--ease-out) 1.2s infinite;
+}
+@keyframes shiny-sweep {
+  0%   { background-position: 100% 0; }
+  45%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__accent { animation: none; background-position: 0 0; }
+}
+
+/* ===== 代码块光斑（沿用 spotlight 的 --mx/--my） =====
+   代码块是阅读主体：光斑压到 8% 透明度，且只在 hover 时出现，避免干扰读代码 */
+.md-codeblock { position: relative; isolation: isolate; }
+.md-codeblock::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--c-primary) 8%, transparent),
+    transparent 70%
+  );
+}
+.md-codeblock:hover::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .md-codeblock::before { display: none; }
+}
