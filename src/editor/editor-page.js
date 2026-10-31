@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvwljsn1';
-import { initShortcuts } from './shortcuts.js?v=vmvwljsn1';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwljsn1';
-import { initAutosave } from './autosave.js?v=vmvwljsn1';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvwljsn1';
-import { confirmFlash } from '../fx/confirm.js?v=vmvwljsn1';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwljsn1';
-import { toast } from '../components/theme-switcher.js?v=vmvwljsn1';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwljsn1';
+import { initSplitPane } from './split-pane.js?v=vmvwln5eq';
+import { initShortcuts } from './shortcuts.js?v=vmvwln5eq';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwln5eq';
+import { initAutosave } from './autosave.js?v=vmvwln5eq';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvwln5eq';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwln5eq';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwln5eq';
+import { toast } from '../components/theme-switcher.js?v=vmvwln5eq';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwln5eq';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvwljsn1'),
-      import('../markdown/renderer.js?v=vmvwljsn1')
+      import('../markdown/vendor-loader.js?v=vmvwln5eq'),
+      import('../markdown/renderer.js?v=vmvwln5eq')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwljsn1');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwln5eq');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwljsn1');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwln5eq');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwljsn1');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwln5eq');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwljsn1');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwln5eq');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwljsn1');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwln5eq');
   return _mathMod;
 };
 
@@ -515,6 +515,10 @@ export default function render(root) {
   const exportAnchor = root.querySelector('#exportBtn');
   if (exportAnchor) exportAnchor.style.position = 'relative';
   const notify = (msg) => { toast(msg); confirmFlash(exportAnchor); };
+  // 用户一动编辑器就空闲预取动画库，避免首次导出时动效迟到
+  const onceWarm = () => { prewarmConfirmFx(); document.removeEventListener('pointerdown', onceWarm); document.removeEventListener('keydown', onceWarm); };
+  document.addEventListener('pointerdown', onceWarm, { passive: true });
+  document.addEventListener('keydown', onceWarm, { passive: true });
 
   exportMenu.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-exp]');

@@ -1217,6 +1217,11 @@ a, a:hover, a:focus, a:active,
 .fx-confirm__ring {
   width: 34px; height: 34px; margin: -17px 0 0 -17px;
   border: 2px solid var(--c-primary);
+  animation: fx-ring 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes fx-ring {
+  from { transform: scale(0.45); opacity: 0.6; }
+  to   { transform: scale(1.35); opacity: 0; }
 }
 .fx-confirm__dot {
   width: 6px; height: 6px; margin: -3px 0 0 -3px;
