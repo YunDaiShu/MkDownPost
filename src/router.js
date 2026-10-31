@@ -60,6 +60,11 @@ function syncNav(path) {
   });
 }
 
+/** 是否要求减少动态效果 */
+function prefersReducedMotion() {
+  try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
+}
+
 /** 渲染当前路由 */
 export async function render() {
   const { path, query } = parseHash();
@@ -77,12 +82,27 @@ export async function render() {
     const mod = await target.loader();
     const view = mod.default || mod.render;
 
-    app.innerHTML = '';
-    const wrap = document.createElement('div');
-    wrap.className = 'page';
-    if (!isSame) wrap.style.animationPlayState = 'running';
-    app.appendChild(wrap);
-    await view(wrap, { ...(hit ? hit.params : {}), query });
+    const mount = async (suppressPageAnim) => {
+      app.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = suppressPageAnim ? 'page page--vt' : 'page';
+      if (!isSame && !suppressPageAnim) wrap.style.animationPlayState = 'running';
+      app.appendChild(wrap);
+      await view(wrap, { ...(hit ? hit.params : {}), query });
+    };
+
+    // 页面转场：同文档路由切换时用 View Transitions；不支持/减少动效/首次渲染则直接挂载
+    const useVT = !isSame && typeof document.startViewTransition === 'function' && !prefersReducedMotion();
+    if (useVT) {
+      try {
+        const vt = document.startViewTransition(() => mount(true));
+        await vt.finished.catch(() => {});
+      } catch {
+        await mount(false);   // 任何异常都退回普通挂载，绝不白屏
+      }
+    } else {
+      await mount(false);
+    }
 
     const rawTitle = typeof target.titleFn === 'function'
       ? target.titleFn(hit ? hit.params : {})

@@ -7,7 +7,7 @@
   background: var(--c-surface); border: 1px solid var(--c-border);
   border-radius: var(--r-3); box-shadow: var(--shadow-2);
   transform-origin: top right;
-  animation: tswIn var(--dur-fast) var(--ease) both;
+  animation: tswIn var(--dur-3) var(--ease-out) both;
 }
 @keyframes tswIn { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
 .tsw__head {
@@ -24,7 +24,7 @@
   display: grid; gap: var(--sp-1); text-align: left;
   padding: var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .tsw__item:hover { border-color: var(--c-primary); transform: translateY(-1px); }
 .tsw__item[aria-pressed="true"] { border-color: var(--c-primary); background: var(--c-primary-bg); }
@@ -40,7 +40,7 @@
   min-height: 36px; padding: 0 var(--sp-3);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text); font-size: var(--fs-13); cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .btn:hover { border-color: var(--c-primary); }
 .btn:active { transform: scale(.97); }
@@ -54,7 +54,7 @@
   font-size: var(--fs-13); padding: var(--sp-2) var(--sp-4);
   border-radius: var(--r-2); box-shadow: var(--shadow-2);
   opacity: 0; pointer-events: none; z-index: 80;
-  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-spring);
 }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
@@ -81,7 +81,7 @@
 .sheet__panel {
   width: min(560px, 100%); max-height: 80vh; overflow: auto;
   background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-3);
-  box-shadow: var(--shadow-2); padding: var(--sp-4); animation: ccIn 200ms var(--ease) both;
+  box-shadow: var(--shadow-2); padding: var(--sp-4); animation: ccIn var(--dur-4) var(--ease-out) both;
 }
 .sheet__head { display: flex; align-items: center; margin-bottom: var(--sp-3); }
 .sheet__head b { font-size: var(--fs-16); }
@@ -121,7 +121,7 @@
 .tsw__search:focus-visible { border-color: var(--c-primary); }
 .tsw__chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); padding: var(--sp-2) var(--sp-4) 0; }
 .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--sp-2); padding: var(--sp-3) var(--sp-4) var(--sp-4); max-height: min(56vh, 460px); overflow: auto; }
-.pcard { display: grid; justify-items: center; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); cursor: pointer; border: 1.5px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.pcard { display: grid; justify-items: center; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); cursor: pointer; border: 1.5px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 .pcard:hover { border-color: var(--c-primary); transform: translateY(-1px); }
 .pcard.is-on { border-color: var(--c-primary); background: var(--c-primary-bg); }
 .pcard__dots { display: inline-flex; align-items: center; }

@@ -18,7 +18,7 @@
 .md-anchor {
   margin-left: var(--sp-2); padding: 0 var(--sp-1); border: 0; background: transparent;
   color: var(--c-text-muted); font-size: var(--fs-14); cursor: pointer; opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: opacity var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .markdown-body h1:hover .md-anchor,
 .markdown-body h2:hover .md-anchor,
@@ -36,7 +36,7 @@
 .markdown-body input[type="checkbox"] { accent-color: var(--c-primary); width: 14px; height: 14px; margin-right: var(--sp-1); vertical-align: -1px; }
 
 /* ===== 链接：主题色 + 下划线动画 ===== */
-.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-1) var(--ease), color var(--dur-1) var(--ease); }
 .markdown-body a:hover { color: var(--c-link-hover); background-size: 100% 1px; }
 
 /* ===== 引用：主色竖条 + 主色浅底 ===== */
@@ -56,7 +56,7 @@
 .md-codeblock { margin: var(--sp-4) 0; border: 1px solid var(--c-border); border-radius: var(--r-2); overflow: hidden; }
 .md-codebar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-3); background: var(--c-code-bar); border-bottom: 1px solid var(--c-border); font-size: var(--fs-12); color: var(--c-text-muted); }
 .md-lang { font-weight: 600; }
-.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
 .md-copy:hover { color: var(--c-primary); border-color: var(--c-primary); }
 .md-copy.is-done { color: var(--c-success); border-color: var(--c-success); }
 .md-codeblock pre { margin: 0; padding: var(--sp-3); background: var(--c-code-bg); overflow: auto; font-size: var(--fs-13); line-height: 1.7; }
@@ -137,7 +137,7 @@
   border: 1px solid var(--c-primary); border-radius: var(--radius-btn, 8px);
   background: var(--c-primary-bg); color: var(--c-primary-text);
   font-size: var(--fs-12); font-weight: 600; cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease);
 }
 .md-mermaid__btn:hover { opacity: .85; }
 .md-mermaid__btn:active { transform: scale(.97); }

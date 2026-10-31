@@ -74,11 +74,11 @@
 .theme-card,
 .seg__btn {
   transition:
-    color var(--dur-fast) var(--ease),
-    background-color var(--dur-fast) var(--ease),
-    border-color var(--dur-fast) var(--ease),
-    box-shadow var(--dur-fast) var(--ease),
-    transform var(--dur-fast) var(--ease);
+    color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease);
 }
 
 /* ===== 导出成功确认动效（anime.js 驱动，见 src/fx/confirm.js） =====
@@ -95,7 +95,7 @@
 .fx-confirm__ring {
   width: 34px; height: 34px; margin: -17px 0 0 -17px;
   border: 2px solid var(--c-primary);
-  animation: fx-ring 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fx-ring var(--dur-4) var(--ease-out) forwards;
 }
 @keyframes fx-ring {
   from { transform: scale(0.45); opacity: 0.6; }
@@ -107,4 +107,46 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-confirm { display: none; }
+}
+
+/* ===== 页面转场（View Transitions API，见 src/router.js） =====
+   不支持时由 router 直接挂载，本段样式自动无效；减少动效时整体关闭 */
+::view-transition-old(root) {
+  animation: vt-out var(--dur-1) var(--ease-in) both;
+}
+::view-transition-new(root) {
+  animation: vt-in var(--dur-3) var(--ease-out) both;
+}
+@keyframes vt-out {
+  to { opacity: 0; transform: translateY(-4px) scale(0.996); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.996); }
+}
+/* 走 View Transitions 时不要再叠加 .page 自己的入场动画，避免双重淡入 */
+.page--vt { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* ===== 卡片光斑（src/fx/spotlight.js 写入 --mx/--my） =====
+   注意：光斑画在 ::before 上，卡片自身的 background / border-color 规则完全不动，
+   因此 check-interaction 的「hover 只变边框」规范仍然成立 */
+.card, .pcard, .theme-card { position: relative; isolation: isolate; }
+.card::before, .pcard::before, .theme-card::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--c-primary) 16%, transparent),
+    transparent 68%
+  );
+}
+.card:hover::before, .pcard:hover::before, .theme-card:hover::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .card::before, .pcard::before, .theme-card::before { display: none; }
 }

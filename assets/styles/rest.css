@@ -229,7 +229,7 @@
 .md-anchor {
   margin-left: var(--sp-2); padding: 0 var(--sp-1); border: 0; background: transparent;
   color: var(--c-text-muted); font-size: var(--fs-14); cursor: pointer; opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: opacity var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .markdown-body h1:hover .md-anchor,
 .markdown-body h2:hover .md-anchor,
@@ -247,7 +247,7 @@
 .markdown-body input[type="checkbox"] { accent-color: var(--c-primary); width: 14px; height: 14px; margin-right: var(--sp-1); vertical-align: -1px; }
 
 /* ===== 链接：主题色 + 下划线动画 ===== */
-.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-1) var(--ease), color var(--dur-1) var(--ease); }
 .markdown-body a:hover { color: var(--c-link-hover); background-size: 100% 1px; }
 
 /* ===== 引用：主色竖条 + 主色浅底 ===== */
@@ -267,7 +267,7 @@
 .md-codeblock { margin: var(--sp-4) 0; border: 1px solid var(--c-border); border-radius: var(--r-2); overflow: hidden; }
 .md-codebar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-3); background: var(--c-code-bar); border-bottom: 1px solid var(--c-border); font-size: var(--fs-12); color: var(--c-text-muted); }
 .md-lang { font-weight: 600; }
-.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
 .md-copy:hover { color: var(--c-primary); border-color: var(--c-primary); }
 .md-copy.is-done { color: var(--c-success); border-color: var(--c-success); }
 .md-codeblock pre { margin: 0; padding: var(--sp-3); background: var(--c-code-bg); overflow: auto; font-size: var(--fs-13); line-height: 1.7; }
@@ -348,7 +348,7 @@
   border: 1px solid var(--c-primary); border-radius: var(--radius-btn, 8px);
   background: var(--c-primary-bg); color: var(--c-primary-text);
   font-size: var(--fs-12); font-weight: 600; cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease);
 }
 .md-mermaid__btn:hover { opacity: .85; }
 .md-mermaid__btn:active { transform: scale(.97); }
@@ -382,7 +382,7 @@
   min-width: 34px; height: 34px; padding: 0 var(--sp-2);
   border: 1px solid transparent; border-radius: var(--r-1);
   background: transparent; color: var(--c-text-secondary); cursor: pointer;
-  font-size: var(--fs-13); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  font-size: var(--fs-13); transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .editor__tool:hover { background: var(--c-surface-2); color: var(--c-text); }
 .editor__tool:active { transform: scale(.97); }
@@ -427,7 +427,7 @@
 .editor__keys { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-12); }
 
 .editor__splitter { flex: none; width: 8px; cursor: col-resize; border-radius: var(--r-1); background: transparent; position: relative; }
-.editor__splitter::before { content: ''; position: absolute; inset: 0 3px; border-radius: 2px; background: var(--c-divider); transition: background-color var(--dur-fast) var(--ease); }
+.editor__splitter::before { content: ''; position: absolute; inset: 0 3px; border-radius: 2px; background: var(--c-divider); transition: background-color var(--dur-1) var(--ease); }
 .editor__splitter:hover::before, .editor__splitter.is-active::before { background: var(--c-primary); }
 
 .editor__status {
@@ -520,7 +520,7 @@
   max-width: min(360px, calc(100% - var(--sp-6)));
   background: var(--c-surface); border: 1px solid var(--c-border);
   border-radius: var(--r-2); box-shadow: var(--shadow-2);
-  padding: var(--sp-2) var(--sp-3); animation: ccIn 160ms var(--ease) both;
+  padding: var(--sp-2) var(--sp-3); animation: ccIn var(--dur-2) var(--ease-out) both;
 }
 .math-preview[hidden] { display: none; }
 .math-preview__src {
@@ -559,12 +559,12 @@
 .editor__chk input[type="checkbox"] {
   appearance: none; -webkit-appearance: none; margin: 0;
   width: 34px; height: 18px; border-radius: 999px; position: relative; cursor: pointer;
-  background: var(--c-border); transition: background-color var(--dur-fast) var(--ease);
+  background: var(--c-border); transition: background-color var(--dur-1) var(--ease);
 }
 .editor__chk input[type="checkbox"]::after {
   content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
   background: var(--c-surface); box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  transition: transform var(--dur-fast) var(--ease);
+  transition: transform var(--dur-1) var(--ease);
 }
 .editor__chk input[type="checkbox"]:checked { background: var(--c-primary); }
 .editor__chk input[type="checkbox"]:checked::after { transform: translateX(16px); }
@@ -589,7 +589,7 @@
   min-width: 34px; height: 26px; padding: 0 var(--sp-2);
   border: 0; border-radius: var(--r-1); background: transparent;
   color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .seg__btn:hover { background: var(--c-surface); color: var(--c-text); }
 .seg__btn:active { transform: scale(.96); }
@@ -738,7 +738,7 @@ body:has(.editor) .app-footer { display: none; }
 
 /* 卡片列表 */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--sp-3); }
-.card { display: grid; gap: var(--sp-2); padding: var(--sp-4); border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); color: var(--c-text); transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.card { display: grid; gap: var(--sp-2); padding: var(--sp-4); border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); color: var(--c-text); transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 .card:hover { border-color: var(--c-primary); transform: translateY(-2px); text-decoration: none; }
 .card__title { font-size: var(--fs-16); }
 .card__desc { font-size: var(--fs-13); color: var(--c-text-secondary); }
@@ -911,11 +911,11 @@ body:has(.editor) .app-footer { display: none; }
   border: 1px solid var(--c-border);
   background: var(--c-surface);
   /* 入场动画只用 backwards，动画结束后交还基础样式，否则 transform 会被锁死、hover 不生效 */
-  animation: cardIn 300ms var(--motion-ease, var(--ease)) backwards;
+  animation: cardIn var(--dur-3) var(--motion-ease, var(--ease-out)) backwards;
   animation-delay: var(--d, 0ms);
   transition:
-    transform 160ms var(--motion-ease, var(--ease)),
-    box-shadow 160ms var(--motion-ease, var(--ease)),
+    transform var(--dur-2) var(--motion-ease, var(--ease-out)),
+    box-shadow var(--dur-2) var(--motion-ease, var(--ease-out)),
     border-color 120ms var(--motion-ease, var(--ease)),
     background-color 120ms var(--motion-ease, var(--ease));
 }
@@ -976,11 +976,11 @@ body:has(.editor) .app-footer { display: none; }
 .article-group__head {
   display: flex; align-items: center; gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-4); cursor: pointer; list-style: none;
-  transition: background-color 120ms var(--ease);
+  transition: background-color var(--dur-1) var(--ease);
 }
 .article-group__head::-webkit-details-marker { display: none; }
 .article-group__head:hover { background: var(--c-surface-2); }
-.article-group__head::after { content: '▾'; margin-left: auto; color: var(--c-text-muted); transition: transform 160ms var(--ease); }
+.article-group__head::after { content: '▾'; margin-left: auto; color: var(--c-text-muted); transition: transform var(--dur-2) var(--ease-spring); }
 .article-group[open] .article-group__head::after { transform: rotate(180deg); }
 .article-group__name { font-weight: 700; font-size: var(--fs-16); }
 .article-group__count { font-size: var(--fs-12); color: var(--c-text-secondary); background: var(--c-surface-2); padding: 2px 8px; border-radius: 999px; }
@@ -990,7 +990,7 @@ body:has(.editor) .app-footer { display: none; }
 
 .article-group__anchor {
   margin-left: 4px; font-size: var(--fs-12); color: var(--c-text-muted);
-  text-decoration: none; opacity: 0; transition: opacity 120ms var(--ease);
+  text-decoration: none; opacity: 0; transition: opacity var(--dur-1) var(--ease);
 }
 .article-group__head:hover .article-group__anchor { opacity: 1; }
 .article-group__anchor:hover { color: var(--c-primary); }
@@ -1002,10 +1002,10 @@ body:has(.editor) .app-footer { display: none; }
 @keyframes ccBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
 .cc-hidden { opacity: 0; transform: translateY(4px); }
-.cc-in { animation: ccIn 220ms var(--ease) both; }
+.cc-in { animation: ccIn var(--dur-2) var(--ease-out) both; }
 @keyframes ccIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-.cc-fade { animation: ccIn 260ms var(--ease) both; }
+.cc-fade { animation: ccIn var(--dur-3) var(--ease-out) both; }
 
 /* 思考态 */
 .cc-thinking { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
@@ -1020,7 +1020,7 @@ body:has(.editor) .app-footer { display: none; }
 .cc-cards { display: grid; gap: var(--sp-2); margin-top: var(--sp-3); }
 .cc-cards__head { font-size: var(--fs-12); color: var(--c-text-muted); letter-spacing: .3px; text-transform: uppercase; }
 .cc-card { border: 1px solid var(--c-border); border-left: 3px solid var(--c-primary); border-radius: var(--r-2);
-  background: var(--c-surface-2); animation: ccIn 240ms var(--ease) both; }
+  background: var(--c-surface-2); animation: ccIn var(--dur-3) var(--ease-out) both; }
 .cc-card__bar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
   font-size: var(--fs-13); color: var(--c-text); }
 .cc-card__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-success); flex: none;
@@ -1045,7 +1045,7 @@ body:has(.editor) .app-footer { display: none; }
 .cc-plat { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .cc-plat__chip { min-height: 34px; padding: 0 var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+  transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 .cc-plat__chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
 .cc-plat__chip:active { transform: scale(.97); }
 .cc-plat__chip.is-on { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
@@ -1196,11 +1196,11 @@ a, a:hover, a:focus, a:active,
 .theme-card,
 .seg__btn {
   transition:
-    color var(--dur-fast) var(--ease),
-    background-color var(--dur-fast) var(--ease),
-    border-color var(--dur-fast) var(--ease),
-    box-shadow var(--dur-fast) var(--ease),
-    transform var(--dur-fast) var(--ease);
+    color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease),
+    transform var(--dur-1) var(--ease);
 }
 
 /* ===== 导出成功确认动效（anime.js 驱动，见 src/fx/confirm.js） =====
@@ -1217,7 +1217,7 @@ a, a:hover, a:focus, a:active,
 .fx-confirm__ring {
   width: 34px; height: 34px; margin: -17px 0 0 -17px;
   border: 2px solid var(--c-primary);
-  animation: fx-ring 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fx-ring var(--dur-4) var(--ease-out) forwards;
 }
 @keyframes fx-ring {
   from { transform: scale(0.45); opacity: 0.6; }
@@ -1229,4 +1229,46 @@ a, a:hover, a:focus, a:active,
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-confirm { display: none; }
+}
+
+/* ===== 页面转场（View Transitions API，见 src/router.js） =====
+   不支持时由 router 直接挂载，本段样式自动无效；减少动效时整体关闭 */
+::view-transition-old(root) {
+  animation: vt-out var(--dur-1) var(--ease-in) both;
+}
+::view-transition-new(root) {
+  animation: vt-in var(--dur-3) var(--ease-out) both;
+}
+@keyframes vt-out {
+  to { opacity: 0; transform: translateY(-4px) scale(0.996); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.996); }
+}
+/* 走 View Transitions 时不要再叠加 .page 自己的入场动画，避免双重淡入 */
+.page--vt { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* ===== 卡片光斑（src/fx/spotlight.js 写入 --mx/--my） =====
+   注意：光斑画在 ::before 上，卡片自身的 background / border-color 规则完全不动，
+   因此 check-interaction 的「hover 只变边框」规范仍然成立 */
+.card, .pcard, .theme-card { position: relative; isolation: isolate; }
+.card::before, .pcard::before, .theme-card::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--c-primary) 16%, transparent),
+    transparent 68%
+  );
+}
+.card:hover::before, .pcard:hover::before, .theme-card:hover::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .card::before, .pcard::before, .theme-card::before { display: none; }
 }

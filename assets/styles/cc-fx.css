@@ -4,10 +4,10 @@
 @keyframes ccBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
 .cc-hidden { opacity: 0; transform: translateY(4px); }
-.cc-in { animation: ccIn 220ms var(--ease) both; }
+.cc-in { animation: ccIn var(--dur-2) var(--ease-out) both; }
 @keyframes ccIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-.cc-fade { animation: ccIn 260ms var(--ease) both; }
+.cc-fade { animation: ccIn var(--dur-3) var(--ease-out) both; }
 
 /* 思考态 */
 .cc-thinking { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
@@ -22,7 +22,7 @@
 .cc-cards { display: grid; gap: var(--sp-2); margin-top: var(--sp-3); }
 .cc-cards__head { font-size: var(--fs-12); color: var(--c-text-muted); letter-spacing: .3px; text-transform: uppercase; }
 .cc-card { border: 1px solid var(--c-border); border-left: 3px solid var(--c-primary); border-radius: var(--r-2);
-  background: var(--c-surface-2); animation: ccIn 240ms var(--ease) both; }
+  background: var(--c-surface-2); animation: ccIn var(--dur-3) var(--ease-out) both; }
 .cc-card__bar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3);
   font-size: var(--fs-13); color: var(--c-text); }
 .cc-card__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-success); flex: none;
@@ -47,7 +47,7 @@
 .cc-plat { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .cc-plat__chip { min-height: 34px; padding: 0 var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+  transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 .cc-plat__chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
 .cc-plat__chip:active { transform: scale(.97); }
 .cc-plat__chip.is-on { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }

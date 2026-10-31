@@ -11,7 +11,7 @@ body {
                "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
   font-size: var(--fs-14);
   line-height: 1.65;
-  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -42,7 +42,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   padding: var(--sp-2) var(--sp-3);
   background: var(--c-surface); color: var(--c-text);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
-  transition: top var(--dur-fast) var(--ease);
+  transition: top var(--dur-1) var(--ease);
   z-index: 100;
 }
 .skip-link:focus { top: var(--sp-3); }

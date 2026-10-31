@@ -26,7 +26,7 @@
 .nav a {
   padding: var(--sp-2) var(--sp-3); border-radius: var(--r-2);
   color: var(--c-text-secondary); font-size: var(--fs-14);
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .nav a:hover { background: var(--c-surface-2); color: var(--c-text); text-decoration: none; }
 .nav a[aria-current="page"] { color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
@@ -36,8 +36,8 @@
   width: 40px; height: 40px; display: grid; place-items: center;
   border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text-secondary); cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .icon-btn:hover { color: var(--c-text); border-color: var(--c-primary); }
 .icon-btn:active { transform: scale(.97); }
@@ -45,7 +45,7 @@
 
 /* 主体 */
 .app-main { flex: 1; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: var(--sp-6) var(--sp-5) var(--sp-8); }
-.page { animation: pageIn var(--dur-base) var(--ease) both; }
+.page { animation: pageIn var(--dur-4) var(--ease-out) both; }
 @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* 页脚 */
@@ -68,7 +68,7 @@
     flex-direction: column; gap: 0; margin: 0; padding: var(--sp-3);
     background: var(--c-surface); border-bottom: 1px solid var(--c-border);
     transform: translateY(-8px); opacity: 0; pointer-events: none;
-    transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+    transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
   }
   .nav.is-open { opacity: 1; transform: none; pointer-events: auto; }
   .nav a { padding: var(--sp-3); min-height: 44px; display: flex; align-items: center; }

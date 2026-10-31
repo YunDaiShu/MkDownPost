@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvwlq8gz';
-import { initShortcuts } from './shortcuts.js?v=vmvwlq8gz';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwlq8gz';
-import { initAutosave } from './autosave.js?v=vmvwlq8gz';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvwlq8gz';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwlq8gz';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwlq8gz';
-import { toast } from '../components/theme-switcher.js?v=vmvwlq8gz';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwlq8gz';
+import { initSplitPane } from './split-pane.js?v=vmvwmfg8w';
+import { initShortcuts } from './shortcuts.js?v=vmvwmfg8w';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwmfg8w';
+import { initAutosave } from './autosave.js?v=vmvwmfg8w';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvwmfg8w';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwmfg8w';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwmfg8w';
+import { toast } from '../components/theme-switcher.js?v=vmvwmfg8w';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwmfg8w';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvwlq8gz'),
-      import('../markdown/renderer.js?v=vmvwlq8gz')
+      import('../markdown/vendor-loader.js?v=vmvwmfg8w'),
+      import('../markdown/renderer.js?v=vmvwmfg8w')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwlq8gz');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwmfg8w');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwlq8gz');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwmfg8w');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwlq8gz');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwmfg8w');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwlq8gz');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwmfg8w');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwlq8gz');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwmfg8w');
   return _mathMod;
 };
 
