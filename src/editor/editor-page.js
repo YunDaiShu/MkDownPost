@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvwln5eq';
-import { initShortcuts } from './shortcuts.js?v=vmvwln5eq';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwln5eq';
-import { initAutosave } from './autosave.js?v=vmvwln5eq';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvwln5eq';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwln5eq';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwln5eq';
-import { toast } from '../components/theme-switcher.js?v=vmvwln5eq';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwln5eq';
+import { initSplitPane } from './split-pane.js?v=vmvwlq8gz';
+import { initShortcuts } from './shortcuts.js?v=vmvwlq8gz';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwlq8gz';
+import { initAutosave } from './autosave.js?v=vmvwlq8gz';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvwlq8gz';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwlq8gz';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwlq8gz';
+import { toast } from '../components/theme-switcher.js?v=vmvwlq8gz';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwlq8gz';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvwln5eq'),
-      import('../markdown/renderer.js?v=vmvwln5eq')
+      import('../markdown/vendor-loader.js?v=vmvwlq8gz'),
+      import('../markdown/renderer.js?v=vmvwlq8gz')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwln5eq');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwlq8gz');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwln5eq');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwlq8gz');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwln5eq');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwlq8gz');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwln5eq');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwlq8gz');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwln5eq');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwlq8gz');
   return _mathMod;
 };
 
@@ -514,7 +514,6 @@ export default function render(root) {
 
   const exportAnchor = root.querySelector('#exportBtn');
   if (exportAnchor) exportAnchor.style.position = 'relative';
-  const notify = (msg) => { toast(msg); confirmFlash(exportAnchor); };
   // 用户一动编辑器就空闲预取动画库，避免首次导出时动效迟到
   const onceWarm = () => { prewarmConfirmFx(); document.removeEventListener('pointerdown', onceWarm); document.removeEventListener('keydown', onceWarm); };
   document.addEventListener('pointerdown', onceWarm, { passive: true });
@@ -525,18 +524,20 @@ export default function render(root) {
     if (!b) return;
     exportMenu.hidden = true;
     exportBtn.setAttribute('aria-expanded', 'false');
-    if (b.dataset.exp === 'md') { (await loadExport()).exportMarkdown(ta.value, 'mkdownpost-draft'); notify('已下载 .md'); }
-    if (b.dataset.exp === 'html') { (await loadExport()).exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); notify('已导出内联样式 HTML'); }
-    if (b.dataset.exp === 'print') { (await loadExport()).printDocWithTemplate(preview, 'brand'); notify('已打开打印预览：在「打印机」里选「另存为 PDF」才保存文件'); }
-    if (b.dataset.exp === 'print-min') { (await loadExport()).printDocWithTemplate(preview, 'minimal'); notify('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
-    if (b.dataset.exp === 'word') { (await loadExport()).exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); notify('已导出 Word：打开时若提示格式不符，点「是」即可'); }
+    // 立刻给反馈：不等下面的动态 import，用户点完当帧就能看到光环
+    confirmFlash(exportAnchor);
+    if (b.dataset.exp === 'md') { (await loadExport()).exportMarkdown(ta.value, 'mkdownpost-draft'); toast('已下载 .md'); }
+    if (b.dataset.exp === 'html') { (await loadExport()).exportInlineHTMLFile(preview, 'mkdownpost-export', '导出稿'); toast('已导出内联样式 HTML'); }
+    if (b.dataset.exp === 'print') { (await loadExport()).printDocWithTemplate(preview, 'brand'); toast('已打开打印预览：在「打印机」里选「另存为 PDF」才保存文件'); }
+    if (b.dataset.exp === 'print-min') { (await loadExport()).printDocWithTemplate(preview, 'minimal'); toast('已打开打印窗口：在「打印机」里选「另存为 PDF」即可保存'); }
+    if (b.dataset.exp === 'word') { (await loadExport()).exportWordHTML(preview, 'mkdownpost-doc', '导出稿'); toast('已导出 Word：打开时若提示格式不符，点「是」即可'); }
     if (b.dataset.exp === 'pdf') {
-      notify('正在生成 PDF…');
-      (await loadExport()).exportPdfRaster(preview, 'mkdownpost').then((r2) => notify(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
+      toast('正在生成 PDF…');
+      (await loadExport()).exportPdfRaster(preview, 'mkdownpost').then((r2) => toast(r2.ok ? ('已生成 PDF（' + r2.pages + ' 页）') : ('PDF 失败：' + r2.reason)));
     }
     if (b.dataset.exp === 'png') {
-      notify('正在生成长图…');
-      (await loadExport()).exportPng(preview, 'mkdownpost').then((ok) => notify(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
+      toast('正在生成长图…');
+      (await loadExport()).exportPng(preview, 'mkdownpost').then((ok) => toast(ok ? '已导出 PNG 长图' : '长图生成失败（图片跨域限制）'));
     }
     if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
