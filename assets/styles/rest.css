@@ -1202,3 +1202,26 @@ a, a:hover, a:focus, a:active,
     box-shadow var(--dur-fast) var(--ease),
     transform var(--dur-fast) var(--ease);
 }
+
+/* ===== 导出成功确认动效（anime.js 驱动，见 src/fx/confirm.js） =====
+   注意：容器绝对定位于按钮中心，pointer-events:none，不影响点击与布局 */
+.fx-confirm {
+  position: absolute; left: 50%; top: 50%;
+  width: 0; height: 0; pointer-events: none; z-index: 5;
+}
+.fx-confirm__ring,
+.fx-confirm__dot {
+  position: absolute; left: 0; top: 0;
+  border-radius: 50%; will-change: transform, opacity;
+}
+.fx-confirm__ring {
+  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border: 2px solid var(--c-primary);
+}
+.fx-confirm__dot {
+  width: 6px; height: 6px; margin: -3px 0 0 -3px;
+  background: var(--c-primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-confirm { display: none; }
+}
