@@ -2,7 +2,7 @@
    校验 5 件事：
    1. 层叠顺序：<style id="critical"> 必须在 rest.css 之前（否则基础层会盖掉功能层）
    2. hover 规范：边框族 = 边框主色 + 前景加深；组内族 = 专用 hover 底色 + 前景加深
-   3. 焦点规范：关键可点元素都有 2px 主色 focus-visible 描边
+   3. 焦点规范：全站只用一种光环（--ui-ring-strong），不允许 outline 与光环并存；容器不发光
    4. 图标光学重量：顶栏三个图标的 stroke-width 固定为 1.8 / 2.2 / 2
    5. 明暗两套令牌的对比度下限（hover 底、hover 边框、焦点环、正文）
 
@@ -27,7 +27,7 @@ const parseRules = (rawCss, baseOrder) => {
     for (const d of m[2].split(';')) {
       const i = d.indexOf(':');
       if (i < 0) continue;
-      decl[d.slice(0, i).trim()] = d.slice(i + 1).trim();
+      decl[d.slice(0, i).trim()] = d.slice(i + 1).trim().replace(/\s*!important\s*$/i, '');   // stripImportant：比较时忽略优先级标记
     }
     for (const one of selText.split(',')) {
       const sel = one.trim();
@@ -67,7 +67,7 @@ const winner = (target, state) => {
 
 /* ---------- 2. hover 规范 ---------- */
 const borderFamily = ['.icon-btn', '.btn', '.card', '.theme-card', '.tsw__chip', '.editor__tool'];
-const groupFamily = ['.seg__btn', '.nav a', '.editor__menu button'];
+const groupFamily = ['.tsw__chip', '.seg__btn', '.tabs__item'];
 
 for (const sel of borderFamily) {
   const d = winner(sel, ':hover');
@@ -81,19 +81,53 @@ for (const sel of groupFamily) {
   const d = winner(sel, ':hover');
   if (!d) { problems.push(sel + ' 没有 :hover 规则'); continue; }
   const bg = d.background || d['background-color'] || '';
-  if (!bg.startsWith('var(--c-hover-bg')) problems.push(sel + ' :hover 的底色应为 var(--c-hover-bg)，实际 ' + (bg || '(未设置)'));
+  const hasRing = /var\(--ui-ring\)/.test(d['box-shadow'] || '');
+  if (!bg.startsWith('var(--c-hover-bg') && !hasRing) problems.push(sel + ' :hover 既没有 hover 底色也没有光环（看不出反馈），实际 ' + (bg || '(未设置)'));
   if ((d.color || '') !== 'var(--c-text)') problems.push(sel + ' :hover 的前景应为 var(--c-text)，实际 ' + (d.color || '(未设置)'));
 }
 if (!problems.length) report.push('hover 规范：' + borderFamily.length + ' 个边框族 + ' + groupFamily.length + ' 个组内族全部符合 ✓');
 
-/* ---------- 3. 焦点规范 ---------- */
-const focusRequired = ['.icon-btn', '.btn', '.card', '.theme-card', '.nav a', '.tsw__chip', '.editor__tool', '.seg__btn'];
+/* ---------- 3. 焦点规范：全站只允许一种机制（光环），不允许 outline 与光环并存 ---------- */
+const focusRequired = ['.icon-btn', '.btn', '.card', '.theme-card', '.nav a', '.tsw__chip', '.editor__tool', '.seg__btn', 'button', 'input', '.tabs__item', '.brand'];
 for (const sel of focusRequired) {
   const d = winner(sel, ':focus-visible');
   if (!d) { problems.push(sel + ' 缺少 :focus-visible'); continue; }
-  if (!/var\(--c-focus-ring\)/.test(d.outline || '')) problems.push(sel + ' :focus-visible 应使用 var(--c-focus-ring)，实际 ' + (d.outline || '(未设置)'));
+  const ringByShadow = /var\(--ui-ring-strong\)|var\(--c-focus-ring\)/.test(d['box-shadow'] || '');
+  const oldOutline = d.outline && !/^none/.test(d.outline);
+  if (oldOutline && !ringByShadow) problems.push(sel + ' :focus-visible 仍是 outline 描边，应为统一光环');
+  if (!ringByShadow) problems.push(sel + ' :focus-visible 未使用统一光环变量 var(--ui-ring-strong)');
 }
-if (!problems.length) report.push('焦点规范：' + focusRequired.length + ' 个元素均有主色描边 ✓');
+/* 容器不得发光：跳到主内容会把 <main> 聚焦，若它套光环就是整页大蓝框 */
+for (const sel of ['main', '#app']) {
+  const d = winner(sel, ':focus-visible');
+  if (d && d['box-shadow'] && !/^none/.test(d['box-shadow'])) problems.push(sel + ' :focus-visible 不允许出现光环（会造成整页大框）');
+}
+if (!problems.length) report.push('焦点规范：' + focusRequired.length + ' 个元素统一光环，容器不发光 ✓');
+
+/* ---------- 3b. 光环令牌与四层覆盖 ---------- */
+const unifyCss = (() => {
+  const f = path.join(ROOT, 'assets/styles/unify.css');
+  return fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '';
+})();
+if (!/--ui-ring:\s*0 0 0 var\(--ui-ring-w\)/.test(unifyCss)) problems.push('unify.css 缺少 --ui-ring 令牌（0 0 0 var(--ui-ring-w)）');
+if (!/--ui-ring-w:\s*3px/.test(unifyCss)) problems.push('unify.css 的 --ui-ring-w 应为 3px');
+if (!/--ui-ring-strong:\s*0 0 0 2px var\(--c-focus-ring\)/.test(unifyCss)) problems.push('unify.css 缺少 --ui-ring-strong 令牌');
+const layers = { 控件: ['.editor__tool:hover', '.tsw__chip:hover', '.theme-chip:hover'], 卡片: ['.card:hover', '.theme-card:hover'], 链接: ['.section__more:hover', '.brand:hover'], 表单: ['input:hover'] };
+for (const [name, sels] of Object.entries(layers)) {
+  for (const s of sels) if (!unifyCss.includes(s)) problems.push('unify.css 缺少「' + name + '」层的规则：' + s);
+}
+const ICON_ANCHOR_SAFE = /\.icon-btn[^{]*\{[^}]*border:\s*1px solid var\(--c-border\)\s*!important/.test(unifyCss);
+if (!ICON_ANCHOR_SAFE) problems.push('.icon-btn 缺少 border:1px solid var(--c-border) !important（会被全局 a{border-bottom:0} 打断，造成环形缺口）');
+if (!problems.length) report.push('光环令牌 + 四层覆盖 + 锚点边框豁免 ✓');
+
+/* ---------- 3c. 无死 hover：每个交互类都必须有 hover 响应 ---------- */
+const hoverClasses = ['.icon-btn', '.btn', '.editor__tool', '.seg__btn', '.tabs__item', '.tabs__add', '.sheet__close', '.tsw__chip', '.theme-chip', '.md-anchor', '.card', '.theme-card', '.section__more', '.brand'];
+for (const sel of hoverClasses) {
+  const d = winner(sel, ':hover');
+  const reacted = d && (d['border-color'] || d.color || d['background'] || d['box-shadow'] || d['text-decoration']);
+  if (!reacted) problems.push(sel + ' :hover 没有任何视觉响应（死 hover）');
+}
+if (!problems.length) report.push('hover 覆盖：' + hoverClasses.length + ' 个交互类均有响应 ✓');
 
 /* ---------- 4. 图标光学重量 ---------- */
 const expectStroke = { ghBtn: '1.8', themeBtn: '2.2', modeBtn: '2' };
@@ -168,4 +202,4 @@ if (problems.length) {
   console.log('交互规范校验失败（' + problems.length + ' 项）');
   process.exit(1);
 }
-console.log('PASS：交互规范全部符合（层叠顺序 / hover 两族 / 焦点 / 图标配平 / 明暗对比度）');
+console.log('PASS：交互规范全部符合（层叠顺序 / hover 四层 / 统一光环 / 图标配平 / 明暗对比度）');

@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=vmvwmqclp';
-import { initShortcuts } from './shortcuts.js?v=vmvwmqclp';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvwmqclp';
-import { initAutosave } from './autosave.js?v=vmvwmqclp';
-import { SAMPLE_MAIN } from './sample-main.js?v=vmvwmqclp';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvwmqclp';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvwmqclp';
-import { toast } from '../components/theme-switcher.js?v=vmvwmqclp';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvwmqclp';
+import { initSplitPane } from './split-pane.js?v=vmvuufnog';
+import { initShortcuts } from './shortcuts.js?v=vmvuufnog';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=vmvuufnog';
+import { initAutosave } from './autosave.js?v=vmvuufnog';
+import { SAMPLE_MAIN } from './sample-main.js?v=vmvuufnog';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=vmvuufnog';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=vmvuufnog';
+import { toast } from '../components/theme-switcher.js?v=vmvuufnog';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=vmvuufnog';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=vmvwmqclp'),
-      import('../markdown/renderer.js?v=vmvwmqclp')
+      import('../markdown/vendor-loader.js?v=vmvuufnog'),
+      import('../markdown/renderer.js?v=vmvuufnog')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvwmqclp');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=vmvuufnog');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=vmvwmqclp');
+  if (!_exportMod) _exportMod = await import('./export.js?v=vmvuufnog');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvwmqclp');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=vmvuufnog');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvwmqclp');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=vmvuufnog');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvwmqclp');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=vmvuufnog');
   return _mathMod;
 };
 
@@ -145,7 +145,8 @@ export default function render(root) {
       <div class="editor__split">
         <section class="editor__pane editor__pane--edit" aria-label="Markdown 编辑区">
           <div class="editor__gutter" id="gutter" aria-hidden="true"></div>
-          <textarea class="editor__ta" id="ta" spellcheck="false" wrap="off" aria-label="Markdown 输入"></textarea>
+          <textarea class="editor__ta" id="ta" spellcheck="false" wrap="soft" aria-label="Markdown 输入"></textarea>
+          <div class="editor__mirror" id="mirror" aria-hidden="true"></div>
           <div class="editor__empty" id="emptyHint">
             <p><b>把 .md 文件拖进来</b>，或直接开始写</p>
             <ul class="editor__keys">
@@ -293,10 +294,40 @@ export default function render(root) {
 
   const autosave = initAutosave(ta, { onStatus: (t) => { statusSave.textContent = t; } });
 
+  // 编辑器宽度变化（分栏拖动、窗口缩放）后，软换行的行数会变，行号需重算
+  let rowSyncTimer = null;
+  const queueGutterSync = () => { clearTimeout(rowSyncTimer); rowSyncTimer = setTimeout(() => { try { syncGutter(); } catch (e) { /* 忽略 */ } }, 60); };
+  if (typeof ResizeObserver === 'function') {
+    const paneEl = ta.parentElement;
+    if (paneEl) new ResizeObserver(queueGutterSync).observe(paneEl);
+  }
+
+  const mirror = root.querySelector('#mirror');
+  // 软换行后一个"逻辑行"可能占多行，行号必须按真实高度逐行设置，
+  // 否则长段落之后的所有行号都会错位。
   const syncGutter = () => {
-    const lines = ta.value.split('\n').length;
-    if (gutter.childElementCount !== lines) {
-      gutter.innerHTML = Array.from({ length: lines }, (_, i) => '<span>' + (i + 1) + '</span>').join('');
+    const lines = ta.value.split('\n');
+    if (gutter.childElementCount !== lines.length) {
+      gutter.innerHTML = Array.from({ length: lines.length }, (_, i) => '<span>' + (i + 1) + '</span>').join('');
+    }
+    if (mirror) {
+      mirror.style.fontSize = ta.style.fontSize || '';
+      // 宽度必须等于 textarea 的"内容宽"（已扣掉左右内边距与滚动条），否则折行位置会差一个词
+      const mcs = getComputedStyle(ta);
+      const padL = parseFloat(mcs.paddingLeft) || 0;
+      const padR = parseFloat(mcs.paddingRight) || 0;
+      mirror.style.width = Math.max(0, ta.clientWidth - padL - padR) + 'px';
+      // 每行一个 div，空行用零宽空格占位，保证高度不塌陷
+      mirror.innerHTML = '';
+      lines.forEach((line) => {
+        const d = document.createElement('div');
+        d.textContent = line.length ? line : '\u200b';
+        mirror.appendChild(d);
+      });
+      for (let i = 0; i < gutter.childElementCount; i++) {
+        const h = mirror.children[i] ? mirror.children[i].offsetHeight : 0;
+        gutter.children[i].style.height = h + 'px';
+      }
     }
     gutter.scrollTop = ta.scrollTop;
   };
@@ -547,7 +578,7 @@ export default function render(root) {
   const fsBtns = [...root.querySelectorAll('[data-fs]')];
   const lwBtns = [...root.querySelectorAll('[data-lw]')];
 
-  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; if (hl && hl.setFontSize) hl.setFontSize(v); };
+  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; if (mirror) mirror.style.fontSize = v + 'px'; syncGutter(); if (hl && hl.setFontSize) hl.setFontSize(v); };
   const applyLineWidth = (v) => { preview.style.maxWidth = v + 'px'; preview.style.margin = '0 auto'; };
   const mark = (btns, attr, val) => btns.forEach((b) => {
     const on = String(b.getAttribute(attr)) === String(val);

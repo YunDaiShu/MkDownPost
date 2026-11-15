@@ -45,7 +45,18 @@
   flex: 1; min-width: 0; resize: none; border: 0; outline: 0; padding: var(--sp-3);
   background: transparent; color: var(--c-text); font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
   tab-size: 2;
+  /* 软换行：长段落折行显示，不再出现横向滚动条 */
+  white-space: pre-wrap; word-break: break-word; overflow-x: hidden;
 }
+
+/* 与 textarea 同字号/行高/内边距的隐藏镜像，只用来量每一逻辑行的真实高度 */
+.editor__mirror {
+  position: absolute; left: 44px; right: 0; top: 0; padding: var(--sp-3);
+  font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
+  white-space: pre-wrap; word-break: break-word; tab-size: 2;
+  visibility: hidden; pointer-events: none; z-index: -1; overflow: hidden;
+}
+.editor__mirror > div { margin: 0; }
 .editor__empty {
   position: absolute; inset: auto 0 var(--sp-4) 0; padding: var(--sp-4); text-align: center;
   color: var(--c-text-muted); font-size: var(--fs-13); pointer-events: none;
@@ -232,7 +243,7 @@
   -webkit-text-fill-color: var(--c-text);
 }
 
-/* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、都不软换行 */
+/* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、同软换行规则 */
 .editor__ta,
 .editor__hl {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -240,13 +251,13 @@
   letter-spacing: 0;
   tab-size: 2;
   -moz-tab-size: 2;
-  white-space: pre;          /* 关键：都不自动换行，换行只由 \n 决定 */
-  word-break: normal;
-  overflow-wrap: normal;
+  white-space: pre-wrap;     /* 软换行：两层用同一套折行规则才能继续像素级对齐 */
+  word-break: break-word;
+  overflow-wrap: anywhere;
   padding: var(--sp-3);
   margin: 0;
 }
-.editor__ta { overflow: auto; }
+.editor__ta { overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; }
 .editor__hl { overflow: hidden; }
 
 /* HL_OPTIONAL：高亮是可选叠加层，关闭时文本框用正常文字色（不会重影） */

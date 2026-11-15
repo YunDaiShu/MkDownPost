@@ -418,7 +418,18 @@
   flex: 1; min-width: 0; resize: none; border: 0; outline: 0; padding: var(--sp-3);
   background: transparent; color: var(--c-text); font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
   tab-size: 2;
+  /* 软换行：长段落折行显示，不再出现横向滚动条 */
+  white-space: pre-wrap; word-break: break-word; overflow-x: hidden;
 }
+
+/* 与 textarea 同字号/行高/内边距的隐藏镜像，只用来量每一逻辑行的真实高度 */
+.editor__mirror {
+  position: absolute; left: 44px; right: 0; top: 0; padding: var(--sp-3);
+  font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
+  white-space: pre-wrap; word-break: break-word; tab-size: 2;
+  visibility: hidden; pointer-events: none; z-index: -1; overflow: hidden;
+}
+.editor__mirror > div { margin: 0; }
 .editor__empty {
   position: absolute; inset: auto 0 var(--sp-4) 0; padding: var(--sp-4); text-align: center;
   color: var(--c-text-muted); font-size: var(--fs-13); pointer-events: none;
@@ -605,7 +616,7 @@
   -webkit-text-fill-color: var(--c-text);
 }
 
-/* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、都不软换行 */
+/* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、同软换行规则 */
 .editor__ta,
 .editor__hl {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -613,13 +624,13 @@
   letter-spacing: 0;
   tab-size: 2;
   -moz-tab-size: 2;
-  white-space: pre;          /* 关键：都不自动换行，换行只由 \n 决定 */
-  word-break: normal;
-  overflow-wrap: normal;
+  white-space: pre-wrap;     /* 软换行：两层用同一套折行规则才能继续像素级对齐 */
+  word-break: break-word;
+  overflow-wrap: anywhere;
   padding: var(--sp-3);
   margin: 0;
 }
-.editor__ta { overflow: auto; }
+.editor__ta { overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; }
 .editor__hl { overflow: hidden; }
 
 /* HL_OPTIONAL：高亮是可选叠加层，关闭时文本框用正常文字色（不会重影） */
@@ -1320,4 +1331,315 @@ a, a:hover, a:focus, a:active,
 .md-codeblock:hover::before { opacity: 1; }
 @media (prefers-reduced-motion: reduce), (hover: none) {
   .md-codeblock::before { display: none; }
+}
+
+
+
+/* ===== SITE_WIDE_INTERACTION：全站交互反馈统一（唯一规格，最后加载） =====
+   实测基线（改前）：4 个页面共 572 个可交互元素，hover 表现有 10 种不同签名，
+   其中 18 个元素 hover 完全没有反馈，26 个 .editor__tool 内部就有 2 种表现。
+
+   统一为 5 个族，族内零差异，族间只差"额外动作"：
+   1 边框族  hover = 边框主色 + 前景加深 + 光环
+   2 按钮族  额外：底色加深
+   3 卡片族  额外：上浮 1px + 阴影叠加
+   4 链接族  hover = 前景主色 + 下划线
+   5 表单族  hover = 边框加深；focus = 边框主色 + 光环
+   全部族的 focus 一律用同一枚光环（不出现两套描边）
+*/
+:root {
+  --ui-ring-w: 3px;
+  --ui-ring-color: color-mix(in srgb, var(--c-primary) 22%, transparent);
+  --ui-ring: 0 0 0 var(--ui-ring-w) var(--ui-ring-color);
+  --ui-ring-strong: 0 0 0 2px var(--c-focus-ring);
+  --ui-ease: var(--dur-1) var(--ease);
+}
+
+/* --- 统一过渡：所有族用同一组属性与时长，避免"有的滑有的跳" --- */
+.icon-btn, .btn, .editor__tool, .seg__btn, .tabs__add, .sheet__close,
+.tsw__chip, .theme-chip, .card, .theme-card, .section__more, .brand,
+.md-anchor, .theme-search, .editor__ta, .tabs__item {
+  transition:
+    color var(--ui-ease),
+    background-color var(--ui-ease),
+    border-color var(--ui-ease),
+    box-shadow var(--ui-ease),
+    transform var(--ui-ease);
+}
+
+/* --- 1 边框族：光环 + 边框主色 + 前景加深 --- */
+.icon-btn,
+.editor__tool,
+.seg__btn,
+.tabs__add,
+.sheet__close,
+.tabs__item,
+.tsw__chip,
+.theme-chip {
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.icon-btn:hover,
+.editor__tool:hover,
+.seg__btn:hover,
+.tabs__add:hover,
+.sheet__close:hover,
+.tabs__item:hover,
+.tsw__chip:hover,
+.theme-chip:hover {
+  border-color: var(--c-primary) !important;
+  color: var(--c-text) !important;
+  box-shadow: var(--ui-ring) !important;
+}
+
+/* --- 2 按钮族：底色加深 --- */
+.btn:hover {
+  border-color: var(--c-primary) !important;
+  color: var(--c-text) !important;
+  box-shadow: var(--ui-ring) !important;
+}
+.btn--primary:hover,
+.btn[data-variant="primary"]:hover {
+  background: color-mix(in srgb, var(--c-primary) 88%, #000) !important;
+  color: #fff !important;
+}
+
+/* --- 3 卡片族：上浮 + 边框主色 + 阴影叠加 --- */
+.card:hover,
+.theme-card:hover {
+  border-color: var(--c-primary) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .28), var(--ui-ring) !important;
+}
+.card:active,
+.theme-card:active { transform: translateY(0); }
+
+/* --- 4 链接族：前景主色 + 下划线（不发光，避免满屏光斑） --- */
+.section__more:hover,
+.brand:hover,
+.md-anchor:hover,
+a:not(.btn):not(.icon-btn):not(.card):not(.theme-card):not(.theme-chip):not(.skip-link):hover {
+  color: var(--c-primary) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* --- 5 表单族 --- */
+.theme-search:hover,
+.editor__ta:hover { border-color: var(--c-primary) !important; }
+.theme-search:focus-visible,
+.editor__ta:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none !important;
+  border-color: var(--c-primary) !important;
+  box-shadow: var(--ui-ring) !important;
+}
+
+/* --- 键盘焦点：全站同一枚光环，不再出现两套描边 --- */
+.icon-btn:focus-visible,
+.btn:focus-visible,
+.editor__tool:focus-visible,
+.seg__btn:focus-visible,
+.tabs__add:focus-visible,
+.sheet__close:focus-visible,
+.tabs__item:focus-visible,
+.tsw__chip:focus-visible,
+.theme-chip:focus-visible,
+.card:focus-visible,
+.theme-card:focus-visible,
+.section__more:focus-visible,
+.brand:focus-visible,
+.md-anchor:focus-visible,
+.nav a:focus-visible,
+.skip-link:focus-visible {
+  outline: none !important;
+  border-color: var(--c-primary) !important;
+  box-shadow: var(--ui-ring-strong) !important;
+}
+
+/* 高对比度模式：box-shadow 不显示，退回实线描边 */
+@media (forced-colors: active) {
+  .icon-btn:focus-visible, .btn:focus-visible, .editor__tool:focus-visible,
+  .seg__btn:focus-visible, .tabs__add:focus-visible, .tsw__chip:focus-visible,
+  .theme-chip:focus-visible, .card:focus-visible, .theme-card:focus-visible,
+  .section__more:focus-visible, .nav a:focus-visible, .skip-link:focus-visible,
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid !important;
+    outline-offset: 2px;
+  }
+}
+
+/* ===== GLOBAL_FOCUS_RING：全站只留一套焦点观感 =====
+   改前实测：12 个元素仍命中 base.css 的 :focus-visible{outline:2px}，与新机制并存 → "两套描边"。
+   注意：这里只负责"关掉旧描边"，不再统一加环，
+   否则 <main>（跳到主内容的焦点目标）会套上一整页的蓝色大框。
+   环由下面的四层选择器逐个负责。
+*/
+:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+/* 容器类焦点目标：只保留可感知的细描边，绝不画满页光环 */
+main:focus,
+main:focus-visible,
+#app:focus,
+#app:focus-visible,
+body:focus-visible,
+section:focus-visible,
+[tabindex="-1"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+@media (forced-colors: active) {
+  :focus-visible { outline: 2px solid !important; outline-offset: 2px; box-shadow: none !important; }
+}
+
+/* ===== INTERACTION_TAXONOMY：四层收敛，层内零差异 =====
+   全站可交互元素只允许属于下面四层之一，任何"第二种观感"都算回归缺陷。
+   判定依据来自实测清单：
+     button.editor__tool ×26 / button.btn ×24 / a.theme-chip ×18 / button.tsw__chip ×14
+     article.theme-card ×10 / a.card ×9 / button.icon-btn ×8 / button.md-anchor ×8
+     a.skip-link ×4 / a.brand ×4 / a.icon-btn ×4 / button.seg__btn ×5 / a.section__more ×2
+     button.tabs__add / input.theme-search / textarea.editor__ta / a.btn.btn--primary
+
+   层 1 控件（按钮、芯片、页签、工具、锚点、图标）
+     hover  = 光环 3px + 边框主色 + 前景加深
+     active = 缩放到 .97
+   层 2 卡片（.card / .theme-card）
+     hover  = 光环 3px + 边框主色 + 上浮 1px + 阴影叠加（不改前景色）
+   层 3 链接（正文链接、查看更多、品牌）
+     hover  = 前景主色 + 下划线（不发光，避免满屏光斑）
+   层 4 表单（输入框、搜索框、编辑器）
+     hover  = 边框主色
+     focus  = 边框主色 + 光环
+   所有层 focus 一律同一枚光环（--ui-ring-strong），不出现 outline。
+*/
+
+/* 层 1：控件 */
+button:hover,
+a.icon-btn:hover,
+[role="button"]:hover,
+.icon-btn:hover,
+.editor__tool:hover,
+.seg__btn:hover,
+.tabs__item:hover,
+.tabs__add:hover,
+.sheet__close:hover,
+.tsw__chip:hover,
+.theme-chip:hover,
+.md-anchor:hover,
+.btn:hover,
+a.btn:hover {
+  box-shadow: var(--ui-ring) !important;
+  border-color: var(--c-primary) !important;
+  color: var(--c-text) !important;
+}
+
+button:active,
+[role="button"]:active,
+.icon-btn:active,
+.editor__tool:active,
+.seg__btn:active,
+.tabs__item:active,
+.tsw__chip:active,
+.theme-chip:active,
+.btn:active,
+a.btn:active {
+  transform: scale(.97);
+}
+
+/* 层 2：卡片 */
+.card:hover,
+.theme-card:hover {
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .26), var(--ui-ring) !important;
+  border-color: var(--c-primary) !important;
+  transform: translateY(-1px);
+}
+.card:active,
+.theme-card:active { transform: translateY(0); }
+
+/* 层 3：链接（排除控件与卡片，避免出现"又发光又下划线"） */
+main a:not(.btn):not(.icon-btn):not(.card):not(.theme-card):not(.theme-chip):not(.md-anchor):not(.brand):not(.skip-link):hover,
+.section__more:hover,
+.brand:hover {
+  color: var(--c-primary) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  box-shadow: none !important;
+}
+
+/* 层 1 补充：裸 button 与 role=button 的焦点环 */
+button:focus-visible,
+[role="button"]:focus-visible,
+a.btn:focus-visible {
+  border-color: var(--c-primary) !important;
+  box-shadow: var(--ui-ring-strong) !important;
+}
+
+/* 层 4：表单 */
+.theme-search:hover,
+.editor__ta:hover,
+input:not([type="checkbox"]):not([type="radio"]):hover,
+select:hover,
+textarea:hover {
+  border-color: var(--c-primary) !important;
+}
+.theme-search:focus-visible,
+.editor__ta:focus-visible,
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--c-primary) !important;
+  box-shadow: var(--ui-ring-strong) !important;
+}
+
+/* ===== ICON_BORDER_GUARD：图标按钮的四边边框必须完整 =====
+   背景：全局链接重置里有 a{border-bottom:0 !important}，
+   会把 <a class="icon-btn">（顶栏 GitHub 图标）的底边清零，光环出现缺口。
+   这里只对图标按钮把四边还原，不动其它链接。
+*/
+.header-actions .icon-btn,
+.header-actions .icon-btn:link,
+.header-actions .icon-btn:visited,
+a.icon-btn,
+button.icon-btn {
+  border: 1px solid var(--c-border) !important;
+  border-radius: var(--r-2);
+}
+
+/* 表单层补短路：允许用最简单的选择器命中，便于静态求解与浏览器保持一致 */
+input:hover,
+select:hover,
+textarea:hover { border-color: var(--c-primary) !important; }
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--c-primary) !important;
+  box-shadow: var(--ui-ring-strong) !important;
+  outline: none !important;
+}
+
+/* ===== NAV_LINK_LAYER：顶部/底部导航链接统一走「链接层」 =====
+   改前实测：a.@nav 出现两种 hover 签名（00100 只变底色 / 01110 边框+前景），
+   原因是有历史规则给组内文字导航加了淡底。这里统一成：只变前景色 + 下划线。
+*/
+.nav a:hover,
+header nav a:hover,
+footer nav a:hover {
+  color: var(--c-primary) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  box-shadow: none !important;
+}
+.nav a:focus-visible,
+header nav a:focus-visible,
+footer nav a:focus-visible {
+  color: var(--c-text) !important;
+  box-shadow: var(--ui-ring-strong) !important;
+  text-decoration: none !important;
 }
