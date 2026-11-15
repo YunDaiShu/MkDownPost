@@ -57,8 +57,10 @@ const srv = http.createServer((req, res) => {
 await new Promise((r) => srv.listen(PORT, '127.0.0.1', r));
 
 const profileDir = path.join(ROOT, '.profile-ui-check');
+const isLinux = process.platform === 'linux';
+const extraFlags = isLinux ? ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] : [];
 const child = spawn(browser, ['--headless=new', '--remote-debugging-port=' + CDP_PORT, '--user-data-dir=' + profileDir,
-  '--window-size=1440,1000', '--hide-scrollbars', '--no-first-run', 'about:blank'], { stdio: 'ignore' });
+  '--window-size=1440,1000', '--hide-scrollbars', '--no-first-run', ...extraFlags, 'about:blank'], { stdio: 'ignore' });
 
 let wsUrl = null;
 for (let i = 0; i < 100; i++) {
