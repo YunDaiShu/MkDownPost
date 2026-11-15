@@ -37,6 +37,12 @@ const findBrowser = () => {
   return candidates.find((p) => { try { return fs.existsSync(p); } catch { return false; } }) || null;
 };
 
+// NO_WEBSOCKET_GUARD：Node < 22 没有内置 WebSocket（CI 曾因 ReferenceError 直接失败）
+if (typeof WebSocket !== 'function') {
+  console.log('SKIP：当前 Node（' + process.version + '）没有内置 WebSocket，需要 Node ≥ 22 才能做浏览器实测');
+  process.exit(0);
+}
+
 const browser = findBrowser();
 if (!browser) {
   console.log('SKIP：未找到 Chromium/Edge，跳过浏览器一致性实测（静态检查仍由 check-interaction.mjs 覆盖）');
