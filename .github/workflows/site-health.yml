@@ -24,6 +24,10 @@ jobs:
           node tools/bundle-css.mjs
           node tools/build-seo.mjs
           node tools/check-artifacts.mjs
+      - name: 版本戳跟随内容哈希（保证 SW/CDN 缓存可击穿）
+        run: |
+          node tools/stamp-version.mjs
+          node tools/stamp-version.mjs --check
       - name: 交互规范校验（层叠顺序 / hover 两族 / 焦点 / 图标配平 / 明暗对比度）
         run: node tools/check-interaction.mjs
       - name: UI 一致性浏览器实测（光环唯一 / 无死 hover / 同类零差异；无浏览器自动跳过）
