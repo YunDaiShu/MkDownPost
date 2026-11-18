@@ -1153,6 +1153,7 @@ body:has(.editor) .app-footer { display: none; }
 #wxPresetBtn { min-width: 118px; justify-content: space-between; }
 .editor__viewbar .editor__menu { top: calc(100% + 6px); right: auto; left: auto; position: absolute; z-index: 30; min-width: 220px; }
 .editor__viewbar .seg__btn { height: 30px; padding: 0 var(--sp-3); border-radius: var(--r-2); }
+.wx__phone-wrap[hidden] { display: none !important; }
 .wx__phone-wrap { flex: 1; min-height: 0; overflow: auto; display: flex; justify-content: center; padding: var(--sp-3); background: var(--c-surface-2); }
 .wx__phone { width: 375px; max-width: 100%; border: 1px solid var(--c-border); border-radius: var(--r-4); background: var(--c-surface); overflow: hidden; display: flex; }
 .wx__phone-inner { flex: 1; overflow-y: auto; padding: var(--sp-4); }

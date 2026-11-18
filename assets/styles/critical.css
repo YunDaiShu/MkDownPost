@@ -125,6 +125,9 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   border-radius: var(--r-1);
 }
 
+/* hidden 属性必须真的隐藏：作者样式里的 display:flex/grid 会盖掉浏览器默认行为 */
+[hidden] { display: none !important; }
+
 /* 滚动条滑块走主题变量 */
 * { scrollbar-color: var(--c-border) transparent; scrollbar-width: thin; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }

@@ -175,6 +175,9 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   border-radius: var(--r-1);
 }
 
+/* hidden 属性必须真的隐藏：作者样式里的 display:flex/grid 会盖掉浏览器默认行为 */
+[hidden] { display: none !important; }
+
 /* 滚动条滑块走主题变量 */
 * { scrollbar-color: var(--c-border) transparent; scrollbar-width: thin; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -487,7 +490,9 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .pcard__dots i + i { margin-left: -8px; }
 .pcard__dots i:last-child { box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 3px var(--c-border); }
 </style>
-  <link rel="stylesheet" href="./assets/styles/rest.css?v=842de96b" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="./assets/styles/rest.css?v=9288a2a7" media="print" onload="this.media='all'">
+  
+  
   
   
   
@@ -599,7 +604,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   
 <link rel="stylesheet" href="./vendor/github.min.css" />
 <link rel="stylesheet" href="./vendor/github-dark.min.css" media="(prefers-color-scheme: dark)" id="hljsDark" />
-<link rel="modulepreload" href="./src/main.js?v=842de96b">
-  <script type="module" src="./src/main.js?v=842de96b"></script>
+<link rel="modulepreload" href="./src/main.js?v=9288a2a7">
+  <script type="module" src="./src/main.js?v=9288a2a7"></script>
 </body>
 </html>
