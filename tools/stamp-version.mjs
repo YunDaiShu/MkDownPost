@@ -15,7 +15,7 @@ const ROOT = process.cwd();
 const CHECK = process.argv.includes('--check');
 
 const SOURCE_GLOBS = [
-  'index.html', 'sw.js', 'src', 'assets/styles'
+  'src', 'assets/styles'
 ];
 const IGNORE = /(^|\/)(\.profile|node_modules|\.git)/;
 const GENERATED = new Set([
@@ -48,7 +48,10 @@ for (const f of files) {
 }
 const stamp = h.digest('hex').slice(0, 8);
 
-const targets = files.filter((f) => /\.(html|js)$/.test(f));
+const targets = [...new Set([
+  ...files.filter((f) => /\.(html|js)$/.test(f)),
+  'index.html', 'sw.js', '404.html'
+])].filter((f) => fs.existsSync(path.join(ROOT, f)));
 let changed = 0;
 const stale = [];
 for (const f of targets) {
