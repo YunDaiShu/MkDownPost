@@ -1,0 +1,36 @@
+/* assets/styles/code-themes.css — 代码主题（与页面配色主题正交）
+   只覆盖代码区域的背景与语法色，不触碰 --c-* 外观令牌。 */
+:root { --code-bg: var(--c-code-bg, #F6F8FA); --code-fg: var(--c-text, #1B1F24); }
+
+.md-body pre, .editor__preview pre { background: var(--code-bg); color: var(--code-fg); }
+.md-body code { background: color-mix(in srgb, var(--code-bg) 80%, transparent); color: var(--code-fg); }
+
+/* GitHub Light */
+:root[data-code-theme="github-light"] { --code-bg: #F6F8FA; --code-fg: #24292F; --code-kw: #CF222E; --code-str: #0A3069; --code-com: #6E7781; --code-num: #0550AE; }
+/* GitHub Dark */
+:root[data-code-theme="github-dark"] { --code-bg: #0D1117; --code-fg: #C9D1D9; --code-kw: #FF7B72; --code-str: #A5D6FF; --code-com: #8B949E; --code-num: #79C0FF; }
+/* Monokai */
+:root[data-code-theme="monokai"] { --code-bg: #272822; --code-fg: #F8F8F2; --code-kw: #F92672; --code-str: #E6DB74; --code-com: #75715E; --code-num: #AE81FF; }
+/* One Dark */
+:root[data-code-theme="one-dark"] { --code-bg: #282C34; --code-fg: #ABB2BF; --code-kw: #C678DD; --code-str: #98C379; --code-com: #5C6370; --code-num: #D19A66; }
+/* Solarized Light */
+:root[data-code-theme="solarized-light"] { --code-bg: #FDF6E3; --code-fg: #657B83; --code-kw: #859900; --code-str: #2AA198; --code-com: #93A1A1; --code-num: #D33682; }
+/* Dracula */
+:root[data-code-theme="dracula"] { --code-bg: #282A36; --code-fg: #F8F8F2; --code-kw: #FF79C6; --code-str: #F1FA8C; --code-com: #6272A4; --code-num: #BD93F9; }
+
+/* 语法高亮：兼容 hljs 与项目自带 tok- 前缀 */
+:root[data-code-theme] .md-body :is(.hljs-keyword, .hljs-built_in, .tok-k) { color: var(--code-kw); }
+:root[data-code-theme] .md-body :is(.hljs-string, .hljs-attr, .tok-s) { color: var(--code-str); }
+:root[data-code-theme] .md-body :is(.hljs-comment, .tok-c) { color: var(--code-com); }
+:root[data-code-theme] .md-body :is(.hljs-number, .hljs-literal, .tok-n) { color: var(--code-num); }
+
+/* ===== 编辑器高亮层接代码主题：选 Monokai 时编辑区代码也变色 ===== */
+:root[data-code-theme] .editor__hl .tok-h { color: var(--code-kw); }
+:root[data-code-theme] .editor__hl .tok-code { background: var(--code-bg); color: var(--code-str); }
+:root[data-code-theme] .editor__hl .tok-codeblock { background: var(--code-bg); color: var(--code-fg); }
+:root[data-code-theme] .editor__hl .tok-link { color: var(--code-str); }
+:root[data-code-theme] .editor__hl .tok-url { color: var(--code-com); }
+:root[data-code-theme] .editor__hl .tok-quote { color: var(--code-com); }
+:root[data-code-theme] .editor__hl .tok-table { color: var(--code-num); }
+/* 行内代码与代码块底纹跟随主题（原来固定 --c-code-bg） */
+:root[data-code-theme] .md-body code { background: color-mix(in srgb, var(--code-bg) 86%, transparent); }

@@ -106,6 +106,18 @@ export default function render(root) {
         <span class="editor__spacer"></span>
         <div class="editor__controls">
         <div class="seg" role="group" aria-label="字号">
+          <button class="btn" type="button" id="styleBtn" aria-haspopup="menu" aria-expanded="false" title="设计风格：叠加在主题之上，只改形式不改配色">风格 · 默认 ▾</button>
+          <div class="editor__menu" id="styleMenu" role="menu" hidden>
+            <button role="menuitem" type="button" data-style=""><span class="editor__menu-name">默认</span><span class="editor__menu-hint">跟随主题圆角与阴影</span></button>
+            <button role="menuitem" type="button" data-style="swiss"><span class="editor__menu-name">瑞士国际主义</span><span class="editor__menu-hint">直角 · 无阴影 · 紧字距</span></button>
+            <button role="menuitem" type="button" data-style="apple"><span class="editor__menu-name">苹果</span><span class="editor__menu-hint">大圆角 · 柔和阴影 · 宽松</span></button>
+            <button role="menuitem" type="button" data-style="ikea"><span class="editor__menu-name">宜家</span><span class="editor__menu-hint">方正 · 硬边框 · 紧凑</span></button>
+            <button role="menuitem" type="button" data-style="braun"><span class="editor__menu-name">博朗 / 拉姆斯</span><span class="editor__menu-hint">克制 · 精确 · 少即是多</span></button>
+            <button role="menuitem" type="button" data-style="bauhaus"><span class="editor__menu-name">包豪斯</span><span class="editor__menu-hint">几何 · 硬边 · 实心投影</span></button>
+            <button role="menuitem" type="button" data-style="muji"><span class="editor__menu-name">无印良品</span><span class="editor__menu-hint">低对比 · 大留白 · 慢节奏</span></button>
+            <button role="menuitem" type="button" data-style="material"><span class="editor__menu-name">Material 3</span><span class="editor__menu-hint">层次阴影 · 中圆角</span></button>
+            <button role="menuitem" type="button" data-style="linear"><span class="editor__menu-name">Linear</span><span class="editor__menu-hint">工具感 · 细边框 · 紧凑</span></button>
+          </div>
           <button class="seg__btn" type="button" data-fs="15">小</button>
           <button class="seg__btn is-on" type="button" data-fs="16">中</button>
           <button class="seg__btn" type="button" data-fs="18">大</button>
@@ -126,14 +138,14 @@ export default function render(root) {
         </div>
         <button class="btn" type="button" id="exportBtn" aria-haspopup="menu" aria-expanded="false">导出 ▾</button>
         <div class="editor__menu" id="exportMenu" role="menu" hidden>
-          <button role="menuitem" type="button" data-exp="md">下载 .md</button>
-          <button role="menuitem" type="button" data-exp="html">导出内联样式 HTML</button>
-          <button role="menuitem" type="button" data-exp="word">导出 Word（.doc）</button>
-          <button role="menuitem" type="button" data-exp="pdf">导出 PDF（A4 · 无打印框）</button>
-          <button role="menuitem" type="button" data-exp="print">打印预览（主题色）</button>
-          <button role="menuitem" type="button" data-exp="print-min">打印预览（极简黑白）</button>
-          <button role="menuitem" type="button" data-exp="png">导出 PNG 长图</button>
-          <button role="menuitem" type="button" data-exp="platform">平台适配导出…</button>
+          <button role="menuitem" type="button" data-exp="md"><span class="editor__menu-name">下载 .md</span><span class="editor__menu-hint">纯文本源文件</span></button>
+          <button role="menuitem" type="button" data-exp="html"><span class="editor__menu-name">导出内联样式 HTML</span><span class="editor__menu-hint">公众号可直接粘贴</span></button>
+          <button role="menuitem" type="button" data-exp="word"><span class="editor__menu-name">导出 Word</span><span class="editor__menu-hint">.doc，保留标题层级</span></button>
+          <button role="menuitem" type="button" data-exp="pdf"><span class="editor__menu-name">导出 PDF</span><span class="editor__menu-hint">A4，无打印框</span></button>
+          <button role="menuitem" type="button" data-exp="print"><span class="editor__menu-name">打印预览</span><span class="editor__menu-hint">跟随当前主题色</span></button>
+          <button role="menuitem" type="button" data-exp="print-min"><span class="editor__menu-name">打印预览</span><span class="editor__menu-hint">极简黑白</span></button>
+          <button role="menuitem" type="button" data-exp="png"><span class="editor__menu-name">导出 PNG 长图</span><span class="editor__menu-hint">适合分享到社交平台</span></button>
+          <button role="menuitem" type="button" data-exp="platform"><span class="editor__menu-name">平台适配导出</span><span class="editor__menu-hint">公众号 / 小黑盒 / TapTap</span></button>
         </div>
       </div>
 
@@ -159,8 +171,26 @@ export default function render(root) {
 
         <div class="editor__splitter" role="separator" aria-orientation="vertical" aria-valuemin="24" aria-valuemax="76" aria-valuenow="50" tabindex="0" title="拖动调整宽度，双击复位"></div>
 
-        <section class="editor__pane editor__pane--preview" aria-label="预览">
+        <section class="editor__pane editor__pane--preview" aria-label="右侧面板">
+          <div class="editor__viewbar" role="tablist" aria-label="右侧面板视图">
+            <button class="seg__btn is-on" type="button" role="tab" data-view="preview" aria-selected="true">预览</button>
+            <button class="seg__btn" type="button" role="tab" data-view="wechat" aria-selected="false">微信排版</button>
+            <span class="editor__spacer"></span>
+            <button class="btn" type="button" id="wxPresetBtn" aria-haspopup="menu" aria-expanded="false">排版 · 标准 ▾</button>
+            <div class="editor__menu" id="wxPresetMenu" role="menu" hidden>
+              <button role="menuitem" type="button" data-preset="standard"><span class="editor__menu-name">标准</span><span class="editor__menu-hint">16px / 行高 1.75 · 通用</span></button>
+              <button role="menuitem" type="button" data-preset="loose"><span class="editor__menu-name">宽松</span><span class="editor__menu-hint">16px / 行高 2.0 · 长文</span></button>
+              <button role="menuitem" type="button" data-preset="compact"><span class="editor__menu-name">紧凑</span><span class="editor__menu-hint">15px / 行高 1.62 · 信息密</span></button>
+              <button role="menuitem" type="button" data-preset="large"><span class="editor__menu-name">大字</span><span class="editor__menu-hint">18px / 行高 1.85 · 手机阅读</span></button>
+            </div>
+            <button class="btn btn--primary" id="wxCopy" type="button">复制到公众号</button>
+          </div>
           <div class="editor__preview markdown-body" id="preview"></div>
+          <div class="wx__phone-wrap" id="wxWrap" hidden>
+            <div class="wx__phone"><div class="wx__phone-inner">
+              <div class="md-body wx__body" id="wxPreview"></div>
+            </div></div>
+          </div>
         </section>
       </div>
 
@@ -187,6 +217,150 @@ export default function render(root) {
   const ta = root.querySelector('#ta');
   const gutter = root.querySelector('#gutter');
   const preview = root.querySelector('#preview');
+
+  // 轻量提示条：复制/导出等一次性反馈
+  let toastTimer = null;
+  function showToast(text, isError) {
+    let el = root.querySelector('#edToast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'edToast';
+      el.className = 'editor__toast';
+      root.appendChild(el);
+    }
+    el.textContent = text;
+    el.classList.toggle('is-error', !!isError);
+    el.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('is-on'); }, 2600);
+  }
+
+  // 下拉菜单统一锚定：贴着触发按钮左边缘，并夹在视口内
+  function positionMenu(btn, menu) {
+    if (!btn || !menu) return;
+    const host = btn.closest('.editor__bar') || btn.closest('.editor__viewbar') || btn.parentElement;
+    const hb = host.getBoundingClientRect();
+    const bb = btn.getBoundingClientRect();
+    menu.style.right = 'auto';
+    menu.style.left = Math.round(bb.left - hb.left) + 'px';
+    menu.style.top = Math.round(bb.bottom - hb.top + 6) + 'px';
+    menu.style.maxHeight = 'min(58vh, 430px)';
+    menu.style.overflowY = 'auto';
+    // 越界修正：右侧超出视口就往左推
+    const predict = Math.min(menu.scrollWidth || 220, 320);
+    const overflowRight = bb.left + predict - window.innerWidth;
+    if (overflowRight > -8) menu.style.left = Math.max(8, Math.round(bb.left - hb.left - overflowRight - 12)) + 'px';
+  }
+
+  // ===== 右侧面板：预览 / 微信排版 =====
+  const WX_PRESETS = {
+    standard: { fs: 16, lh: 1.75, ls: 0, gap: '1em' },
+    loose: { fs: 16, lh: 2.0, ls: 0.01, gap: '1.4em' },
+    compact: { fs: 15, lh: 1.62, ls: 0, gap: '0.8em' },
+    large: { fs: 18, lh: 1.85, ls: 0.01, gap: '1.2em' }
+  };
+  const viewBtns = Array.from(root.querySelectorAll('[data-view]'));
+  const wxWrap = root.querySelector('#wxWrap');
+  const wxPreview = root.querySelector('#wxPreview');
+  const wxPresetBtn = root.querySelector('#wxPresetBtn');
+  const wxPresetMenu = root.querySelector('#wxPresetMenu');
+  const PRESET_LABEL = { standard: '标准', loose: '宽松', compact: '紧凑', large: '大字' };
+  let presetKey = 'standard';
+  const wxCopyBtn = root.querySelector('#wxCopy');
+
+  // 排版预设同时作用于「预览」与「微信排版」，两处看到的是同一套排版
+  function paintPreset() {
+    const p = WX_PRESETS[presetKey] || WX_PRESETS.standard;
+    [preview, wxPreview].forEach(function (host) {
+      if (!host) return;
+      host.style.fontSize = p.fs + 'px';
+      host.style.lineHeight = String(p.lh);
+      host.style.letterSpacing = p.ls ? p.ls + 'em' : 'normal';
+      host.querySelectorAll('p, li').forEach(function (el) { el.style.marginBottom = p.gap; });
+    });
+    if (wxPresetBtn) wxPresetBtn.textContent = '排版 · ' + (PRESET_LABEL[presetKey] || '标准') + ' ▾';
+  }
+
+  function setPreset(key) {
+    presetKey = WX_PRESETS[key] ? key : 'standard';
+    try { localStorage.setItem('mdp:v1:wxp', presetKey); } catch (e) {}
+    paintPreset();
+  }
+
+  // 下拉开合：与「示例 / 导出」同一套交互
+  function closePresetMenu() {
+    if (wxPresetMenu) wxPresetMenu.hidden = true;
+    if (wxPresetBtn) wxPresetBtn.setAttribute('aria-expanded', 'false');
+  }
+  if (wxPresetBtn && wxPresetMenu) {
+    wxPresetBtn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      const open = wxPresetMenu.hidden;
+      wxPresetMenu.hidden = !open;
+      if (open) positionMenu(wxPresetBtn, wxPresetMenu);
+      wxPresetBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    wxPresetMenu.addEventListener('click', function (ev) {
+      const b = ev.target.closest('[data-preset]');
+      if (!b) return;
+      setPreset(b.getAttribute('data-preset'));
+      closePresetMenu();
+    });
+    document.addEventListener('click', function (ev) {
+      if (!wxPresetMenu.hidden && !ev.target.closest('#wxPresetMenu') && !ev.target.closest('#wxPresetBtn')) closePresetMenu();
+    });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closePresetMenu(); });
+  }
+
+  function switchView(view) {
+    const isWx = view === 'wechat';
+    viewBtns.forEach(function (b) {
+      const on = b.getAttribute('data-view') === view;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    preview.hidden = isWx;
+    wxWrap.hidden = !isWx;
+    if (isWx) {
+      wxPreview.innerHTML = '';
+      const clone = preview.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.removeAttribute('hidden');   // 克隆时 preview 处于 hidden，克隆体会带着这个属性
+      clone.hidden = false;
+      // 标题锚点只服务编辑器，进微信排版会变成多余的 '#'，且会被复制出去
+      clone.querySelectorAll('.md-anchor').forEach(function (a) { a.remove(); });
+      wxPreview.appendChild(clone);
+      paintPreset();
+    }
+  }
+  viewBtns.forEach(function (b) {
+    b.addEventListener('click', function () { switchView(b.getAttribute('data-view')); });
+  });
+  try { const savedPreset = localStorage.getItem('mdp:v1:wxp'); if (savedPreset) presetKey = savedPreset; } catch (e) {}
+  paintPreset();
+  if (wxCopyBtn) {
+    wxCopyBtn.addEventListener('click', async function () {
+      const mod = await import('./export.js?v=98c827f2');
+      const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
+      const html = mod.exportInlineHTML(source, '公众号稿件');
+      try {
+        if (navigator.clipboard && window.ClipboardItem) {
+          await navigator.clipboard.write([new ClipboardItem({
+            'text/html': new Blob([html], { type: 'text/html' }),
+            'text/plain': new Blob([source.innerText], { type: 'text/plain' })
+          })]);
+        } else {
+          const r = document.createRange(); r.selectNodeContents(source);
+          const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+          document.execCommand('copy'); sel.removeAllRanges();
+        }
+        showToast('已复制 ' + html.length + ' 字符，去公众号 Ctrl+V');
+      } catch (e2) {
+        showToast('复制失败：' + (e2 && e2.message ? e2.message : '浏览器不支持'), true);
+      }
+    });
+  }
+
   const emptyHint = root.querySelector('#emptyHint');
   const statusSave = root.querySelector('#statusSave');
   const wordCount = root.querySelector('#wordCount');
@@ -293,6 +467,7 @@ export default function render(root) {
   initHistory();
 
   const autosave = initAutosave(ta, { onStatus: (t) => { statusSave.textContent = t; } });
+  ta.addEventListener('input', () => { statusSave.textContent = '保存中…'; });
 
   // 编辑器宽度变化（分栏拖动、窗口缩放）后，软换行的行数会变，行号需重算
   let rowSyncTimer = null;
@@ -482,6 +657,7 @@ export default function render(root) {
   exportBtn.addEventListener('click', () => {
     const open = exportMenu.hidden;
     exportMenu.hidden = !open;
+    if (open) positionMenu(exportBtn, exportMenu);
     exportBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
   const closeExportMenu = () => { exportMenu.hidden = true; exportBtn.setAttribute('aria-expanded', 'false'); };
@@ -500,6 +676,7 @@ export default function render(root) {
   sampleBtn.addEventListener('click', () => {
     const open = sampleMenu.hidden;
     sampleMenu.hidden = !open;
+    if (open) positionMenu(sampleBtn, sampleMenu);
     sampleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) closeExportMenu();
   });
@@ -572,6 +749,40 @@ export default function render(root) {
     }
     if (b.dataset.exp === 'platform') { openPlatformPanel(); }
   });
+
+  // 设计风格（叠加层，不改品牌配色）
+  const STYLE_KEY = 'mdp:v1:style';
+  const STYLE_LABEL = { '': '默认', swiss: '瑞士国际主义', apple: '苹果', ikea: '宜家', braun: '博朗 / 拉姆斯', bauhaus: '包豪斯', muji: '无印良品', material: 'Material 3', linear: 'Linear' };
+  const styleBtn = root.querySelector('#styleBtn');
+  const styleMenu = root.querySelector('#styleMenu');
+  const applyStyle = (v) => {
+    if (v) document.documentElement.dataset.style = v;
+    else delete document.documentElement.dataset.style;
+    if (styleBtn) styleBtn.textContent = '风格 · ' + (STYLE_LABEL[v] || '默认') + ' ▾';
+    if (styleMenu) styleMenu.querySelectorAll('[data-style]').forEach((b) => b.classList.toggle('is-on', b.getAttribute('data-style') === v));
+  };
+  if (styleBtn && styleMenu) {
+    const closeStyleMenu = () => { styleMenu.hidden = true; styleBtn.setAttribute('aria-expanded', 'false'); };
+    styleBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const open = styleMenu.hidden;
+      styleMenu.hidden = !open;
+      if (open) positionMenu(styleBtn, styleMenu);
+      styleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    styleMenu.addEventListener('click', (ev) => {
+      const b = ev.target.closest('[data-style]');
+      if (!b) return;
+      applyStyle(b.getAttribute('data-style') || '');
+      localStorage.setItem(STYLE_KEY, b.getAttribute('data-style') || '');
+      closeStyleMenu();
+    });
+    document.addEventListener('click', (ev) => {
+      if (!styleMenu.hidden && !ev.target.closest('#styleMenu') && !ev.target.closest('#styleBtn')) closeStyleMenu();
+    });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeStyleMenu(); });
+  }
+  applyStyle(localStorage.getItem(STYLE_KEY) || '');
 
   // 字号 / 行宽
   const syncChk = root.querySelector('#syncScroll');

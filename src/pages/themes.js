@@ -5,9 +5,17 @@ import { toast } from '../components/theme-switcher.js?v=98c827f2';
 import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=98c827f2';
 
 const GROUP_LABEL = {
-  ai: 'AI', social: '社交', game: '游戏', dev: '开发', tool: '工具', lang: '语言',
-  system: '系统', framework: '框架', media: '媒体', browser: '浏览器', design: '设计',
-  cms: '建站', cn: '国内', infra: '基础设施', misc: '其他'
+  all: '全部',
+  dev: '开发',
+  tool: '工具',
+  social: '社交',
+  media: '媒体',
+  system: '系统',
+  design: '设计',
+  cn: '国内',
+  ai: 'AI',
+  browser: '浏览器',
+  misc: '其他'
 };
 
 export default function render(root, params) {
@@ -132,6 +140,42 @@ export default function render(root, params) {
       catch { toast('复制失败'); }
     }
   });
+
+  // ===== 代码主题分区（与页面配色主题分开） =====
+  const CODE_THEMES = [{"key":"github-light","name":"GitHub Light","note":"浅色 · 默认"},{"key":"github-dark","name":"GitHub Dark","note":"深色 · 通用"},{"key":"monokai","name":"Monokai","note":"高饱和"},{"key":"one-dark","name":"One Dark","note":"编辑器经典"},{"key":"solarized-light","name":"Solarized Light","note":"低对比护眼"},{"key":"dracula","name":"Dracula","note":"紫青对比"}];
+  const codeThemeSection = document.createElement('section');
+  codeThemeSection.className = 'code-themes';
+  codeThemeSection.innerHTML = [
+    '<h2 class="section__title">代码主题</h2>',
+    '<p class="section__desc">只影响代码块配色，与上面的页面主题互不干扰</p>',
+    '<div class="code-themes__grid">',
+    CODE_THEMES.map(function (c) {
+      return '<button class="code-theme" type="button" data-code="' + c.key + '">' +
+        '<span class="code-theme__name">' + c.name + '</span>' +
+        '<span class="code-theme__note">' + c.note + '</span>' +
+        '</button>';
+    }).join(''),
+    '</div>'
+  ].join('');
+  root.appendChild(codeThemeSection);
+
+  const paintCode = function () {
+    const cur = localStorage.getItem('mdp:v1:code-theme') || '';
+    codeThemeSection.querySelectorAll('.code-theme').forEach(function (b) {
+      b.classList.toggle('is-on', b.getAttribute('data-code') === cur);
+    });
+  };
+  codeThemeSection.addEventListener('click', function (e) {
+    const b = e.target.closest('.code-theme');
+    if (!b) return;
+    const key = b.getAttribute('data-code');
+    if (key) document.documentElement.dataset.codeTheme = key;
+    else delete document.documentElement.dataset.codeTheme;
+    localStorage.setItem('mdp:v1:code-theme', key);
+    paintCode();
+    if (typeof toast === 'function') toast('代码主题：' + key);
+  });
+  paintCode();
 
   paint(false);
   // 从首页跳来：滚到该主题并闪一下，随后清掉标记（不留永久描边）

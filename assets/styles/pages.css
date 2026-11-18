@@ -283,3 +283,89 @@
 }
 .article-group__head:hover .article-group__anchor { opacity: 1; }
 .article-group__anchor:hover { color: var(--c-primary); }
+
+/* 右侧面板视图切换条（预览 / 微信排版） */
+.editor__viewbar {
+  position: relative;
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--c-divider);
+  background: var(--c-surface); flex-wrap: wrap;
+}
+#wxPresetBtn { min-width: 118px; justify-content: space-between; }
+.editor__viewbar .editor__menu { top: calc(100% + 6px); right: auto; left: auto; position: absolute; z-index: 30; min-width: 220px; }
+.editor__viewbar .seg__btn { height: 30px; padding: 0 var(--sp-3); border-radius: var(--r-2); }
+.wx__phone-wrap { flex: 1; min-height: 0; overflow: auto; display: flex; justify-content: center; padding: var(--sp-3); background: var(--c-surface-2); }
+.wx__phone { width: 375px; max-width: 100%; border: 1px solid var(--c-border); border-radius: var(--r-4); background: var(--c-surface); overflow: hidden; display: flex; }
+.wx__phone-inner { flex: 1; overflow-y: auto; padding: var(--sp-4); }
+.wx__body { font-size: 16px; }
+
+/* ===== 微信排版工具（assets/styles/pages.css 追加） ===== */
+.wx { display: flex; flex-direction: column; gap: var(--sp-3); }
+.wx__bar {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  flex-wrap: wrap; padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface);
+}
+.wx__h1 { font-size: var(--fs-20, 20px); font-weight: 700; letter-spacing: -0.01em; }
+.wx__sub { margin-top: 4px; font-size: var(--fs-13); color: var(--c-text-muted); }
+.wx__actions { display: flex; align-items: center; gap: var(--sp-2); }
+
+.wx__split { display: grid; grid-template-columns: 1fr 460px; gap: var(--sp-3); align-items: stretch; min-height: 520px; }
+@media (max-width: 1023px) { .wx__split { grid-template-columns: 1fr; } }
+
+.wx__pane {
+  border: 1px solid var(--c-border); border-radius: var(--r-3);
+  background: var(--c-surface); overflow: hidden; display: flex; flex-direction: column; min-height: 0;
+}
+.wx__pane--edit { padding: 0; }
+.wx__pane--preview { background: var(--c-surface-2); align-items: center; padding: var(--sp-4); }
+
+.wx__ta {
+  flex: 1; width: 100%; min-height: 480px; padding: var(--sp-3);
+  border: 0; outline: 0; resize: none; background: transparent; color: var(--c-text);
+  font: var(--fs-15, 15px)/1.75 ui-monospace, Menlo, Consolas, monospace;
+  white-space: pre-wrap; word-break: break-word; overflow-y: auto; overflow-x: hidden;
+}
+
+.wx__phone {
+  width: 375px; max-width: 100%; height: 100%; min-height: 480px;
+  border: 1px solid var(--c-border); border-radius: var(--r-4); background: var(--c-surface);
+  overflow: hidden; display: flex;
+}
+.wx__phone-inner { flex: 1; overflow-y: auto; padding: var(--sp-4); }
+.wx__body { font-size: 16px; }
+
+.wx__status {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sp-1) var(--sp-2); font-size: var(--fs-12); color: var(--c-text-muted);
+}
+.wx__msg.is-ok { color: var(--c-success); }
+
+/* 代码主题分区 */
+.code-themes { margin-top: var(--sp-6); }
+.code-themes__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-3); }
+.code-theme {
+  display: grid; gap: 2px; text-align: left; padding: var(--sp-3);
+  border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface);
+  cursor: pointer; transition: border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.code-theme:hover { border-color: var(--c-primary); box-shadow: var(--ui-ring); }
+.code-theme.is-on { border-color: var(--c-primary); box-shadow: inset 0 0 0 1px var(--c-primary); }
+.code-theme__name { font-size: var(--fs-14); font-weight: 600; }
+.code-theme__note { font-size: var(--fs-12); color: var(--c-text-muted); }
+
+/* 工具栏内的风格下拉：与「示例 / 导出」同一套 .editor__menu */
+#styleBtn { min-width: 132px; justify-content: space-between; }
+#styleMenu { min-width: 220px; max-height: min(58vh, 430px); overflow-y: auto; }
+#styleMenu [data-style].is-on .editor__menu-name::after { content: ' ✓'; color: var(--c-primary); }
+
+/* 编辑器轻量提示条 */
+.editor__toast {
+  position: fixed; left: 50%; bottom: 48px; transform: translate(-50%, 12px);
+  padding: 10px 16px; border-radius: var(--r-3); border: 1px solid var(--c-border);
+  background: var(--c-surface); color: var(--c-text); font-size: var(--fs-13);
+  box-shadow: var(--shadow-2); opacity: 0; pointer-events: none; z-index: 200;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+}
+.editor__toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.editor__toast.is-error { border-color: var(--c-danger); color: var(--c-danger); }

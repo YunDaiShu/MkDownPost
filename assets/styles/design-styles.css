@@ -1,0 +1,226 @@
+/* assets/styles/design-styles.css — 设计风格层（世界设计史 + 科技公司设计语言）
+   作用：只覆盖"形式类"令牌（圆角、阴影、字距、字形、密度），不动品牌 цвет；
+   因此任何主题都能叠加任意设计风格，两者互不干扰。 */
+
+/* 瑞士国际主义：零圆角、网格感、极紧字距、无阴影 */
+:root[data-style="swiss"] {
+  --card-lift: 0 0 0 0 transparent;
+  --r-1: 0px; --r-2: 0px; --r-3: 0px; --r-4: 0px;
+  --shadow-1: none; --shadow-2: none;
+  --style-tracking: -0.02em;
+  --style-h1-weight: 800;
+  --style-density: 0.94;
+  --style-border: 1.5px;
+  --dur-1: 90ms; --dur-2: 140ms; --dur-3: 200ms; --dur-4: 260ms;
+  --ease: cubic-bezier(.2, 0, 0, 1); --ease-out: cubic-bezier(.2, 0, 0, 1); --ease-in: cubic-bezier(.6, 0, 1, 1);
+}
+
+/* 苹果：大圆角、极轻阴影、字重偏中性、留白充足 */
+:root[data-style="apple"] {
+  --card-lift: 0 2px 6px rgba(0, 0, 0, .08);
+  --r-1: 8px; --r-2: 14px; --r-3: 20px; --r-4: 28px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px -12px rgba(0,0,0,.18);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.08), 0 24px 48px -20px rgba(0,0,0,.22);
+  --style-tracking: -0.011em;
+  --style-h1-weight: 700;
+  --style-density: 1.06;
+  --style-border: 1px;
+  --dur-1: 180ms; --dur-2: 260ms; --dur-3: 380ms; --dur-4: 520ms;
+  --ease: cubic-bezier(.4, 0, .2, 1); --ease-out: cubic-bezier(.16, 1, .3, 1); --ease-in: cubic-bezier(.4, 0, 1, 1);
+}
+
+/* 宜家：实用、方正小圆角、高对比、紧凑 */
+:root[data-style="ikea"] {
+  --card-lift: 0 4px 0 rgba(0, 0, 0, .06);
+  --r-1: 2px; --r-2: 4px; --r-3: 6px; --r-4: 8px;
+  --shadow-1: none; --shadow-2: 0 4px 0 rgba(0,0,0,.06);
+  --style-tracking: 0;
+  --style-h1-weight: 900;
+  --style-density: 0.92;
+  --style-border: 2px;
+  --dur-1: 110ms; --dur-2: 160ms; --dur-3: 220ms; --dur-4: 300ms;
+  --ease: cubic-bezier(.3, 0, .2, 1); --ease-out: cubic-bezier(.2, .8, .3, 1); --ease-in: cubic-bezier(.5, 0, 1, 1);
+}
+
+/* 博朗 / 迪特·拉姆斯：少即是多，中圆角、灰阶、精确 */
+:root[data-style="braun"] {
+  --card-lift: 0 1px 0 rgba(0, 0, 0, .08);
+  --r-1: 3px; --r-2: 6px; --r-3: 8px; --r-4: 10px;
+  --shadow-1: 0 1px 0 rgba(0,0,0,.08); --shadow-2: 0 2px 8px -6px rgba(0,0,0,.25);
+  --style-tracking: 0.01em;
+  --style-h1-weight: 700;
+  --style-density: 1.0;
+  --style-border: 1px;
+  --dur-1: 130ms; --dur-2: 180ms; --dur-3: 240ms; --dur-4: 320ms;
+  --ease: cubic-bezier(.25, .1, .25, 1); --ease-out: cubic-bezier(.2, .7, .3, 1); --ease-in: cubic-bezier(.5, 0, 1, 1);
+}
+
+/* 包豪斯：几何、硬边、色块感 */
+:root[data-style="bauhaus"] {
+  --card-lift: 4px 4px 0 rgba(0, 0, 0, .12);
+  --r-1: 0px; --r-2: 2px; --r-3: 4px; --r-4: 4px;
+  --shadow-1: 4px 4px 0 rgba(0,0,0,.12); --shadow-2: 6px 6px 0 rgba(0,0,0,.16);
+  --style-tracking: -0.01em;
+  --style-h1-weight: 800;
+  --style-density: 0.96;
+  --style-border: 2px;
+  --dur-1: 100ms; --dur-2: 150ms; --dur-3: 200ms; --dur-4: 260ms;
+  --ease: cubic-bezier(.1, 0, 0, 1); --ease-out: cubic-bezier(.1, 0, 0, 1); --ease-in: cubic-bezier(.7, 0, 1, 1);
+}
+
+/* 无印良品：极简、低对比、非常大留白 */
+:root[data-style="muji"] {
+  --card-lift: 0 0 0 0 transparent;
+  --r-1: 2px; --r-2: 4px; --r-3: 6px; --r-4: 8px;
+  --shadow-1: none; --shadow-2: none;
+  --style-tracking: 0.04em;
+  --style-h1-weight: 500;
+  --style-density: 1.14;
+  --style-border: 1px;
+  --dur-1: 240ms; --dur-2: 340ms; --dur-3: 480ms; --dur-4: 640ms;
+  --ease: cubic-bezier(.5, 0, .3, 1); --ease-out: cubic-bezier(.4, 1, .4, 1); --ease-in: cubic-bezier(.5, 0, 1, 1);
+}
+
+/* Material Design 3：中圆角、层次阴影、中等字距 */
+:root[data-style="material"] {
+  --card-lift: 0 3px 6px rgba(0, 0, 0, .16);
+  --r-1: 6px; --r-2: 12px; --r-3: 16px; --r-4: 24px;
+  --shadow-1: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
+  --shadow-2: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+  --style-tracking: 0.0075em;
+  --style-h1-weight: 600;
+  --style-density: 1.02;
+  --style-border: 1px;
+  --dur-1: 150ms; --dur-2: 220ms; --dur-3: 300ms; --dur-4: 400ms;
+  --ease: cubic-bezier(.2, 0, 0, 1); --ease-out: cubic-bezier(0, 0, .2, 1); --ease-in: cubic-bezier(.4, 0, 1, 1);
+}
+
+/* Linear：暗色工具感、小圆角、极细边框、紧凑 */
+:root[data-style="linear"] {
+  --card-lift: 0 8px 24px -16px rgba(0, 0, 0, .5);
+  --r-1: 4px; --r-2: 7px; --r-3: 10px; --r-4: 12px;
+  --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset; --shadow-2: 0 8px 24px -16px rgba(0,0,0,.5);
+  --style-tracking: -0.006em;
+  --style-h1-weight: 600;
+  --style-density: 0.94;
+  --style-border: 1px;
+  --dur-1: 120ms; --dur-2: 170ms; --dur-3: 240ms; --dur-4: 320ms;
+  --ease: cubic-bezier(.25, .46, .45, .94); --ease-out: cubic-bezier(.22, 1, .36, 1); --ease-in: cubic-bezier(.55, 0, 1, .45);
+}
+
+/* 风格令牌落到实际元素上 */
+:root[data-style] .editor__ta,
+:root[data-style] .md-body { letter-spacing: var(--style-tracking, normal); }
+:root[data-style] .md-body h1 { font-weight: var(--style-h1-weight, 700); }
+:root[data-style] .md-body p,
+:root[data-style] .md-body li { line-height: calc(1.75 * var(--style-density, 1)); }
+:root[data-style] .icon-btn,
+:root[data-style] .btn,
+:root[data-style] .card,
+:root[data-style] .theme-card,
+:root[data-style] .tsw__chip { border-width: var(--style-border, 1px); }
+
+/* 工具栏里的风格选择器：与现有控件同规格 */
+.editor__style {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 10px; border-radius: var(--r-2);
+  border: 1px solid var(--c-border); background: var(--c-surface);
+  color: var(--c-text-secondary); font-size: var(--fs-12);
+  transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.editor__style:hover { border-color: var(--c-primary); color: var(--c-text); box-shadow: var(--ui-ring); }
+.editor__style select {
+  border: 0; background: transparent; color: inherit; font: inherit; outline: 0;
+  cursor: pointer; padding-right: 2px;
+}
+
+
+/* ===== 全局结构层：把风格令牌铺到整站骨架（header / 工具栏 / 面板 / 卡片 / 状态栏） ===== */
+:root[data-style] body { letter-spacing: var(--style-tracking, normal); }
+
+/* 圆角：所有容器与控件统一走 --r-* */
+:root[data-style] .app-header,
+:root[data-style] .editor__bar, .editor__tools-wrap,
+:root[data-style] .editor__pane,
+:root[data-style] .editor__split,
+:root[data-style] .tsw__chip,
+:root[data-style] .btn,
+:root[data-style] .icon-btn,
+:root[data-style] .tabs__item,
+:root[data-style] .seg__btn,
+:root[data-style] .editor__style,
+:root[data-style] .editor__tool,
+:root[data-style] .editor__gutter,
+:root[data-style] .editor__status,
+:root[data-style] .sheet,
+:root[data-style] .md-table,
+:root[data-style] .md-body pre,
+:root[data-style] .md-body blockquote {
+  border-radius: var(--r-2) !important;
+}
+
+/* 边框粗细：风格决定是 1px 还是 2px 硬边 */
+:root[data-style] .app-header,
+:root[data-style] .editor__bar, .editor__tools-wrap,
+:root[data-style] .editor__pane,
+:root[data-style] .card,
+:root[data-style] .theme-card,
+:root[data-style] .btn,
+:root[data-style] .icon-btn,
+:root[data-style] .md-table {
+  border-width: var(--style-border, 1px) !important;
+}
+
+/* 装饰性阴影：只有"表面"元素吃 --shadow-*，交互光环（--ui-ring）不受影响 */
+:root[data-style] .card,
+:root[data-style] .theme-card,
+:root[data-style] .editor__pane,
+:root[data-style] .editor__bar, .editor__tools-wrap,
+:root[data-style] .app-header,
+:root[data-style] .sheet {
+  box-shadow: var(--shadow-1, none) !important;
+}
+:root[data-style] .card:hover,
+:root[data-style] .theme-card:hover {
+  /* --card-lift 是"合法阴影视图"，swiss/muji 用 0 0 0 0 transparent 占位，
+     这样 var(--ui-ring) 不会被非法值带崩（之前用 none 逗号拼接导致整条失效） */
+  box-shadow: var(--card-lift, 0 0 0 0 transparent), var(--ui-ring) !important;
+}
+
+/* 动效：整站统一走风格给定的时长/缓动 */
+:root[data-style] .btn,
+:root[data-style] .icon-btn,
+:root[data-style] .card,
+:root[data-style] .theme-card,
+:root[data-style] .editor__tool,
+:root[data-style] .seg__btn,
+:root[data-style] .tabs__item,
+:root[data-style] .tsw__chip,
+:root[data-style] .editor__style,
+:root[data-style] .editor__pane,
+:root[data-style] .app-header {
+  transition:
+    color var(--dur-1) var(--ease),
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease),
+transform var(--dur-1) var(--ease) !important;
+}
+
+/* 标题字重与正文密度：让"排版气质"也随风格变 */
+:root[data-style] h1,
+:root[data-style] h2,
+:root[data-style] h3,
+:root[data-style] .md-body h1,
+:root[data-style] .md-body h2,
+:root[data-style] .md-body h3 { font-weight: var(--style-h1-weight, 700); }
+
+:root[data-style] .md-body p,
+:root[data-style] .md-body li { line-height: calc(1.72 * var(--style-density, 1)); }
+
+
+/* 卡片：大圆角角色 → 统一走 --r-3（默认 10 / 瑞士 0 / 苹果 20 / 无印 6） */
+:root[data-style] .card,
+:root[data-style] .theme-card {
+  border-radius: var(--r-3) !important;
+}

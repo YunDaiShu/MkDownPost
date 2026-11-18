@@ -276,7 +276,7 @@
 .theme-card:hover {
   border-color: var(--c-primary) !important;
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .28), var(--ui-ring) !important;
+  box-shadow: var(--shadow-2), var(--ui-ring) !important;
 }
 .card:active,
 .theme-card:active { transform: translateY(0); }

@@ -1,3 +1,13 @@
+// 设计风格：启动即应用（整站生效，跨页面保持）
+(() => {
+  try {
+    const v = localStorage.getItem('mdp:v1:style') || '';
+    const ct = localStorage.getItem('mdp:v1:code-theme') || '';
+    if (ct) document.documentElement.dataset.codeTheme = ct;
+    if (v) document.documentElement.dataset.style = v;
+    else delete document.documentElement.dataset.style;
+  } catch (e) { /* 隐私模式下忽略 */ }
+})();
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
 import { defineRoute, setNotFound, startRouter , prefetchRoute } from './router.js';
@@ -28,6 +38,8 @@ function applyMode(pref) {
 defineRoute('/', () => import('./pages/home.js?v=98c827f2'), () => 'MkDownPost · 码稿');
 defineRoute('/editor', () => import('./pages/editor.js?v=98c827f2'), () => '编辑器 · MkDownPost');
 defineRoute('/article/:slug', () => import('./pages/article.js?v=98c827f2'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+// /wechat 已并入编辑器右栏（预览 / 微信排版），路由保留兼容直达
+  defineRoute('/wechat', () => import('./pages/editor.js?v=98c827f2'), () => '编辑器 · MkDownPost');
 defineRoute('/themes', () => import('./pages/themes.js?v=98c827f2'), () => '主题库 · MkDownPost');
 defineRoute('/articles', () => import('./pages/articles.js?v=98c827f2'), () => '全部内容 · MkDownPost');
 defineRoute('/about', () => import('./pages/about.js?v=98c827f2'), () => '关于 · MkDownPost');

@@ -4,6 +4,7 @@
   display: flex; align-items: center; gap: var(--sp-1); flex-wrap: wrap;
   padding: var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); position: relative;
+  min-height: 56px;
 }
 .editor__tool {
   min-width: 34px; height: 34px; padding: 0 var(--sp-2);
@@ -22,6 +23,7 @@
   position: absolute; right: var(--sp-2); top: calc(100% + 4px); z-index: 20;
   display: grid; min-width: 200px; padding: var(--sp-1);
   background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-2); box-shadow: var(--shadow-2);
+  max-height: min(58vh, 430px); overflow-y: auto;
 }
 .editor__menu[hidden] { display: none; }
 .editor__menu button {
@@ -30,10 +32,10 @@
 }
 .editor__menu button:hover { background: var(--c-surface-2); }
 
-.editor__split { display: flex; gap: var(--sp-2); align-items: stretch; min-height: 60vh; }
+.editor__split { display: flex; gap: 0; align-items: stretch; min-height: 60vh; }
 .editor__pane { position: relative; min-width: 0; border: 1px solid var(--c-border); border-radius: var(--r-2); background: var(--c-surface); overflow: hidden; }
 .editor__pane--edit { flex: 0 0 50%; display: flex; }
-.editor__pane--preview { flex: 1 1 0; overflow: auto; padding: var(--sp-3); }   /* 与 .editor__ta 的 12px 对齐 */
+.editor__pane--preview { flex: 1 1 0; overflow: auto; padding: var(--sp-3); background: var(--c-surface-2); }   /* 与 .editor__ta 的 12px 对齐 */
 .editor__gutter {
   flex: none; width: 44px; padding: var(--sp-3) var(--sp-2); overflow: hidden;
   background: var(--c-surface-2); border-right: 1px solid var(--c-divider);
@@ -64,9 +66,28 @@
 .editor__empty[hidden] { display: none; }
 .editor__keys { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-12); }
 
-.editor__splitter { flex: none; width: 8px; cursor: col-resize; border-radius: var(--r-1); background: transparent; position: relative; }
-.editor__splitter::before { content: ''; position: absolute; inset: 0 3px; border-radius: 2px; background: var(--c-divider); transition: background-color var(--dur-1) var(--ease); }
-.editor__splitter:hover::before, .editor__splitter.is-active::before { background: var(--c-primary); }
+.editor__splitter {
+  flex: none; width: 12px; cursor: col-resize; border-radius: var(--r-1);
+  background: transparent; position: relative; touch-action: none;
+}
+/* 常驻细线：不 hover 也看得见，颜色沿用分隔线令牌 */
+.editor__splitter::before {
+  content: ''; position: absolute; inset: 0 5.5px; border-radius: 2px;
+  background: var(--c-divider);
+  transition: background-color var(--dur-1) var(--ease), inset var(--dur-1) var(--ease);
+}
+/* 中心握把：默认淡，hover/拖动时亮起，提示"这里能拖" */
+.editor__splitter::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 4px; height: 34px;
+  transform: translate(-50%, -50%); border-radius: 2px;
+  background: var(--c-text-muted); opacity: .35;
+  transition: opacity var(--dur-1) var(--ease), height var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
+}
+.editor__splitter:hover::before,
+.editor__splitter.is-active::before { background: var(--c-primary); inset: 0 4px; }
+.editor__splitter:hover::after,
+.editor__splitter.is-active::after { opacity: 1; height: 56px; background: var(--c-primary); }
+.editor__splitter:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 2px; }
 
 .editor__status {
   display: flex; align-items: center; gap: var(--sp-4);
@@ -103,7 +124,7 @@
 .editor__preview .md-table { overflow-x: auto; }
 
 /* ICON_FIT：SVG 图标工具栏 */
-.editor__tool { display: inline-grid; place-items: center; width: 34px; padding: 0; color: var(--c-text-secondary); }
+.editor__tool { display: inline-grid; place-items: center; width: 34px; height: 32px; padding: 0; color: var(--c-text-secondary); }
 .editor__tool svg { pointer-events: none; }
 .editor__tool:hover { background: var(--c-primary-bg); color: var(--c-primary); }
 @media (max-width: 639px) { .editor__tool { width: 44px; height: 44px; } }

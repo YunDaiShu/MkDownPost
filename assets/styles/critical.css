@@ -40,7 +40,7 @@
   --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
 
   /* —— 圆角（只允许这 4 档） —— */
-  --r-1: 4px; --r-2: 8px; --r-3: 12px; --r-4: 16px;
+  --r-1: 4px; --r-2: 8px; --r-3: 10px; --r-4: 12px;
 
   /* —— 字号 —— */
   --fs-12: 12px; --fs-13: 13px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px;
@@ -61,8 +61,8 @@
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
 
   /* —— 阴影 —— */
-  --shadow-1: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);
-  --shadow-2: 0 4px 12px rgba(16,24,40,.10);
+  --shadow-1: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-2: 0 4px 12px rgba(15, 23, 42, .07);
 
   /* —— 布局 —— */
   --maxw: 1120px;
@@ -367,8 +367,8 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .tsw__search:focus-visible { border-color: var(--c-primary); }
 .tsw__chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3) 0; }
 .tsw__chip {
-  height: 26px; padding: 0 var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--radius-pill, 999px);
-  background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer;
+  height: 30px; padding: 0 var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); cursor: pointer;
 }
 .tsw__chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
 .tsw__chip.is-on { background: var(--c-primary-bg); border-color: var(--c-primary); color: var(--c-primary); font-weight: 600; }

@@ -158,3 +158,13 @@
 .md-anchor, .md-anchor::after {
   user-select: none; -webkit-user-select: none;
 }
+
+/* 空段落不占位：避免预览底部出现空白卡片 */
+.markdown-body p:empty,
+.markdown-body h1:empty,
+.markdown-body h2:empty { display: none; }
+/* 标题尖号只在编辑态显示，预览里保持干净 */
+.markdown-body .md-anchor { opacity: 0; }
+.markdown-body h1:hover .md-anchor,
+.markdown-body h2:hover .md-anchor,
+.markdown-body h3:hover .md-anchor { opacity: 1; }
