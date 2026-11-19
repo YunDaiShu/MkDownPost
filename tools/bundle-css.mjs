@@ -5,7 +5,9 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
+const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
+// 编辑器样式单独成包：只在进入 #/editor 时加载（首页/主题页不再背 24KB）
+const EDITOR = ['editor.css'];
 
 const read = (f) => {
   const p = path.join(ROOT, 'assets/styles', f);
@@ -15,9 +17,11 @@ const read = (f) => {
 
 const criticalCss = CRITICAL.map(read).join('\n');
 const restCss = REST.map(read).join('\n');
+const editorCss = EDITOR.map(read).join('\n');
 
 fs.writeFileSync(path.join(ROOT, 'assets/styles/critical.css'), criticalCss, 'utf8');
 fs.writeFileSync(path.join(ROOT, 'assets/styles/rest.css'), restCss, 'utf8');
+fs.writeFileSync(path.join(ROOT, 'assets/styles/editor.lazy.css'), editorCss, 'utf8');
 
 // 同步 index.html：内联 critical，rest 用 media 技巧异步加载
 const htmlPath = path.join(ROOT, 'index.html');

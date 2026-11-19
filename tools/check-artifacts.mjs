@@ -1,7 +1,8 @@
 /* tools/check-artifacts.mjs — 校验构建产物是否与源文件一致（不使用 git diff，避免时间戳抖动）
    检查项：
    1. assets/styles/critical.css  == tokens+base+layout+components 拼接
-   2. assets/styles/rest.css      == themes+themes.generated+markdown+editor+pages+cc-fx 拼接
+   2. assets/styles/rest.css      == themes+themes.generated+markdown+pages+cc-fx+… 拼接（不含 editor）
+   2b. assets/styles/editor.lazy.css == editor.css 拼接（进入编辑器路由时按需加载）
    3. index.html 内联的 <style id="critical"> 与 critical.css 内容一致
    4. a/ 下静态页数量 == content-index.json 条目数
    5. sitemap.xml 的 URL 数 == 文章数 + 1
@@ -14,11 +15,13 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const S = path.join(ROOT, 'assets/styles');
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
+const EDITOR = ['editor.css'];
+const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
 
 const read = (f) => '/* ===== ' + f + ' ===== */\n' + fs.readFileSync(path.join(S, f), 'utf8').trimEnd() + '\n';
 const expectCritical = CRITICAL.map(read).join('\n');
 const expectRest = REST.map(read).join('\n');
+const expectEditor = EDITOR.map(read).join('\n');
 
 const problems = [];
 const same = (a, b) => a.replace(/\r\n/g, '\n').trim() === b.replace(/\r\n/g, '\n').trim();
@@ -26,6 +29,8 @@ const same = (a, b) => a.replace(/\r\n/g, '\n').trim() === b.replace(/\r\n/g, '\
 if (!fs.existsSync(path.join(S, 'critical.css'))) problems.push('缺少 critical.css');
 else if (!same(fs.readFileSync(path.join(S, 'critical.css'), 'utf8'), expectCritical)) problems.push('critical.css 与源文件不一致，请运行 node tools/bundle-css.mjs');
 
+if (!fs.existsSync(path.join(S, 'editor.lazy.css'))) problems.push('缺少 editor.lazy.css');
+else if (!same(fs.readFileSync(path.join(S, 'editor.lazy.css'), 'utf8'), expectEditor)) problems.push('editor.lazy.css 与源文件不一致');
 if (!fs.existsSync(path.join(S, 'rest.css'))) problems.push('缺少 rest.css');
 else if (!same(fs.readFileSync(path.join(S, 'rest.css'), 'utf8'), expectRest)) problems.push('rest.css 与源文件不一致，请运行 node tools/bundle-css.mjs');
 
