@@ -1,8 +1,8 @@
 import { derivePaletteCached as derivePalette } from '../theme-custom.js';
-import { mountReactbitsFX } from '../fx/reactbits.js?v=c874497c';
+import { mountReactbitsFX } from '../fx/reactbits.js?v=5b176f2e';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=c874497c';
+import { THEMES } from '../../data/themes.js?v=5b176f2e';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -43,11 +43,11 @@ export default async function render(root) {
 
   // Hero
   const hero = el('section', 'hero');
-  const h1 = el('h1', 'hero__title', '写 Markdown，');
-  h1.appendChild(el('span', 'hero__accent', '一键拿到各平台能用的排版'));
+  const h1 = el('h1', 'hero__title', '你只管写，');
+  h1.appendChild(el('span', 'hero__accent', '排版交给它'));
   hero.append(
     h1,
-    el('p', 'hero__sub', '面向公众号、小黑盒、TapTap 创作者的写作与排版工作台。左边写，右边看，导出即可粘贴。')
+    el('p', 'hero__sub', '左边敲字，右边就是公众号里的样子。147 套主题、8 种设计风格，写完点一下复制，直接粘进后台草稿箱。')
   );
   const cta = el('div', 'hero__cta');
   const start = el('a', 'btn btn--primary', '开始写作');

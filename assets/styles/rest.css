@@ -917,6 +917,27 @@ body:has(.editor) .app-footer { display: none; }
 .editor__chk--icon { gap: 0; }
 .editor__row--actions #codeBtn { min-width: 0; width: auto; padding-inline: var(--sp-3); }
 
+/* ===== 工具栏控件尺寸统一（按钮 / 分段 / 开关 / 下拉 全部 32px 高） ===== */
+.editor__bar > .editor__row--actions { --ctl-h: 32px; }
+.editor__row--actions .btn,
+.editor__row--actions .seg__btn,
+.editor__row--actions .wx-opt,
+.editor__row--actions .editor__chk {
+  height: var(--ctl-h); min-height: var(--ctl-h);
+  padding-inline: var(--sp-3);
+  border-radius: var(--r-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-sizing: border-box;
+}
+.editor__row--actions .seg,
+.editor__row--actions .seg__group {
+  height: var(--ctl-h); display: inline-flex; align-items: center;
+  padding: 2px; border-radius: var(--r-2); background: var(--c-surface-2);
+  box-sizing: border-box;
+}
+.editor__row--actions .seg__btn { border: 1px solid transparent; }
+.editor__row--actions .editor__chk { border: 1px solid var(--c-border); background: var(--c-surface); gap: 6px; }
+
 /* ===== pages.css ===== */
 /* pages.css — 首页 / 文章 / 主题墙 / 关于 / 404 */
 
@@ -1611,6 +1632,35 @@ body:has(.editor) .app-footer { display: none; }
 .demo__table th { text-align: left; padding: 8px 10px; border-top: 1px solid var(--c-text); border-bottom: 1px solid var(--c-text); }
 .demo__table td { padding: 8px 10px; border-bottom: 1px solid var(--c-divider); color: var(--c-text-secondary); }
 .demo__table tbody tr:last-child td { border-bottom: 1px solid var(--c-text); }
+
+/* ===== 示例模板四种气质（同一份 Markdown，排版不同） ===== */
+/* 深度评论：衬线正文 + 首字下沉 + 窄行宽 */
+.wx__body[data-sample-style="editorial"], .editor__preview[data-sample-style="editorial"] {
+  font-family: "Songti SC", SimSun, Georgia, serif;
+  max-width: 640px; margin-inline: auto;
+}
+.wx__body[data-sample-style="editorial"] h2, .editor__preview[data-sample-style="editorial"] h2 {
+  border-bottom: 1px solid var(--c-border); padding-bottom: 8px;
+}
+/* 技术文章：无衬线 + 细边框代码块 + 小号行距 */
+.wx__body[data-sample-style="tech"] h2, .editor__preview[data-sample-style="tech"] h2 {
+  border-left: 3px solid var(--c-primary); padding-left: 10px;
+}
+.wx__body[data-sample-style="tech"] pre, .editor__preview[data-sample-style="tech"] pre {
+  border: 1px solid var(--c-border);
+}
+/* 活动通知：通栏色带标题 + 居中引言 */
+.wx__body[data-sample-style="event"] h1, .editor__preview[data-sample-style="event"] h1 {
+  background: var(--c-primary); color: var(--c-on-primary);
+  padding: 18px 20px; border-radius: var(--r-3); text-align: center; font-size: 1.3em;
+}
+.wx__body[data-sample-style="event"] blockquote, .editor__preview[data-sample-style="event"] blockquote {
+  border-left: 0; border-block: 1px solid var(--c-border); text-align: center;
+}
+/* 产品更新：紧凑 + 表格强调 */
+.wx__body[data-sample-style="release"] h2, .editor__preview[data-sample-style="release"] h2 {
+  font-size: 1.1em; letter-spacing: .02em; text-transform: uppercase;
+}
 
 /* ===== cc-fx.css ===== */
 /* cc-fx.css — Claude Code 风格动效 */

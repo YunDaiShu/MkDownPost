@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=c874497c';
-import { initShortcuts } from './shortcuts.js?v=c874497c';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=c874497c';
-import { initAutosave } from './autosave.js?v=c874497c';
-import { SAMPLE_MAIN } from './sample-main.js?v=c874497c';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=c874497c';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=c874497c';
-import { toast } from '../components/theme-switcher.js?v=c874497c';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=c874497c';
+import { initSplitPane } from './split-pane.js?v=5b176f2e';
+import { initShortcuts } from './shortcuts.js?v=5b176f2e';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=5b176f2e';
+import { initAutosave } from './autosave.js?v=5b176f2e';
+import { SAMPLE_MAIN } from './sample-main.js?v=5b176f2e';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=5b176f2e';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=5b176f2e';
+import { toast } from '../components/theme-switcher.js?v=5b176f2e';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=5b176f2e';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=c874497c'),
-      import('../markdown/renderer.js?v=c874497c')
+      import('../markdown/vendor-loader.js?v=5b176f2e'),
+      import('../markdown/renderer.js?v=5b176f2e')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=c874497c');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=5b176f2e');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=c874497c');
+  if (!_exportMod) _exportMod = await import('./export.js?v=5b176f2e');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=c874497c');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=5b176f2e');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=c874497c');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=5b176f2e');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=c874497c');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=5b176f2e');
   return _mathMod;
 };
 
@@ -138,12 +138,25 @@ export default function render(root) {
             <button role="menuitem" type="button" data-code="dracula"><span class="editor__menu-name">Dracula</span><span class="editor__menu-hint">紫青对比</span></button>
             <button role="menuitem" type="button" data-code="wechat-gray"><span class="editor__menu-name">微信原生 · 公众号灰</span><span class="editor__menu-hint">浅色 · 深色模式友好</span></button>
           </div>
+          <button class="btn" type="button" id="insertBtn" aria-haspopup="menu" aria-expanded="false">插入 ▾</button>
+          <div class="editor__menu" id="insertMenu" role="menu" hidden>
+            <button role="menuitem" type="button" data-insert="toc"><span class="editor__menu-name">目录</span><span class="editor__menu-hint">按标题层级自动生成</span></button>
+            <button role="menuitem" type="button" data-insert="table"><span class="editor__menu-name">表格</span><span class="editor__menu-hint">3 列 × 3 行</span></button>
+            <button role="menuitem" type="button" data-insert="hr"><span class="editor__menu-name">分割线</span><span class="editor__menu-hint">---</span></button>
+            <button role="menuitem" type="button" data-insert="image"><span class="editor__menu-name">图片</span><span class="editor__menu-hint">带 alt 的图片语法</span></button>
+            <button role="menuitem" type="button" data-insert="callout"><span class="editor__menu-name">提示卡</span><span class="editor__menu-hint">&gt; **提示**</span></button>
+            <button role="menuitem" type="button" data-insert="math"><span class="editor__menu-name">公式</span><span class="editor__menu-hint">行内 / 块级 LaTeX</span></button>
+          </div>
           <button class="btn" type="button" id="sampleBtn" aria-haspopup="menu" aria-expanded="false">示例 ▾</button>
         <div class="editor__menu" id="sampleMenu" role="menu" hidden>
           <button role="menuitem" type="button" data-sample="main"><span class="editor__menu-name">主范文（详细版）</span><span class="editor__menu-hint">186 行 · 三段式 · 全语法覆盖</span></button>
           <button role="menuitem" type="button" data-sample="table"><span class="editor__menu-name">表格专项</span><span class="editor__menu-hint">对齐 / 竖线转义 / 列数上限</span></button>
           <button role="menuitem" type="button" data-sample="diagram"><span class="editor__menu-name">图表与公式专项</span><span class="editor__menu-hint">Mermaid 流程图 + KaTeX 公式</span></button>
           <button role="menuitem" type="button" data-sample="wechat"><span class="editor__menu-name">公众号排版专项</span><span class="editor__menu-hint">版心 / 图片 / 粘贴自检清单</span></button>
+          <button role="menuitem" type="button" data-sample="review"><span class="editor__menu-name">深度评论 · 长文</span><span class="editor__menu-hint">论点 / 证据 / 反驳</span></button>
+          <button role="menuitem" type="button" data-sample="tech"><span class="editor__menu-name">技术文章 · 教程</span><span class="editor__menu-hint">代码 / 步骤 / 踩坑</span></button>
+          <button role="menuitem" type="button" data-sample="notice"><span class="editor__menu-name">活动通知 · 报名页</span><span class="editor__menu-hint">时间 / 地点 / 议程</span></button>
+          <button role="menuitem" type="button" data-sample="note"><span class="editor__menu-name">产品更新 · Release</span><span class="editor__menu-hint">版本 / 变更 / 修复</span></button>
           <button role="menuitem" type="button" data-sample="cheatsheet"><span class="editor__menu-name">语法速查</span><span class="editor__menu-hint">30 行看完常用语法</span></button>
         </div>
         </div>
@@ -198,6 +211,14 @@ export default function render(root) {
             <button class="btn btn--primary" id="wxCopy" type="button">复制到公众号</button>
           </div>
           <div class="wx-fine" id="wxFinePanel" hidden>
+            <div class="wx-chip-row">
+              <span class="wx-field-label">版式</span>
+              <button class="wx-opt" type="button" data-layout="" aria-pressed="true">标准</button>
+              <button class="wx-opt" type="button" data-layout="editorial" aria-pressed="false">评论</button>
+              <button class="wx-opt" type="button" data-layout="tech" aria-pressed="false">技术</button>
+              <button class="wx-opt" type="button" data-layout="event" aria-pressed="false">活动</button>
+              <button class="wx-opt" type="button" data-layout="release" aria-pressed="false">更新</button>
+            </div>
             <div class="wx-chip-row">
               <button class="wx-opt" type="button" data-wxopt="center" aria-pressed="false">标题居中</button>
               <button class="wx-opt" type="button" data-wxopt="number" aria-pressed="false">标题序号</button>
@@ -264,6 +285,18 @@ export default function render(root) {
     try { localStorage.setItem(PREFS_KEY, JSON.stringify({ ...readPrefs(), ...patch })); } catch { /* 忽略 */ }
   };
   const prefs = readPrefs();
+
+  // 示例模板的"气质"：加载后给预览容器加 data-sample-style，各模板样式不同
+  const SAMPLE_STYLE = { review: 'editorial', tech: 'tech', notice: 'event', note: 'release', main: 'editorial', wechat: 'wechat', table: 'tech', diagram: 'tech', cheatsheet: 'tech' };
+  window.__mdpSampleStyle = function (key) {
+    const style = SAMPLE_STYLE[key] || '';
+    ['#preview', '#wxPreview'].forEach(function (sel) {
+      const el = root.querySelector(sel);
+      if (!el) return;
+      if (style) el.setAttribute('data-sample-style', style);
+      else el.removeAttribute('data-sample-style');
+    });
+  };
 
   // 工具栏分组：图标一行、其余控件一行（DOM 事实，不依赖 flex 补丁）
   (function groupToolbar() {
@@ -342,7 +375,7 @@ export default function render(root) {
 
   // ===== 排版精细参数 =====
   const WX_LAYOUT_KEY = 'mdp:v1:wxlayout';
-  const WX_LAYOUT_DEF = { fs: 16, lh: 1.9, gap: 22, ls: 0, pad: 0, indent: false, fontBody: '', fontHead: '', fontQuote: '', footnote: false, codeScroll: false, dark: false };
+  const WX_LAYOUT_DEF = { layout: '', fs: 16, lh: 1.9, gap: 22, ls: 0, pad: 0, indent: false, fontBody: '', fontHead: '', fontQuote: '', footnote: false, codeScroll: false, dark: false };
   let wxLayout = Object.assign({}, WX_LAYOUT_DEF);
   try { wxLayout = Object.assign(wxLayout, JSON.parse(localStorage.getItem(WX_LAYOUT_KEY) || '{}')); } catch (e) {}
 
@@ -375,6 +408,11 @@ export default function render(root) {
 
   function saveLayout() { try { localStorage.setItem(WX_LAYOUT_KEY, JSON.stringify(wxLayout)); } catch (e) {} }
 
+  function fmtLayoutSummary() {
+    const L = wxLayout;
+    return L.fs + 'px · 行距 ' + L.lh + ' · 段距 ' + L.gap + 'px' + (L.layout ? ' · ' + ({ editorial: '评论版式', tech: '技术版式', event: '活动版式', release: '更新版式' }[L.layout] || '') : '');
+  }
+
   function applyLayout(host) {
     if (!host) return;
     const L = wxLayout;
@@ -393,6 +431,8 @@ export default function render(root) {
     host.querySelectorAll('blockquote, blockquote *').forEach(function (b) {
       if (L.fontQuote) b.style.fontFamily = FONT_STACK[L.fontQuote];
     });
+    if (L.layout) host.setAttribute('data-sample-style', L.layout);
+    else host.removeAttribute('data-sample-style');
     host.classList.toggle('wx-codescroll', !!L.codeScroll);
     host.classList.toggle('wx-dark', !!L.dark);
   }
@@ -606,6 +646,32 @@ export default function render(root) {
   setTimeout(function () { pushHist(true); }, 1200);
   setInterval(function () { pushHist(false); }, 45000);
   ta.addEventListener('input', function () { if (ta.value.length % 400 < 3) pushHist(false); });
+
+  // 版式选择（标准 / 评论 / 技术 / 活动 / 更新）
+  const layoutBtns = Array.from(root.querySelectorAll('[data-layout]'));
+  function paintLayoutBtns() {
+    layoutBtns.forEach(function (b) {
+      const on = (b.getAttribute('data-layout') || '') === (wxLayout.layout || '');
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+  layoutBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      wxLayout.layout = b.getAttribute('data-layout') || '';
+      saveLayout(); paintLayoutBtns();
+      applyLayout(preview); applyLayout(wxPreview);
+    });
+  });
+  paintLayoutBtns();
+
+  // 载入示例时把版式一起切过去
+  window.__mdpSampleStyle = function (key) {
+    const map = { review: 'editorial', tech: 'tech', notice: 'event', note: 'release', main: 'editorial', wechat: '', table: 'tech', diagram: 'tech', cheatsheet: '' };
+    wxLayout.layout = map[key] || '';
+    saveLayout(); paintLayoutBtns();
+    applyLayout(preview); applyLayout(wxPreview);
+  };
 
   // 精细面板开合
   const wxFineBtn = root.querySelector('#wxFineBtn');
@@ -850,7 +916,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=c874497c');
+      const mod = await import('./export.js?v=5b176f2e');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {
@@ -1222,6 +1288,42 @@ export default function render(root) {
   }
   paintCode();
 
+  // 插入菜单
+  const insertBtn = root.querySelector('#insertBtn');
+  const insertMenu = root.querySelector('#insertMenu');
+  if (insertBtn && insertMenu) {
+    const SNIP = {
+      toc: '\n<!-- 目录 -->\n\n- [一级标题](#一级标题)\n  - [二级标题](#二级标题)\n',
+      table: '\n| 列一 | 列二 | 列三 |\n| --- | --- | --- |\n|  |  |  |\n',
+      hr: '\n---\n\n',
+      image: '\n![图片说明](https://example.com/image.png)\n',
+      callout: '\n> **提示**\n> 这里写一句关键结论。\n',
+      math: '\n$\nE = mc^2\n$\n'
+    };
+    const close = function () { insertMenu.hidden = true; insertBtn.setAttribute('aria-expanded', 'false'); };
+    insertBtn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      const open = insertMenu.hidden;
+      insertMenu.hidden = !open;
+      insertBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) positionMenu(insertBtn, insertMenu);
+    });
+    insertMenu.addEventListener('click', function (ev) {
+      const b = ev.target.closest('[data-insert]');
+      if (!b) return;
+      const key = b.getAttribute('data-insert');
+      const pos = ta.selectionStart || ta.value.length;
+      ta.value = ta.value.slice(0, pos) + (SNIP[key] || '') + ta.value.slice(pos);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+      ta.focus();
+      close();
+    });
+    document.addEventListener('click', function (ev) {
+      if (!insertMenu.hidden && !ev.target.closest('#insertMenu') && !ev.target.closest('#insertBtn')) close();
+    });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') close(); });
+  }
+
   const sampleBtn = root.querySelector('#sampleBtn');
   const sampleMenu = root.querySelector('#sampleMenu');
   const closeSampleMenu = () => { sampleMenu.hidden = true; sampleBtn.setAttribute('aria-expanded', 'false'); };
@@ -1269,7 +1371,8 @@ export default function render(root) {
     saveAll(tabs, activeTab);
     ta.dispatchEvent(new Event('input', { bubbles: true }));
     ta.focus({ preventScroll: true });
-    toast('已载入示例：' + label);
+    try { if (window.__mdpSampleStyle) window.__mdpSampleStyle(key); } catch (e) {}
+      toast('已载入示例：' + label);
   });
 
   const exportAnchor = root.querySelector('#exportBtn');
@@ -1335,6 +1438,7 @@ export default function render(root) {
     document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeStyleMenu(); });
   }
   applyStyle(localStorage.getItem(STYLE_KEY) || '');
+  { const bar = root.querySelector('.editor__status'); if (bar && !root.querySelector('#layoutSummary')) { const span = document.createElement('span'); span.id = 'layoutSummary'; span.className = 'muted'; bar.insertBefore(span, bar.firstChild); window.__paintSummary = function () { span.textContent = fmtLayoutSummary(); }; window.__paintSummary(); } }
 
   // 字号 / 行宽
   const syncChk = root.querySelector('#syncScroll');
