@@ -386,9 +386,9 @@
 .wx__body pre.wx-macwin { position: relative; padding-top: 34px; }
 .wx__body pre .wx-macbar { position: absolute; left: 12px; top: 11px; display: flex; gap: 6px; }
 .wx__body pre .wx-macbar i { width: 10px; height: 10px; border-radius: 50%; display: block; }
-.wx__body pre .wx-macbar i:nth-child(1) { background: #FF5F57; }
-.wx__body pre .wx-macbar i:nth-child(2) { background: #FEBC2E; }
-.wx__body pre .wx-macbar i:nth-child(3) { background: #28C840; }
+.wx__body pre .wx-macbar i:nth-child(1) { background: var(--c-mac-red); }
+.wx__body pre .wx-macbar i:nth-child(2) { background: var(--c-mac-yellow); }
+.wx__body pre .wx-macbar i:nth-child(3) { background: var(--c-mac-green); }
 
 /* 代码行号 */
 .wx__body pre.wx-lineno { position: relative; padding-left: 46px; }
@@ -475,13 +475,13 @@
 .wx__body .wx-refs__item { margin: 4px 0; word-break: break-all; }
 
 /* 微信暗色模拟：只作用于预览容器，不影响站点 */
-.wx__body.wx-dark { background: #191919; color: #B4B4B4; }
-.wx__body.wx-dark h1, .wx__body.wx-dark h2, .wx__body.wx-dark h3 { color: #E7E7E7; }
-.wx__body.wx-dark a { color: #7D9BE8; }
-.wx__body.wx-dark blockquote { background: #232323; color: #A8A8A8; border-left-color: #3A3A3A; }
-.wx__body.wx-dark code { background: #262626; color: #E7E7E7; }
-.wx__body.wx-dark .wx-refs { border-top-color: #3A3A3A; color: #8A8A8A; }
-.wx__body.wx-dark .wx-refs__title { color: #CFCFCF; }
+.wx__body.wx-dark { background: var(--wx-dark-bg); color: var(--wx-dark-fg); }
+.wx__body.wx-dark h1, .wx__body.wx-dark h2, .wx__body.wx-dark h3 { color: var(--wx-dark-heading); }
+.wx__body.wx-dark a { color: var(--wx-dark-link); }
+.wx__body.wx-dark blockquote { background: var(--wx-dark-quote-bg); color: var(--wx-dark-quote-fg); border-left-color: var(--wx-dark-border); }
+.wx__body.wx-dark code { background: var(--wx-dark-code-bg); color: var(--wx-dark-heading); }
+.wx__body.wx-dark .wx-refs { border-top-color: var(--wx-dark-border); color: var(--wx-dark-muted); }
+.wx__body.wx-dark .wx-refs__title { color: var(--wx-dark-title); }
 
 /* ===== 排版面板：分组与呼吸感 ===== */
 .wx-fine { gap: var(--sp-3) var(--sp-4); padding: var(--sp-3) var(--sp-4) var(--sp-4); }
@@ -614,7 +614,7 @@
 /* 1) 标题序号徽标：01 / 02 方块 */
 .wx__body .wx-num, .editor__preview .wx-num {
   display: inline-block; min-width: 22px; padding: 1px 6px; margin-right: 8px;
-  border-radius: 5px; background: var(--c-primary); color: #fff;
+  border-radius: 5px; background: var(--c-primary); color: var(--c-on-primary);
   font-size: .68em; font-weight: 700; text-align: center; line-height: 1.5;
   vertical-align: .12em; letter-spacing: .02em;
 }
@@ -664,7 +664,7 @@
 .flow3__item { padding: var(--sp-4); border: 1px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); }
 .flow3__num {
   display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: var(--r-1);
-  background: var(--c-primary); color: #fff; font-size: 13px; font-weight: 700;
+  background: var(--c-primary); color: var(--c-on-primary); font-size: 13px; font-weight: 700;
 }
 .flow3__title { margin: var(--sp-2) 0 6px; font-size: var(--fs-16); font-weight: 600; }
 .flow3__desc { color: var(--c-text-secondary); font-size: var(--fs-14); line-height: 1.7; }
@@ -684,7 +684,7 @@
   max-width: 720px;
 }
 .demo__h { font-size: 20px; font-weight: 700; margin-bottom: var(--sp-4); }
-.demo__badge { display: inline-block; padding: 1px 8px; margin-right: 10px; border-radius: var(--r-1); background: var(--c-primary); color: #fff; font-size: 12px; vertical-align: 2px; }
+.demo__badge { display: inline-block; padding: 1px 8px; margin-right: 10px; border-radius: var(--r-1); background: var(--c-primary); color: var(--c-on-primary); font-size: 12px; vertical-align: 2px; }
 .demo__callout { border-left: 3px solid var(--c-primary); background: var(--c-surface-2); border-radius: var(--r-2); padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-4); }
 .demo__callout-title { font-size: 13px; font-weight: 700; color: var(--c-primary); margin-bottom: 6px; }
 .demo__table { width: 100%; border-collapse: collapse; font-size: var(--fs-13); }

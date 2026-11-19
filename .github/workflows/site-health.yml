@@ -19,6 +19,13 @@ jobs:
         run: node tools/check-imports.mjs
       - name: 硬编码颜色 lint
         run: node tools/lint-hardcoded-color.mjs
+
+      - name: 主题数据校验（字段 / 枚举 / 色值格式）
+        run: node tools/check-themes-schema.mjs
+
+      - name: 单元测试（node:test，零依赖）
+        run: node --test tests/themes.test.mjs
+
       - name: 构建产物一致性（CSS / 静态页 / sitemap）
         run: |
           node tools/bundle-css.mjs

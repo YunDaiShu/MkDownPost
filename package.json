@@ -4,6 +4,8 @@
   "private": true,
   "description": "MkDownPost 码稿 — 面向公众号/小黑盒/TapTap 等平台的 Markdown 写作与排版工作台",
   "scripts": {
+    "test": "node --test tests/themes.test.mjs",
+    "check:themes": "node tools/check-themes-schema.mjs",
     "serve": "node tools/serve.mjs",
     "check": "node tools/check-imports.mjs",
     "audit": "node tools/audit-responsive.mjs",

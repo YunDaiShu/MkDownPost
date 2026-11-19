@@ -41,7 +41,7 @@ const files = [...new Set(SOURCE_GLOBS.flatMap((g) => collect(g)))].sort();
 const h = crypto.createHash('sha256');
 for (const f of files) {
   // 哈希前抹掉现有版本戳，避免"改戳→改内容→改戳"自激
-  const buf = fs.readFileSync(path.join(ROOT, f), 'utf8')
+  const buf = fs.readFileSync(path.join(ROOT, f).toString().replace(/\r\n/g, '\n'), 'utf8')
     .replace(/\?v=[a-z0-9]+/g, '?v=@STAMP@')
     .replace(/const VERSION = '[^']*';/g, "const VERSION = '@STAMP@';");
   h.update(f + '\u0000' + buf + '\u0000');
