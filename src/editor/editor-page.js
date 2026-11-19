@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=9288a2a7';
-import { initShortcuts } from './shortcuts.js?v=9288a2a7';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=9288a2a7';
-import { initAutosave } from './autosave.js?v=9288a2a7';
-import { SAMPLE_MAIN } from './sample-main.js?v=9288a2a7';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=9288a2a7';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=9288a2a7';
-import { toast } from '../components/theme-switcher.js?v=9288a2a7';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=9288a2a7';
+import { initSplitPane } from './split-pane.js?v=e58d0b87';
+import { initShortcuts } from './shortcuts.js?v=e58d0b87';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=e58d0b87';
+import { initAutosave } from './autosave.js?v=e58d0b87';
+import { SAMPLE_MAIN } from './sample-main.js?v=e58d0b87';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=e58d0b87';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=e58d0b87';
+import { toast } from '../components/theme-switcher.js?v=e58d0b87';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=e58d0b87';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=9288a2a7'),
-      import('../markdown/renderer.js?v=9288a2a7')
+      import('../markdown/vendor-loader.js?v=e58d0b87'),
+      import('../markdown/renderer.js?v=e58d0b87')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=9288a2a7');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=e58d0b87');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=9288a2a7');
+  if (!_exportMod) _exportMod = await import('./export.js?v=e58d0b87');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=9288a2a7');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=e58d0b87');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=9288a2a7');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=e58d0b87');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=9288a2a7');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=e58d0b87');
   return _mathMod;
 };
 
@@ -127,7 +127,18 @@ export default function render(root) {
           <button class="seg__btn" type="button" data-lw="820">宽</button>
         </div>
         <label class="editor__chk"><input type="checkbox" id="syncScroll" checked aria-label="同步滚动" /><span class="editor__chk-text">同步滚动</span></label>
-        <button class="btn" type="button" id="sampleBtn" aria-haspopup="menu" aria-expanded="false">示例 ▾</button>
+        <button class="btn" type="button" id="codeBtn" aria-haspopup="menu" aria-expanded="false">代码 · 默认 ▾</button>
+          <div class="editor__menu" id="codeMenu" role="menu" hidden>
+            <button role="menuitem" type="button" data-code=""><span class="editor__menu-name">跟随主题</span><span class="editor__menu-hint">用页面主题自带的代码配色</span></button>
+            <button role="menuitem" type="button" data-code="github-light"><span class="editor__menu-name">GitHub Light</span><span class="editor__menu-hint">浅色 · 通用</span></button>
+            <button role="menuitem" type="button" data-code="github-dark"><span class="editor__menu-name">GitHub Dark</span><span class="editor__menu-hint">深色 · 通用</span></button>
+            <button role="menuitem" type="button" data-code="monokai"><span class="editor__menu-name">Monokai</span><span class="editor__menu-hint">高饱和</span></button>
+            <button role="menuitem" type="button" data-code="one-dark"><span class="editor__menu-name">One Dark</span><span class="editor__menu-hint">编辑器经典</span></button>
+            <button role="menuitem" type="button" data-code="solarized-light"><span class="editor__menu-name">Solarized Light</span><span class="editor__menu-hint">低对比护眼</span></button>
+            <button role="menuitem" type="button" data-code="dracula"><span class="editor__menu-name">Dracula</span><span class="editor__menu-hint">紫青对比</span></button>
+            <button role="menuitem" type="button" data-code="wechat-gray"><span class="editor__menu-name">微信原生 · 公众号灰</span><span class="editor__menu-hint">浅色 · 深色模式友好</span></button>
+          </div>
+          <button class="btn" type="button" id="sampleBtn" aria-haspopup="menu" aria-expanded="false">示例 ▾</button>
         <div class="editor__menu" id="sampleMenu" role="menu" hidden>
           <button role="menuitem" type="button" data-sample="main"><span class="editor__menu-name">主范文（详细版）</span><span class="editor__menu-hint">186 行 · 三段式 · 全语法覆盖</span></button>
           <button role="menuitem" type="button" data-sample="table"><span class="editor__menu-name">表格专项</span><span class="editor__menu-hint">对齐 / 竖线转义 / 列数上限</span></button>
@@ -173,7 +184,7 @@ export default function render(root) {
 
         <section class="editor__pane editor__pane--preview" aria-label="右侧面板">
           <div class="editor__viewbar" role="tablist" aria-label="右侧面板视图">
-            <button class="seg__btn is-on" type="button" role="tab" data-view="preview" aria-selected="true">预览</button>
+            <button class="seg__btn is-on" type="button" role="tab" data-view="preview" aria-selected="true">网页宽屏</button>
             <button class="seg__btn" type="button" role="tab" data-view="wechat" aria-selected="false">微信排版</button>
             <span class="editor__spacer"></span>
             <button class="btn" type="button" id="wxPresetBtn" aria-haspopup="menu" aria-expanded="false">排版 · 标准 ▾</button>
@@ -183,7 +194,47 @@ export default function render(root) {
               <button role="menuitem" type="button" data-preset="compact"><span class="editor__menu-name">紧凑</span><span class="editor__menu-hint">15px / 行高 1.62 · 信息密</span></button>
               <button role="menuitem" type="button" data-preset="large"><span class="editor__menu-name">大字</span><span class="editor__menu-hint">18px / 行高 1.85 · 手机阅读</span></button>
             </div>
+            <button class="btn" type="button" id="wxFineBtn" aria-expanded="false">排版设置 ▾</button>
             <button class="btn btn--primary" id="wxCopy" type="button">复制到公众号</button>
+          </div>
+          <div class="wx-fine" id="wxFinePanel" hidden>
+            <div class="wx-chip-row">
+              <button class="wx-opt" type="button" data-wxopt="center" aria-pressed="false">标题居中</button>
+              <button class="wx-opt" type="button" data-wxopt="number" aria-pressed="false">标题序号</button>
+              <button class="wx-opt" type="button" data-wxopt="macwin" aria-pressed="false">代码窗口</button>
+              <button class="wx-opt" type="button" data-wxopt="lineno" aria-pressed="false">显示行号</button>
+              <button class="wx-opt" type="button" data-wxopt="footnote" id="wxFnChip" aria-pressed="false">外链引用</button>
+              <button class="wx-opt" type="button" data-wxopt="codeScroll" id="wxCsChip" aria-pressed="false">代码横滑</button>
+              <button class="wx-opt" type="button" id="wxDarkBtn" aria-pressed="false">微信暗色</button>
+            </div>
+            <div class="wx-fine__grid">
+              <div class="wx-field"><span>字号</span><div class="wx-step" data-key="fs" data-min="12" data-max="22" data-step="1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字号"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
+              <div class="wx-field"><span>行距</span><div class="wx-step" data-key="lh" data-min="1.3" data-max="2.6" data-step="0.05"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="行距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>倍</i></div>
+              <div class="wx-field"><span>段距</span><div class="wx-step" data-key="gap" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="段距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
+              <div class="wx-field"><span>字间距</span><div class="wx-step" data-key="ls" data-min="0" data-max="2" data-step="0.1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字间距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
+              <div class="wx-field"><span>两侧留白</span><div class="wx-step" data-key="pad" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="两侧留白"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
+              <button class="wx-switch" type="button" data-key="indent" aria-pressed="false">首行缩进 2em</button>
+            </div>
+            <div class="wx-fine__grid wx-fine__grid--fonts">
+              <div class="wx-field"><span>正文字体</span><button class="wx-font" type="button" data-fontkey="fontBody">默认 ▾</button></div>
+              <div class="wx-field"><span>标题字体</span><button class="wx-font" type="button" data-fontkey="fontHead">默认 ▾</button></div>
+              <div class="wx-field"><span>引用字体</span><button class="wx-font" type="button" data-fontkey="fontQuote">默认 ▾</button></div>
+            </div>
+            <div class="editor__menu" id="fontMenu" role="menu" hidden>
+              <button role="menuitem" type="button" data-fval=""><span class="editor__menu-name">默认</span><span class="editor__menu-hint">跟随当前主题字体</span></button>
+              <button role="menuitem" type="button" data-fval="hei"><span class="editor__menu-name">系统黑体</span><span class="editor__menu-hint">苹方 / 微软雅黑</span></button>
+              <button role="menuitem" type="button" data-fval="song"><span class="editor__menu-name">系统衬线</span><span class="editor__menu-hint">宋体 / Georgia</span></button>
+              <button role="menuitem" type="button" data-fval="wxkai"><span class="editor__menu-name">霞鹜文楷</span><span class="editor__menu-hint">LXGW WenKai · ZeoSeven</span></button>
+              <button role="menuitem" type="button" data-fval="zhenkai"><span class="editor__menu-name">霞鹜臻楷</span><span class="editor__menu-hint">LXGW ZhenKai · ZeoSeven</span></button>
+              <button role="menuitem" type="button" data-fval="mono"><span class="editor__menu-name">等宽</span><span class="editor__menu-hint">代码风格</span></button>
+            </div>
+            <div class="wx-chip-row">
+              <button class="wx-opt" type="button" id="lfReset">恢复默认</button>
+              <button class="wx-opt" type="button" id="wxCheckBtn">排版自检</button>
+              <button class="wx-opt" type="button" id="wxHistBtn">历史版本</button>
+            </div>
+            <div class="wx-report" id="wxReport" hidden></div>
+            <div class="wx-hist" id="wxHist" hidden></div>
           </div>
           <div class="editor__preview markdown-body" id="preview"></div>
           <div class="wx__phone-wrap" id="wxWrap" hidden>
@@ -214,6 +265,20 @@ export default function render(root) {
   };
   const prefs = readPrefs();
 
+  // 工具栏分组：图标一行、其余控件一行（DOM 事实，不依赖 flex 补丁）
+  (function groupToolbar() {
+    const bar = root.querySelector('.editor__bar');
+    const tools = bar && bar.querySelector('.editor__tools-wrap');
+    if (!bar || !tools) return;
+    const row = document.createElement('div');
+    row.className = 'editor__row--actions';
+    [...bar.children].forEach(function (el) {
+      if (el === tools || el.tagName === 'INPUT' || el.classList.contains('visually-hidden')) return;
+      row.appendChild(el);
+    });
+    bar.appendChild(row);
+  })();
+
   const ta = root.querySelector('#ta');
   const gutter = root.querySelector('#gutter');
   const preview = root.querySelector('#preview');
@@ -238,18 +303,25 @@ export default function render(root) {
   // 下拉菜单统一锚定：贴着触发按钮左边缘，并夹在视口内
   function positionMenu(btn, menu) {
     if (!btn || !menu) return;
-    const host = btn.closest('.editor__bar') || btn.closest('.editor__viewbar') || btn.parentElement;
-    const hb = host.getBoundingClientRect();
     const bb = btn.getBoundingClientRect();
+    const w = menu.offsetWidth || 220;
+    const spaceBelow = window.innerHeight - bb.bottom;
+    menu.style.position = 'fixed';
     menu.style.right = 'auto';
-    menu.style.left = Math.round(bb.left - hb.left) + 'px';
-    menu.style.top = Math.round(bb.bottom - hb.top + 6) + 'px';
-    menu.style.maxHeight = 'min(58vh, 430px)';
+    menu.style.zIndex = '400';
+    let left = Math.round(bb.left);
+    if (left + w > window.innerWidth - 8) left = window.innerWidth - w - 8;
+    menu.style.left = Math.max(8, left) + 'px';
+    if (spaceBelow < 180) {
+      menu.style.top = 'auto';
+      menu.style.bottom = Math.round(window.innerHeight - bb.top + 6) + 'px';
+      menu.style.maxHeight = Math.min(360, bb.top - 24) + 'px';
+    } else {
+      menu.style.bottom = 'auto';
+      menu.style.top = Math.round(bb.bottom + 6) + 'px';
+      menu.style.maxHeight = Math.min(430, spaceBelow - 24) + 'px';
+    }
     menu.style.overflowY = 'auto';
-    // 越界修正：右侧超出视口就往左推
-    const predict = Math.min(menu.scrollWidth || 220, 320);
-    const overflowRight = bb.left + predict - window.innerWidth;
-    if (overflowRight > -8) menu.style.left = Math.max(8, Math.round(bb.left - hb.left - overflowRight - 12)) + 'px';
   }
 
   // ===== 右侧面板：预览 / 微信排版 =====
@@ -268,22 +340,447 @@ export default function render(root) {
   let presetKey = 'standard';
   const wxCopyBtn = root.querySelector('#wxCopy');
 
+  // ===== 排版精细参数 =====
+  const WX_LAYOUT_KEY = 'mdp:v1:wxlayout';
+  const WX_LAYOUT_DEF = { fs: 16, lh: 1.9, gap: 22, ls: 0, pad: 0, indent: false, fontBody: '', fontHead: '', fontQuote: '', footnote: false, codeScroll: false, dark: false };
+  let wxLayout = Object.assign({}, WX_LAYOUT_DEF);
+  try { wxLayout = Object.assign(wxLayout, JSON.parse(localStorage.getItem(WX_LAYOUT_KEY) || '{}')); } catch (e) {}
+
+  const FONT_STACK = {
+    hei: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif',
+    song: '"Songti SC", SimSun, Georgia, serif',
+    wxkai: '"LXGW WenKai", "Songti SC", serif',
+    zhenkai: '"LXGW ZhenKai GB", "Songti SC", serif',
+    mono: 'ui-monospace, Menlo, Consolas, monospace'
+  };
+  // 字体按需加载：只有真的选中才插入 CDN 样式，没选过就零外部请求
+  const FONT_CDN = {
+    wxkai: 'https://fontsapi.zeoseven.com/292/main/result.css',
+    zhenkai: 'https://fontsapi.zeoseven.com/2/main/result.css'
+  };
+  const loadedFonts = {};
+  function ensureFont(key) {
+    const url = FONT_CDN[key];
+    if (!url || loadedFonts[key]) return;
+    loadedFonts[key] = true;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    link.setAttribute('data-wxfont', key);
+    document.head.appendChild(link);
+  }
+  (function preloadChosen() { ['fontBody', 'fontHead', 'fontQuote'].forEach(function (k) { ensureFont(wxLayout[k]); }); })();
+
+  const FONT_LABEL = { '': '默认', hei: '系统黑体', song: '系统衬线', wxkai: '霞鹜文楷', zhenkai: '霞鹜臻楷', mono: '等宽' };
+
+  function saveLayout() { try { localStorage.setItem(WX_LAYOUT_KEY, JSON.stringify(wxLayout)); } catch (e) {} }
+
+  function applyLayout(host) {
+    if (!host) return;
+    const L = wxLayout;
+    host.style.setProperty('--wx-fs', L.fs + 'px');
+    host.style.setProperty('--wx-lh', String(L.lh));
+    host.style.setProperty('--wx-ls', (L.ls || 0) + 'px');
+    host.style.setProperty('--wx-gap', L.gap + 'px');
+    host.style.paddingLeft = L.pad + 'px';
+    host.style.paddingRight = L.pad + 'px';
+    host.style.fontFamily = L.fontBody ? FONT_STACK[L.fontBody] : '';
+    host.style.textIndent = L.indent ? '2em' : '';
+
+    host.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function (h) {
+      h.style.fontFamily = L.fontHead ? FONT_STACK[L.fontHead] : '';
+    });
+    host.querySelectorAll('blockquote, blockquote *').forEach(function (b) {
+      if (L.fontQuote) b.style.fontFamily = FONT_STACK[L.fontQuote];
+    });
+    host.classList.toggle('wx-codescroll', !!L.codeScroll);
+    host.classList.toggle('wx-dark', !!L.dark);
+  }
+
+  // 提示卡：> [!NOTE] 或 > **提示** → 带标题的卡片（幂等，靠 data-kind 记住身份）
+  const CALLOUT = { NOTE: '提示', TIP: '技巧', IMPORTANT: '重要', WARNING: '注意', CAUTION: '警告' };
+  const CALLOUT_CN = { 提示: 'NOTE', 技巧: 'TIP', 重要: 'IMPORTANT', 注意: 'WARNING', 警告: 'CAUTION', 说明: 'NOTE' };
+
+  function applyCallouts(host) {
+    if (!host) return;
+    host.querySelectorAll('.wx-callout').forEach(function (bq) {
+      bq.classList.remove('wx-callout');
+    });
+    host.querySelectorAll('blockquote').forEach(function (bq) {
+      const text = (bq.textContent || '').trim();
+      const m = text.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/);
+      const strong = bq.querySelector('strong, b');
+      const cnTitle = strong ? (strong.textContent || '').trim() : '';
+      const known = bq.getAttribute('data-kind');
+      if (!m && !CALLOUT_CN[cnTitle] && !known) return;
+
+      const kind = known || (m ? m[1] : CALLOUT_CN[cnTitle]) || 'NOTE';
+      bq.setAttribute('data-kind', String(kind).toLowerCase());
+      bq.classList.add('wx-callout');
+
+      // [!NOTE] 标记：从文本里抹掉
+      if (m) {
+        const walker = document.createTreeWalker(bq, NodeFilter.SHOW_TEXT);
+        let n;
+        while ((n = walker.nextNode())) {
+          if (n.nodeValue.indexOf('[!' + m[1] + ']') >= 0) {
+            n.nodeValue = n.nodeValue.replace('[!' + m[1] + ']', '').trimStart();
+            break;
+          }
+        }
+      }
+      // 有加粗标题就用它当标题，没有再补一个
+      let title = bq.querySelector('.wx-callout__title');
+      const hasBoldTitle = !!CALLOUT_CN[cnTitle];
+      if (!hasBoldTitle) {
+        if (!title) {
+          title = document.createElement('div');
+          title.className = 'wx-callout__title';
+          bq.insertBefore(title, bq.firstChild);
+        }
+        title.textContent = CALLOUT[kind] || '提示';
+      } else if (title) {
+        title.remove();
+      }
+    });
+  }
+
+  // 外链转文末引用：不破坏原链接，只追加角标与文末清单，随时可清
+  function applyFootnote(host) {
+    if (!host) return;
+    host.querySelectorAll('.wx-fn, .wx-refs').forEach(function (n) { n.remove(); });
+    if (!wxLayout.footnote) return;
+    const refs = [];
+    host.querySelectorAll('a[href^="http"]').forEach(function (a) {
+      const n = refs.length + 1;
+      refs.push({ n: n, text: (a.textContent || '').trim() || a.getAttribute('href'), href: a.getAttribute('href') });
+      const sup = document.createElement('sup');
+      sup.className = 'wx-fn';
+      sup.textContent = '[' + n + ']';
+      a.insertAdjacentElement('afterend', sup);
+    });
+    if (!refs.length) return;
+    const box = document.createElement('div');
+    box.className = 'wx-refs';
+    box.innerHTML = '<div class="wx-refs__title">参考链接</div>' +
+      refs.map(function (r) { return '<div class="wx-refs__item">[' + r.n + '] ' + r.text + '：' + r.href + '</div>'; }).join('');
+    host.appendChild(box);
+  }
+
+  // ===== 微信排版的四个开关 =====
+  const WX_OPT_KEY = 'mdp:v1:wxopts';
+  const wxOptState = (() => { try { return JSON.parse(localStorage.getItem(WX_OPT_KEY) || '{}'); } catch (e) { return {}; } })();
+  const wxOptBtns = Array.from(root.querySelectorAll('[data-wxopt]'));
+
+  function applyWxOptions(host) {
+    host = host || wxPreview;
+    if (!host) return;
+    // 每次从干净状态重算，避免开关反复叠加
+    host.querySelectorAll('h1, h2, h3, h4').forEach(function (h) {
+      h.style.textAlign = '';
+      h.querySelectorAll('.wx-num').forEach(function (n) { n.remove(); });
+      h.normalize();
+    });
+    host.querySelectorAll('pre').forEach(function (pre) {
+      pre.classList.remove('wx-macwin', 'wx-lineno');
+      const bar = pre.querySelector('.wx-macbar'); if (bar) bar.remove();
+      pre.querySelectorAll('.wx-ln').forEach(function (n) { n.remove(); });
+    });
+
+    if (wxOptState.center) host.querySelectorAll('h1, h2, h3, h4').forEach(function (h) { h.style.textAlign = 'center'; });
+
+    if (wxOptState.number) {
+      const counters = [0, 0, 0, 0];
+      host.querySelectorAll('h1, h2, h3, h4').forEach(function (h) {
+        const lv = Number(h.tagName.slice(1)) - 1;
+        counters[lv] += 1;
+        for (let i = lv + 1; i < 4; i++) counters[i] = 0;
+        const label = counters.slice(0, lv + 1).filter(function (n) { return n > 0; }).join('.');
+        const num = document.createElement('span');
+        num.className = 'wx-num';
+        num.textContent = label + ' ';
+        h.insertBefore(num, h.firstChild);
+      });
+    }
+
+    if (wxOptState.macwin) {
+      host.querySelectorAll('pre').forEach(function (pre) {
+        pre.classList.add('wx-macwin');
+        const bar = document.createElement('span');
+        bar.className = 'wx-macbar';
+        bar.innerHTML = '<i></i><i></i><i></i>';
+        pre.insertBefore(bar, pre.firstChild);
+      });
+    }
+
+    applyLayout(host);
+    applyCallouts(host);
+    applyFootnote(host);
+
+    if (wxOptState.lineno) {
+      host.querySelectorAll('pre').forEach(function (pre) {
+        pre.classList.add('wx-lineno');
+        const code = pre.querySelector('code') || pre;
+        const lines = (code.textContent || '').replace(/\n$/, '').split('\n');
+        const wrap = document.createElement('span');
+        wrap.className = 'wx-ln';
+        wrap.textContent = lines.map(function (_, i) { return i + 1; }).join('\n');
+        pre.insertBefore(wrap, pre.firstChild);
+      });
+    }
+  }
+
+  // ===== 排版自检（复制前跑一遍，给出可执行建议） =====
+  function runSelfCheck() {
+    const host = (wxPreview && wxPreview.querySelector('h1, h2, p')) ? wxPreview : preview;
+    const issues = [];
+    const L = wxLayout;
+    if (L.fs < 14) issues.push({ lv: 'warn', t: '正文字号 ' + L.fs + 'px 偏小，手机阅读建议 15–17px' });
+    if (L.lh < 1.5) issues.push({ lv: 'warn', t: '行距 ' + L.lh + ' 偏紧，建议 1.6 以上' });
+    if (L.pad > 24) issues.push({ lv: 'warn', t: '两侧留白 ' + L.pad + 'px 过大，正文会被压窄' });
+    const links = host.querySelectorAll('a[href^="http"]').length;
+    if (links > 5 && !L.footnote) issues.push({ lv: 'warn', t: '正文有 ' + links + ' 个外链，公众号里点不动，建议开「外链转文末引用」' });
+    const imgs = host.querySelectorAll('img').length;
+    if (imgs > 15) issues.push({ lv: 'warn', t: '图片 ' + imgs + ' 张，注意公众号单篇体积' });
+    const levels = [...host.querySelectorAll('h1, h2, h3, h4, h5, h6')].map(function (h) { return Number(h.tagName.slice(1)); });
+    for (let i = 1; i < levels.length; i++) {
+      if (levels[i] - levels[i - 1] > 1) { issues.push({ lv: 'warn', t: '标题层级跳级（h' + levels[i - 1] + ' → h' + levels[i] + '），建议逐级' }); break; }
+    }
+    if (!host.querySelector('h1, h2')) issues.push({ lv: 'warn', t: '全文没有标题，公众号排版会缺层次' });
+    if (!issues.length) issues.push({ lv: 'ok', t: '未发现明显排版问题，可以复制' });
+    return issues;
+  }
+
+  const wxReport = root.querySelector('#wxReport');
+  const wxCheckBtn = root.querySelector('#wxCheckBtn');
+  if (wxCheckBtn) wxCheckBtn.addEventListener('click', function () {
+    const list = runSelfCheck();
+    const bad = list.filter(function (i) { return i.lv !== 'ok'; }).length;
+    wxReport.hidden = false;
+    wxReport.innerHTML = '<div class="wx-report__head">排版自检 · ' + (bad ? bad + ' 项建议' : '通过') + '</div>' +
+      list.map(function (i) { return '<div class="wx-report__item is-' + i.lv + '">' + (i.lv === 'ok' ? '✓ ' : '! ') + i.t + '</div>'; }).join('');
+  });
+
+  // ===== 本地历史版本（localStorage 快照，最多 20 份，单份 200KB 上限） =====
+  const HIST_KEY = 'mdp:v1:wxhist';
+  const HIST_MAX = 20;
+  const HIST_LIMIT = 200 * 1024;
+  function loadHist() { try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch (e) { return []; } }
+  function saveHist(list) { try { localStorage.setItem(HIST_KEY, JSON.stringify(list.slice(0, HIST_MAX))); } catch (e) {} }
+  function pushHist(force) {
+    const text = ta.value;
+    if (!text || text.length > HIST_LIMIT) return;
+    const list = loadHist();
+    if (!force && list[0] && list[0].text === text) return;
+    if (list[0] && list[0].text === text) return;
+    list.unshift({ t: Date.now(), text: text });
+    saveHist(list);
+  }
+  const wxHist = root.querySelector('#wxHist');
+  const wxHistBtn = root.querySelector('#wxHistBtn');
+  function paintHist() {
+    const list = loadHist();
+    wxHist.innerHTML = '<div class="wx-report__head">历史版本 · ' + list.length + ' / ' + HIST_MAX + '</div>' +
+      (list.length ? list.map(function (v, i) {
+        const d = new Date(v.t);
+        const ts = (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        return '<button class="wx-hist__item" type="button" data-hist="' + i + '"><span>' + ts + '</span><i>' + v.text.length + ' 字</i></button>';
+      }).join('') : '<div class="wx-report__item">还没有快照，编辑一会儿会自动留存</div>');
+  }
+  if (wxHistBtn) wxHistBtn.addEventListener('click', function () {
+    wxHist.hidden = !wxHist.hidden;
+    if (!wxHist.hidden) paintHist();
+  });
+  if (wxHist) wxHist.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-hist]');
+    if (!b) return;
+    const list = loadHist();
+    const v = list[Number(b.getAttribute('data-hist'))];
+    if (!v) return;
+    pushHist(true);
+    ta.value = v.text;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    wxHist.hidden = true;
+    showToast('已恢复到 ' + new Date(v.t).toLocaleTimeString());
+  });
+  setTimeout(function () { pushHist(true); }, 1200);
+  setInterval(function () { pushHist(false); }, 45000);
+  ta.addEventListener('input', function () { if (ta.value.length % 400 < 3) pushHist(false); });
+
+  // 精细面板开合
+  const wxFineBtn = root.querySelector('#wxFineBtn');
+  const wxFinePanel = root.querySelector('#wxFinePanel');
+  if (wxFineBtn && wxFinePanel) {
+    wxFineBtn.addEventListener('click', function () {
+      const open = wxFinePanel.hidden;
+      wxFinePanel.hidden = !open;
+      wxFineBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      wxFineBtn.textContent = open ? '精细设置 ▴' : '精细设置 ▾';
+    });
+  }
+
+  // 数值步进器（自绘，无浏览器原生 spinner）
+  root.querySelectorAll('.wx-step').forEach(function (box) {
+    const key = box.getAttribute('data-key');
+    const min = Number(box.getAttribute('data-min'));
+    const max = Number(box.getAttribute('data-max'));
+    const step = Number(box.getAttribute('data-step'));
+    const field = box.querySelector('input');
+    const fmt = function (v) { return step < 1 ? String(Math.round(v * 100) / 100) : String(Math.round(v)); };
+    const paint = function () { field.value = fmt(Number(wxLayout[key])); };
+    paint();
+    const commit = function (raw) {
+      let v = parseFloat(String(raw).replace(/[^\d.-]/g, ''));
+      if (!isFinite(v)) { paint(); return; }
+      v = Math.min(max, Math.max(min, v));
+      wxLayout[key] = v;
+      saveLayout();
+      applyLayout(preview); applyLayout(wxPreview);
+    };
+    field.addEventListener('input', function () { commit(field.value); });
+    field.addEventListener('blur', function () { paint(); });
+    box.addEventListener('click', function (e) {
+      const b = e.target.closest('[data-d]');
+      if (!b) return;
+      const dir = Number(b.getAttribute('data-d'));
+      let v = Number(wxLayout[key]) + dir * step;
+      v = Math.min(max, Math.max(min, Math.round(v * 100) / 100));
+      wxLayout[key] = v;
+      saveLayout(); paint();
+      applyLayout(preview); applyLayout(wxPreview);
+    });
+    box.__paint = paint;
+  });
+
+  // 开关（自绘，替代 checkbox）
+  root.querySelectorAll('.wx-switch').forEach(function (b) {
+    const key = b.getAttribute('data-key');
+    const paint = function () {
+      b.classList.toggle('is-on', !!wxLayout[key]);
+      b.setAttribute('aria-pressed', String(!!wxLayout[key]));
+    };
+    paint();
+    b.__paint = paint;
+    b.addEventListener('click', function () {
+      wxLayout[key] = !wxLayout[key];
+      saveLayout(); paint();
+      applyLayout(preview); applyLayout(wxPreview);
+      if (key === 'footnote') { applyFootnote(preview); applyFootnote(wxPreview); }
+    });
+  });
+
+  // 字体下拉（站内菜单，替代原生 select）
+  const fontMenu = root.querySelector('#fontMenu');
+  const fontBtns = Array.from(root.querySelectorAll('.wx-font'));
+  let fontTarget = null;
+  function paintFonts() {
+    fontBtns.forEach(function (b) {
+      const k = b.getAttribute('data-fontkey');
+      b.textContent = (FONT_LABEL[wxLayout[k]] || '默认') + ' ▾';
+    });
+  }
+  fontBtns.forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      fontTarget = b.getAttribute('data-fontkey');
+      const open = fontMenu.hidden;
+      fontMenu.hidden = !open;
+      if (open) positionMenu(b, fontMenu);
+    });
+  });
+  if (fontMenu) {
+    fontMenu.addEventListener('click', function (e) {
+      const item = e.target.closest('[data-fval]');
+      if (!item || !fontTarget) return;
+      wxLayout[fontTarget] = item.getAttribute('data-fval');
+      ensureFont(wxLayout[fontTarget]);
+      saveLayout();
+      fontMenu.hidden = true;
+      paintFonts();
+      applyLayout(preview); applyLayout(wxPreview);
+    });
+    document.addEventListener('click', function (e) {
+      if (!fontMenu.hidden && !e.target.closest('#fontMenu') && !e.target.closest('.wx-font')) fontMenu.hidden = true;
+    });
+  }
+  paintFonts();
+
+  const lfReset = root.querySelector('#lfReset');
+  if (lfReset) lfReset.addEventListener('click', function () {
+    wxLayout = Object.assign({}, WX_LAYOUT_DEF, { dark: wxLayout.dark });
+    saveLayout();
+    root.querySelectorAll('.wx-step').forEach(function (b) { if (b.__paint) b.__paint(); });
+    root.querySelectorAll('.wx-switch').forEach(function (b) { if (b.__paint) b.__paint(); });
+    paintFonts();
+    paintPreset();
+    applyLayout(preview); applyLayout(wxPreview);
+    applyFootnote(preview); applyFootnote(wxPreview);
+  });
+
+  // 微信暗色
+  const wxDarkBtn = root.querySelector('#wxDarkBtn');
+  function paintDark() {
+    if (!wxDarkBtn) return;
+    wxDarkBtn.classList.toggle('is-on', !!wxLayout.dark);
+    wxDarkBtn.setAttribute('aria-pressed', String(!!wxLayout.dark));
+  }
+  if (wxDarkBtn) wxDarkBtn.addEventListener('click', function () {
+    wxLayout.dark = !wxLayout.dark; saveLayout();
+    paintDark();
+    applyLayout(preview); applyLayout(wxPreview);
+  });
+  paintDark();
+
+  wxOptBtns.forEach(function (b) {
+    const key = b.getAttribute('data-wxopt');
+    if (key === 'footnote' || key === 'codeScroll') {
+      const paintChip = function () {
+        b.classList.toggle('is-on', !!wxLayout[key]);
+        b.setAttribute('aria-pressed', String(!!wxLayout[key]));
+      };
+      paintChip();
+      b.__paintChip = paintChip;
+      b.addEventListener('click', function () {
+        wxLayout[key] = !wxLayout[key];
+        saveLayout(); paintChip();
+        applyLayout(preview); applyLayout(wxPreview);
+        if (key === 'footnote') { applyFootnote(preview); applyFootnote(wxPreview); }
+      });
+      return;
+    }
+    const on = !!wxOptState[key];
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', String(on));
+    b.addEventListener('click', function () {
+      wxOptState[key] = !wxOptState[key];
+      b.classList.toggle('is-on', wxOptState[key]);
+      b.setAttribute('aria-pressed', String(wxOptState[key]));
+      try { localStorage.setItem(WX_OPT_KEY, JSON.stringify(wxOptState)); } catch (e) {}
+      applyWxOptions(preview);
+      applyWxOptions(wxPreview);
+      paintPreset();
+    });
+  });
+
+  // 预览与微信排版共用同一套排版开关
+  setTimeout(function () { applyWxOptions(preview); }, 0);
+
   // 排版预设同时作用于「预览」与「微信排版」，两处看到的是同一套排版
   function paintPreset() {
-    const p = WX_PRESETS[presetKey] || WX_PRESETS.standard;
-    [preview, wxPreview].forEach(function (host) {
-      if (!host) return;
-      host.style.fontSize = p.fs + 'px';
-      host.style.lineHeight = String(p.lh);
-      host.style.letterSpacing = p.ls ? p.ls + 'em' : 'normal';
-      host.querySelectorAll('p, li').forEach(function (el) { el.style.marginBottom = p.gap; });
-    });
     if (wxPresetBtn) wxPresetBtn.textContent = '排版 · ' + (PRESET_LABEL[presetKey] || '标准') + ' ▾';
   }
 
   function setPreset(key) {
     presetKey = WX_PRESETS[key] ? key : 'standard';
     try { localStorage.setItem('mdp:v1:wxp', presetKey); } catch (e) {}
+    // 预设只是"起点"：把数值灌进精细参数，之后以手工数值为准
+    const p = WX_PRESETS[presetKey];
+    wxLayout.fs = p.fs;
+    wxLayout.lh = p.lh;
+    wxLayout.gap = parseFloat(String(p.gap)) || 16;
+    saveLayout();
+    root.querySelectorAll('.wx-step').forEach(function (b) { if (b.__paint) b.__paint(); });
+    applyLayout(preview); applyLayout(wxPreview);
     paintPreset();
   }
 
@@ -321,7 +818,19 @@ export default function render(root) {
     });
     preview.hidden = isWx;
     wxWrap.hidden = !isWx;
+    const entering = isWx ? wxWrap : preview;
+    if (entering) {
+      entering.classList.remove('is-entering');
+      void entering.offsetWidth;          // 强制重排，让动画可以重复触发
+      entering.classList.add('is-entering');
+    }
     if (isWx) {
+      const phone = root.querySelector('.wx__phone');
+      if (phone) {
+        const target = Math.min(375, wxWrap.clientWidth - 32) + 'px';
+        phone.style.width = '300px';
+        requestAnimationFrame(function () { requestAnimationFrame(function () { phone.style.width = target; }); });
+      }
       wxPreview.innerHTML = '';
       const clone = preview.cloneNode(true);
       clone.removeAttribute('id');
@@ -330,6 +839,7 @@ export default function render(root) {
       // 标题锚点只服务编辑器，进微信排版会变成多余的 '#'，且会被复制出去
       clone.querySelectorAll('.md-anchor').forEach(function (a) { a.remove(); });
       wxPreview.appendChild(clone);
+      applyWxOptions();
       paintPreset();
     }
   }
@@ -340,7 +850,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=9288a2a7');
+      const mod = await import('./export.js?v=e58d0b87');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {
@@ -527,6 +1037,7 @@ export default function render(root) {
       const out = renderMarkdown(val, { onCopy: toast });
       // 用真实元素替换：保留 Mermaid/KaTeX/灯箱/复制按钮的事件与异步装饰
       preview.replaceChildren(out.element);
+    try { applyWxOptions(preview); } catch (e) {}
       preview.querySelectorAll('img').forEach((img) => { img.style.cursor = 'zoom-in'; });
     }, 180);
   };
@@ -670,6 +1181,43 @@ export default function render(root) {
   });
 
   // 示例下拉：空标签直接填入；已有内容则新建标签，绝不覆盖用户稿子
+  // 代码主题：与主题页共用同一个 localStorage 键，两边联动
+  const codeBtn = root.querySelector('#codeBtn');
+  const codeMenu = root.querySelector('#codeMenu');
+  const CODE_LABEL = { '': '默认', 'github-light': 'GitHub Light', 'github-dark': 'GitHub Dark', monokai: 'Monokai', 'one-dark': 'One Dark', 'solarized-light': 'Solarized Light', dracula: 'Dracula', 'wechat-gray': '微信原生灰' };
+  function paintCode() {
+    const cur = localStorage.getItem('mdp:v1:code-theme') || '';
+    if (codeBtn) codeBtn.textContent = '代码 · ' + (CODE_LABEL[cur] || '默认') + ' ▾';
+    if (codeMenu) codeMenu.querySelectorAll('[data-code]').forEach(function (b) {
+      b.classList.toggle('is-on', (b.getAttribute('data-code') || '') === cur);
+    });
+  }
+  if (codeBtn && codeMenu) {
+    const closeCodeMenu = function () { codeMenu.hidden = true; codeBtn.setAttribute('aria-expanded', 'false'); };
+    codeBtn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      const open = codeMenu.hidden;
+      codeMenu.hidden = !open;
+      codeBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) positionMenu(codeBtn, codeMenu);
+    });
+    codeMenu.addEventListener('click', function (ev) {
+      const b = ev.target.closest('[data-code]');
+      if (!b) return;
+      const key = b.getAttribute('data-code');
+      if (key) document.documentElement.dataset.codeTheme = key;
+      else delete document.documentElement.dataset.codeTheme;
+      localStorage.setItem('mdp:v1:code-theme', key || '');
+      paintCode();
+      closeCodeMenu();
+    });
+    document.addEventListener('click', function (ev) {
+      if (!codeMenu.hidden && !ev.target.closest('#codeMenu') && !ev.target.closest('#codeBtn')) closeCodeMenu();
+    });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeCodeMenu(); });
+  }
+  paintCode();
+
   const sampleBtn = root.querySelector('#sampleBtn');
   const sampleMenu = root.querySelector('#sampleMenu');
   const closeSampleMenu = () => { sampleMenu.hidden = true; sampleBtn.setAttribute('aria-expanded', 'false'); };

@@ -1,7 +1,8 @@
 import { derivePaletteCached as derivePalette } from '../theme-custom.js';
+import { mountReactbitsFX } from '../fx/reactbits.js?v=e58d0b87';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=9288a2a7';
+import { THEMES } from '../../data/themes.js?v=e58d0b87';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -88,5 +89,83 @@ export default async function render(root) {
   THEMES.slice(0, 18).forEach((t) => { if (t && t.brand) strip.appendChild(buildChip(t)); });
   sec2.append(head2, strip);
 
-  root.append(hero, features, sec, sec2);
+  // ===== 三步流程 =====
+  const flow3 = el('section', 'home__section flow3');
+  const fhead = el('div', 'section__head');
+  fhead.appendChild(el('h2', 'section__title', '三步走完一篇'));
+  flow3.appendChild(fhead);
+  const steps = el('div', 'flow3__grid');
+  [
+    ['1', '写 Markdown', '左边写，右边实时预览。支持标题、表格、代码块、公式。'],
+    ['2', '选主题与风格', '153 套页面主题、7 套代码主题、8 种设计风格，互不打架。'],
+    ['3', '复制到公众号', '一键复制内联样式富文本，粘进公众号不丢格式。']
+  ].forEach(function (it) {
+    const card = el('div', 'flow3__item');
+    card.appendChild(el('span', 'flow3__num', it[0]));
+    card.appendChild(el('h3', 'flow3__title', it[1]));
+    card.appendChild(el('p', 'flow3__desc', it[2]));
+    steps.appendChild(card);
+  });
+  flow3.appendChild(steps);
+
+  // ===== 同稿多主题 =====
+  const same = el('section', 'home__section same');
+  const shead = el('div', 'section__head');
+  shead.appendChild(el('h2', 'section__title', '同一段字，三种气质'));
+  const more3 = el('a', 'section__more', '换主题 →');
+  more3.href = '#/themes';
+  shead.appendChild(more3);
+  same.appendChild(shead);
+  const picks = THEMES.filter(function (t) { return t && t.brand; }).slice(0, 3);
+  const sgrid = el('div', 'same__grid');
+  picks.forEach(function (t) {
+    const card = el('article', 'same__card');
+    const label = el('div', 'same__label');
+    label.appendChild(el('span', 'same__dot', ''));
+    label.lastChild.style.background = t.brand;
+    label.appendChild(el('span', 'same__name', t.name));
+    const body = el('div', 'same__body');
+    const h = el('h3', 'same__h');
+    h.style.color = t.brand;
+    h.textContent = '标题示例 Heading';
+    const p = el('p', 'same__p');
+    p.textContent = '正文示例：写一份 Markdown，导出各平台可用的排版结果。';
+    const q = el('blockquote', 'same__q');
+    q.style.borderLeftColor = t.brand;
+    q.textContent = '引用块也会跟随主色。';
+    body.append(h, p, q);
+    card.append(label, body);
+    sgrid.appendChild(card);
+  });
+  same.appendChild(sgrid);
+
+  // ===== 排版示例 =====
+  const demo = el('section', 'home__section demo');
+  const dhead = el('div', 'section__head');
+  dhead.appendChild(el('h2', 'section__title', '能做到的排版'));
+  demo.appendChild(dhead);
+  const sheet = el('div', 'demo__sheet');
+  const dnum = el('h3', 'demo__h');
+  const badge = el('span', 'demo__badge', '01');
+  dnum.append(badge, document.createTextNode('实时预览与内联导出'));
+  const dcall = el('div', 'demo__callout');
+  dcall.appendChild(el('div', 'demo__callout-title', '核心洞察'));
+  dcall.appendChild(el('p', '', '好的创作工具不该让作者在「写什么」和「怎么涂颜色」之间反复横跳。'));
+  const dtable = el('table', 'demo__table');
+  const thead = el('thead');
+  const trh = el('tr');
+  ['排版维度', '传统套路', '现代审美'].forEach(function (h) { trh.appendChild(el('th', '', h)); });
+  thead.appendChild(trh);
+  const tbody = el('tbody');
+  [['色彩使用', '多色混搭', '单一主色'], ['表格呈现', '全封闭网格', '极简三线表']].forEach(function (row) {
+    const tr = el('tr');
+    row.forEach(function (c) { tr.appendChild(el('td', '', c)); });
+    tbody.appendChild(tr);
+  });
+  dtable.append(thead, tbody);
+  sheet.append(dnum, dcall, dtable);
+  demo.appendChild(sheet);
+
+  root.append(hero, features, sec, sec2, flow3, same, demo);
+  try { mountReactbitsFX(root); } catch (e) {}
 }

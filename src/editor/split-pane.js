@@ -4,7 +4,7 @@ export function initSplitPane(root, { key = 'mdp:v1:split' } = {}) {
   const left = root.querySelector('.editor__pane--edit');
   if (!bar || !left) return;
 
-  const saved = Number(localStorage.getItem(key) || 50);
+  const saved = Number(localStorage.getItem(key) || 42);
   setPct(saved);
 
   function setPct(pct) {

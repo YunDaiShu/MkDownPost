@@ -5,6 +5,7 @@
   padding: var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); position: relative;
   min-height: 56px;
+  flex-wrap: nowrap;
 }
 .editor__tool {
   min-width: 34px; height: 34px; padding: 0 var(--sp-2);
@@ -366,3 +367,55 @@ body:has(.editor) .app-footer { display: none; }
   .editor__tools-wrap, .editor__controls { min-width: 0; }
   #sampleBtn, #exportBtn { padding: 0 8px; }
 }
+
+
+
+/* ===== 工具栏两行布局（有意为之，不是挤出来的） ===== */
+.editor__bar { flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-2); }
+.editor__bar > .editor__tools-wrap {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px;
+  flex: 1 1 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--c-divider);
+}
+.editor__bar > .editor__controls {
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 6px;
+  flex: 0 1 auto; min-width: 0;
+  margin-left: 0;
+}
+.editor__bar .btn, .editor__bar .seg__btn { white-space: nowrap; }
+#codeBtn { max-width: 176px; overflow: hidden; text-overflow: ellipsis; }
+
+.editor__bar > .editor__controls::-webkit-scrollbar { display: none; }
+#codeBtn { max-width: 150px; }
+
+.editor__bar { justify-content: flex-start; }
+/* 第二行里，动作类按钮推到最右，其余靠左，与图标左边缘对齐 */
+.editor__bar > .editor__controls { margin-right: auto; }
+
+
+/* ===== 手机框宽度平滑变化（切换视图时 300px → 375px） ===== */
+.wx__phone { width: min(375px, 100%); transition: width var(--dur-3, 240ms) cubic-bezier(.16, 1, .3, 1); }
+@media (prefers-reduced-motion: reduce) { .wx__phone { transition: none; } }
+
+/* 工具栏第二行：所有控件收进容器，左对齐，与图标左边缘齐平 */
+.editor__bar { flex-wrap: wrap !important; }
+.editor__bar > .editor__tools-wrap { flex: 1 1 100% !important; padding-bottom: 8px; border-bottom: 1px solid var(--c-divider); }
+.editor__bar > .editor__bar-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--sp-2);
+  flex: 1 1 100%;
+  justify-content: flex-start;
+}
+.editor__bar > .editor__bar-actions > * { flex: 0 0 auto; }
+
+
+/* ===== 工具栏：两行结构（图标行 + 操作行），不再依赖 order 补丁 ===== */
+.editor__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.editor__bar > .editor__tools-wrap { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--c-divider); }
+.editor__bar > .editor__row--actions { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--sp-2); }
+.editor__bar > .editor__row--actions > * { flex: 0 0 auto; }
+.editor__bar .editor__spacer { display: none; }
+
+/* 操作行内部：控件组不换行、不占满，导出跟随其后 */
+.editor__row--actions > .editor__controls { flex: 0 0 auto; flex-wrap: nowrap; min-width: 0; }
+.editor__row--actions > .editor__controls .editor__menu { position: fixed; }

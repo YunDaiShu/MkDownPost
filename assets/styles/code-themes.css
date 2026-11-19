@@ -15,6 +15,8 @@
 :root[data-code-theme="one-dark"] { --code-bg: #282C34; --code-fg: #ABB2BF; --code-kw: #C678DD; --code-str: #98C379; --code-com: #5C6370; --code-num: #D19A66; }
 /* Solarized Light */
 :root[data-code-theme="solarized-light"] { --code-bg: #FDF6E3; --code-fg: #657B83; --code-kw: #859900; --code-str: #2AA198; --code-com: #93A1A1; --code-num: #D33682; }
+/* 微信原生 · 公众号灰（浅色，深色模式反色后仍可读） */
+:root[data-code-theme="wechat-gray"] { --code-bg: #F7F7F7; --code-fg: #333333; --code-kw: #C7254E; --code-str: #1F7A3F; --code-com: #8C8C8C; --code-num: #8A5A00; }
 /* Dracula */
 :root[data-code-theme="dracula"] { --code-bg: #282A36; --code-fg: #F8F8F2; --code-kw: #FF79C6; --code-str: #F1FA8C; --code-com: #6272A4; --code-num: #BD93F9; }
 
@@ -34,3 +36,22 @@
 :root[data-code-theme] .editor__hl .tok-table { color: var(--code-num); }
 /* 行内代码与代码块底纹跟随主题（原来固定 --c-code-bg） */
 :root[data-code-theme] .md-body code { background: color-mix(in srgb, var(--code-bg) 86%, transparent); }
+
+/* ===== 主题页代码卡片：每个卡片按自身主题渲染 Hello World 样例 ===== */
+.code-theme__sample {
+  display: block; margin-top: 8px; padding: 8px 10px; border-radius: var(--r-1);
+  background: var(--code-bg); color: var(--code-fg);
+  font: 12px/1.6 ui-monospace, Menlo, Consolas, monospace; overflow: hidden;
+}
+.code-theme__sample .tok-kw { color: var(--code-kw); }
+.code-theme__sample .tok-str { color: var(--code-str); }
+.code-theme__sample .tok-fn { color: var(--code-num); }
+
+/* 卡片内部的 dark 主题也要用对应的底色，而不是全局 --code-bg */
+.code-theme[data-code="github-light"] .code-theme__sample { --code-bg: #F6F8FA; --code-fg: #24292F; --code-kw: #CF222E; --code-str: #0A3069; --code-num: #0550AE; }
+.code-theme[data-code="github-dark"] .code-theme__sample { --code-bg: #0D1117; --code-fg: #C9D1D9; --code-kw: #FF7B72; --code-str: #A5D6FF; --code-num: #79C0FF; }
+.code-theme[data-code="monokai"] .code-theme__sample { --code-bg: #272822; --code-fg: #F8F8F2; --code-kw: #F92672; --code-str: #E6DB74; --code-num: #AE81FF; }
+.code-theme[data-code="one-dark"] .code-theme__sample { --code-bg: #282C34; --code-fg: #ABB2BF; --code-kw: #C678DD; --code-str: #98C379; --code-num: #D19A66; }
+.code-theme[data-code="solarized-light"] .code-theme__sample { --code-bg: #FDF6E3; --code-fg: #657B83; --code-kw: #859900; --code-str: #2AA198; --code-num: #D33682; }
+.code-theme[data-code="wechat-gray"] .code-theme__sample { --code-bg: #F7F7F7; --code-fg: #333333; --code-kw: #C7254E; --code-str: #1F7A3F; --code-num: #8A5A00; }
+.code-theme[data-code="dracula"] .code-theme__sample { --code-bg: #282A36; --code-fg: #F8F8F2; --code-kw: #FF79C6; --code-str: #F1FA8C; --code-num: #BD93F9; }

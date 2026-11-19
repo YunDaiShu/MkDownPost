@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=9288a2a7';
-import { apply, get, exportCSS } from '../theme-manager.js?v=9288a2a7';
-import { toast } from '../components/theme-switcher.js?v=9288a2a7';
-import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=9288a2a7';
+import { THEMES } from '../../data/themes.js?v=e58d0b87';
+import { apply, get, exportCSS } from '../theme-manager.js?v=e58d0b87';
+import { toast } from '../components/theme-switcher.js?v=e58d0b87';
+import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=e58d0b87';
 
 const GROUP_LABEL = {
   all: '全部',
@@ -142,7 +142,7 @@ export default function render(root, params) {
   });
 
   // ===== 代码主题分区（与页面配色主题分开） =====
-  const CODE_THEMES = [{"key":"github-light","name":"GitHub Light","note":"浅色 · 默认"},{"key":"github-dark","name":"GitHub Dark","note":"深色 · 通用"},{"key":"monokai","name":"Monokai","note":"高饱和"},{"key":"one-dark","name":"One Dark","note":"编辑器经典"},{"key":"solarized-light","name":"Solarized Light","note":"低对比护眼"},{"key":"dracula","name":"Dracula","note":"紫青对比"}];
+  const CODE_THEMES = [{"key":"github-light","name":"GitHub Light","note":"浅色 · 默认"},{"key":"github-dark","name":"GitHub Dark","note":"深色 · 通用"},{"key":"monokai","name":"Monokai","note":"高饱和"},{"key":"one-dark","name":"One Dark","note":"编辑器经典"},{"key":"solarized-light","name":"Solarized Light","note":"低对比护眼"},{"key":"dracula","name":"Dracula","note":"紫青对比"},{"key":"wechat-gray","name":"微信原生 · 公众号灰","note":"浅色 · 深色模式友好"}];
   const codeThemeSection = document.createElement('section');
   codeThemeSection.className = 'code-themes';
   codeThemeSection.innerHTML = [
@@ -153,6 +153,10 @@ export default function render(root, params) {
       return '<button class="code-theme" type="button" data-code="' + c.key + '">' +
         '<span class="code-theme__name">' + c.name + '</span>' +
         '<span class="code-theme__note">' + c.note + '</span>' +
+        '<span class="code-theme__sample" data-sample-code="' + c.key + '"><code>' +
+          '<span class="tok-kw">const</span> msg = <span class="tok-str">' + "'Hello World'" + '</span>;' +
+          '<br><span class="tok-fn">console</span>.log(msg);' +
+        '</code></span>' +
         '</button>';
     }).join(''),
     '</div>'
