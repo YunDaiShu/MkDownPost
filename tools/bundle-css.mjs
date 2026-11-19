@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css'];
+const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'editor.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
 
 const read = (f) => {
   const p = path.join(ROOT, 'assets/styles', f);

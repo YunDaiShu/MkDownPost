@@ -11,10 +11,10 @@
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
 import { defineRoute, setNotFound, startRouter , prefetchRoute } from './router.js';
-import * as Themes from './theme-manager.js?v=464c15a3';
-import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=464c15a3';
-import { bindShortcutSheet } from './components/shortcut-sheet.js?v=464c15a3';
-import { cycle as cycleTheme } from './theme-manager.js?v=464c15a3';
+import * as Themes from './theme-manager.js?v=2fbbb807';
+import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=2fbbb807';
+import { bindShortcutSheet } from './components/shortcut-sheet.js?v=2fbbb807';
+import { cycle as cycleTheme } from './theme-manager.js?v=2fbbb807';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -35,15 +35,15 @@ function applyMode(pref) {
 }
 
 /* ---------- 路由表（页面模块在 M6 补全，当前为占位） ---------- */
-defineRoute('/', () => import('./pages/home.js?v=464c15a3'), () => 'MkDownPost · 码稿');
-defineRoute('/editor', () => import('./pages/editor.js?v=464c15a3'), () => '编辑器 · MkDownPost');
-defineRoute('/article/:slug', () => import('./pages/article.js?v=464c15a3'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+defineRoute('/', () => import('./pages/home.js?v=2fbbb807'), () => 'MkDownPost · 码稿');
+defineRoute('/editor', () => import('./pages/editor.js?v=2fbbb807'), () => '编辑器 · MkDownPost');
+defineRoute('/article/:slug', () => import('./pages/article.js?v=2fbbb807'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
 // /wechat 已并入编辑器右栏（预览 / 微信排版），路由保留兼容直达
-  defineRoute('/wechat', () => import('./pages/editor.js?v=464c15a3'), () => '编辑器 · MkDownPost');
-defineRoute('/themes', () => import('./pages/themes.js?v=464c15a3'), () => '主题库 · MkDownPost');
-defineRoute('/articles', () => import('./pages/articles.js?v=464c15a3'), () => '全部内容 · MkDownPost');
-defineRoute('/about', () => import('./pages/about.js?v=464c15a3'), () => '关于 · MkDownPost');
-setNotFound(() => import('./pages/notfound.js?v=464c15a3'), '页面不存在 · MkDownPost');
+  defineRoute('/wechat', () => import('./pages/editor.js?v=2fbbb807'), () => '编辑器 · MkDownPost');
+defineRoute('/themes', () => import('./pages/themes.js?v=2fbbb807'), () => '主题库 · MkDownPost');
+defineRoute('/articles', () => import('./pages/articles.js?v=2fbbb807'), () => '全部内容 · MkDownPost');
+defineRoute('/about', () => import('./pages/about.js?v=2fbbb807'), () => '关于 · MkDownPost');
+setNotFound(() => import('./pages/notfound.js?v=2fbbb807'), '页面不存在 · MkDownPost');
 
 /* ---------- 启动 ---------- */
 function boot() {
@@ -121,7 +121,7 @@ idle(() => {
 });
 
 /* ---------- Service Worker：离线与秒开（第二次访问起静态资源走本地缓存） ---------- */
-import { initSpotlight } from './fx/spotlight.js?v=464c15a3';
+import { initSpotlight } from './fx/spotlight.js?v=2fbbb807';
 
 const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 if (!isDev && 'serviceWorker' in navigator && location.protocol === 'https:') {
