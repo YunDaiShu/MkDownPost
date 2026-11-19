@@ -1,11 +1,11 @@
 /* sw.js — 离线缓存：HTML 走网络优先，静态资源（带版本戳）缓存优先 */
-const VERSION = 'vc6c7b1a7';
+const VERSION = 'va873d312';
 const STATIC_CACHE = 'mdp-static-' + VERSION;
 const HTML_CACHE = 'mdp-html-' + VERSION;
 
 /* 首次安装时预热应用外壳（index + 关键 CSS + 入口模块），
    其余带版本戳的资源在首次被 SW 接管后的访问中进入缓存 */
-const PRECACHE = ['./', './index.html?v=c6c7b1a7', './assets/styles/critical.css?v=c6c7b1a7', './assets/styles/rest.css?v=c6c7b1a7', './src/main.js?v=c6c7b1a7', './src/router.js?v=c6c7b1a7'];
+const PRECACHE = ['./', './index.html?v=a873d312', './assets/styles/critical.css?v=a873d312', './assets/styles/rest.css?v=a873d312', './src/main.js?v=a873d312', './src/router.js?v=a873d312'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
@@ -39,13 +39,14 @@ self.addEventListener('fetch', (e) => {
   if (req.mode === 'navigate') {
     e.respondWith((async () => {
       try {
-        const fresh = await fetch(req);
+        // no-store：绕过 Pages CDN 对 HTML 的 10 分钟缓存，保证刷新即拿新版
+        const fresh = await fetch(new Request(req, { cache: 'no-store' }));
         const cache = await caches.open(HTML_CACHE);
         cache.put(req, fresh.clone());
         return fresh;
       } catch {
         const cache = await caches.open(HTML_CACHE);
-        return (await cache.match(req)) || (await cache.match('./index.html?v=c6c7b1a7')) || Response.error();
+        return (await cache.match(req)) || (await cache.match('./index.html?v=a873d312')) || Response.error();
       }
     })());
     return;
@@ -55,7 +56,11 @@ self.addEventListener('fetch', (e) => {
   e.respondWith((async () => {
     const cache = await caches.open(STATIC_CACHE);
     const hit = await cache.match(req);
-    if (hit) return hit;
+    if (hit) {
+      // 后台静默刷新，下一次访问即拿到新内容
+      fetch(req).then(function (res) { if (res && res.ok) cache.put(req, res.clone()); }).catch(function () {});
+      return hit;
+    }
     try {
       const res = await fetch(req);
       if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
