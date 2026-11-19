@@ -801,3 +801,12 @@
 .wx-tile__unit { grid-column: 3; font-size: 11px; }
 .wx-tile .wx-step { grid-column: 2; height: 28px; }
 .wx-tile .wx-switch, .wx-tile .wx-font { grid-column: 2 / -1; height: 28px; }
+
+/* 字体：窄面板下一行三个紧凑选择器 */
+.wx-sec--fonts .wx-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.wx-sec--fonts .wx-tile {
+  grid-template-columns: 1fr; row-gap: 2px; padding: 4px 6px;
+  border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface);
+}
+.wx-sec--fonts .wx-tile__label { grid-column: 1; justify-self: center; font-size: 11px; line-height: 1.2; }
+.wx-sec--fonts .wx-font { grid-column: 1; width: 100%; height: 26px; padding: 0 4px; font-size: 11px; }
