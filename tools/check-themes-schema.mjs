@@ -48,14 +48,14 @@ export function duplicateKeys(list) {
 }
 
 export async function loadThemes() {
-  const out = [];
+  // data/themes.js 是合并后的权威数据；themes.generated.js 是它的生成源，不能叠加统计
   for (const f of ['data/themes.js', 'data/themes.generated.js']) {
     const p = path.join(ROOT, f);
     if (!fs.existsSync(p)) continue;
     const mod = await import(pathToFileURL(p).href);
-    for (const v of Object.values(mod)) if (Array.isArray(v)) out.push(...v);
+    for (const v of Object.values(mod)) if (Array.isArray(v) && v.length) return v;
   }
-  return out;
+  return [];
 }
 
 const isMain = process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url;

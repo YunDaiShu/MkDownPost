@@ -208,6 +208,7 @@ function vars(brand, mode) {
 
 const css = ['/* themes.generated.css — 由 tools/gen-themes.mjs 生成，请勿手改 */', ''];
 const meta = [];
+  const seenKeys = new Set();
 let worst = 99;
 
 for (const seed of SEEDS) {
@@ -220,7 +221,9 @@ for (const seed of SEEDS) {
     const r = Math.min(ratio(v['--c-text'], v['--c-bg']), ratio(v['--c-primary-text'], v['--c-bg']));
     worst = Math.min(worst, r);
   }
-  meta.push({ key, name, group, brand: { light: l, dark: d }, note: GROUP_NOTE[group] || '品牌色（近似取色）' });
+  if (seenKeys.has(key)) continue;
+    seenKeys.add(key);
+    meta.push({ key, name, group, brand: { light: l, dark: d }, note: GROUP_NOTE[group] || '品牌色（近似取色）' });
 }
 
 fs.writeFileSync(path.join(ROOT, 'assets/styles/themes.generated.css'), css.join('\n') + '\n');

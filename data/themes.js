@@ -1,5 +1,6 @@
 /* data/themes.js — 主题元数据（供 UI、复制 CSS、快捷键循环使用）
-   注意：brand 色值为「近似取色」，非官方规范，可在此一处替换。 */
+   注意：brand 色值为「近似取色」，非官方规范，可在此一处替换。
+   去重策略：手调优先，生成数据里同 key 的重复项被丢弃（历史上确实出现过 6 个重复 key）。 */
 import { GENERATED } from './themes.generated.js';
 
 /** 手调 8 套（品牌色人工校对） */
@@ -14,8 +15,14 @@ const HAND = [
   { key: 'github',      name: 'GitHub',        group: 'dev',     brand: { light: '#0969DA', dark: '#79C0FF' }, note: '开发者向' }
 ];
 
-/** 全部主题：手调 8 + 生成 42 = 50 */
-export const THEMES = [...HAND, ...GENERATED];
+/** 合并 + 按 key 去重（保留首次出现，即手调优先） */
+const seen = new Set();
+export const THEMES = [...HAND, ...GENERATED].filter((t) => {
+  if (!t || !t.key) return false;
+  if (seen.has(t.key)) return false;
+  seen.add(t.key);
+  return true;
+});
 
 /** 按 key 取主题元数据 */
 export function themeMeta(key) {

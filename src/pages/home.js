@@ -1,8 +1,8 @@
 import { derivePaletteCached as derivePalette } from '../theme-custom.js';
-import { mountReactbitsFX } from '../fx/reactbits.js?v=92f8b73f';
+import { mountReactbitsFX } from '../fx/reactbits.js?v=c874497c';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=92f8b73f';
+import { THEMES } from '../../data/themes.js?v=c874497c';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -97,7 +97,7 @@ export default async function render(root) {
   const steps = el('div', 'flow3__grid');
   [
     ['1', '写 Markdown', '左边写，右边实时预览。支持标题、表格、代码块、公式。'],
-    ['2', '选主题与风格', '153 套页面主题、7 套代码主题、8 种设计风格，互不打架。'],
+    ['2', '选主题与风格', '147 套、7 套代码主题、8 种设计风格，互不打架。'],
     ['3', '复制到公众号', '一键复制内联样式富文本，粘进公众号不丢格式。']
   ].forEach(function (it) {
     const card = el('div', 'flow3__item');
