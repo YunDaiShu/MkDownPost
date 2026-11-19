@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=0317072f';
-import { initShortcuts } from './shortcuts.js?v=0317072f';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=0317072f';
-import { initAutosave } from './autosave.js?v=0317072f';
-import { SAMPLE_MAIN } from './sample-main.js?v=0317072f';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=0317072f';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=0317072f';
-import { toast } from '../components/theme-switcher.js?v=0317072f';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=0317072f';
+import { initSplitPane } from './split-pane.js?v=d6bf64d6';
+import { initShortcuts } from './shortcuts.js?v=d6bf64d6';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=d6bf64d6';
+import { initAutosave } from './autosave.js?v=d6bf64d6';
+import { SAMPLE_MAIN } from './sample-main.js?v=d6bf64d6';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=d6bf64d6';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=d6bf64d6';
+import { toast } from '../components/theme-switcher.js?v=d6bf64d6';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=d6bf64d6';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=0317072f'),
-      import('../markdown/renderer.js?v=0317072f')
+      import('../markdown/vendor-loader.js?v=d6bf64d6'),
+      import('../markdown/renderer.js?v=d6bf64d6')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=0317072f');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=d6bf64d6');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=0317072f');
+  if (!_exportMod) _exportMod = await import('./export.js?v=d6bf64d6');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=0317072f');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=d6bf64d6');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=0317072f');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=d6bf64d6');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=0317072f');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=d6bf64d6');
   return _mathMod;
 };
 
@@ -329,6 +329,27 @@ export default function render(root) {
       row.appendChild(el);
     });
     bar.appendChild(row);
+  })();
+
+  // 工具栏快速排版条：把「版式」整段与「字号/行距」两个数值块搬进工具栏空位
+  (function mountQuickbar() {
+    const bar = root.querySelector('.editor__bar');
+    const panel = root.querySelector('#wxFinePanel');
+    if (!bar || !panel) return;
+    const quick = document.createElement('div');
+    quick.className = 'editor__quickbar';
+    quick.setAttribute('aria-label', '快速排版');
+
+    const layoutSec = [...panel.querySelectorAll('.wx-sec')].find(function (sec) { return /^版式/.test(sec.textContent.trim()); });
+    if (layoutSec) quick.appendChild(layoutSec);
+
+    ['fs', 'lh'].forEach(function (key) {
+      const step = panel.querySelector('.wx-step[data-key="' + key + '"]');
+      const tile = step && step.closest('.wx-tile');
+      if (tile) quick.appendChild(tile);
+    });
+
+    bar.appendChild(quick);
   })();
 
   const ta = root.querySelector('#ta');
@@ -935,7 +956,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=0317072f');
+      const mod = await import('./export.js?v=d6bf64d6');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {

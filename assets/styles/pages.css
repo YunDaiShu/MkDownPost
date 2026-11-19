@@ -774,3 +774,30 @@
 .wx-tile { padding: 6px 8px; row-gap: 4px; }
 .wx-tiles { gap: 6px; }
 .wx-sec--actions { padding-top: 8px; }
+
+/* ===== 工具栏快速排版条（红框位置） ===== */
+.editor__quickbar {
+  flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  padding: 6px 0 2px;
+}
+.editor__quickbar .wx-sec { display: flex; align-items: center; gap: 8px; }
+.editor__quickbar .wx-sec__head { display: none; }
+.editor__quickbar .wx-tile {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 8px; height: 30px; border: 1px solid var(--c-border);
+  border-radius: var(--r-2); background: var(--c-surface);
+}
+.editor__quickbar .wx-tile__label { font-size: 12px; color: var(--c-text-muted); }
+.editor__quickbar .wx-tile__unit { font-size: 11px; color: var(--c-text-muted); }
+.editor__quickbar .wx-step { width: 92px; height: 24px; border: 0; background: transparent; }
+
+/* ===== 面板里的数值：内联一行，不再用卡片 ===== */
+.wx-tiles { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 4px 18px; }
+.wx-tile {
+  display: grid; grid-template-columns: 56px 104px auto; align-items: center; gap: 8px;
+  padding: 3px 0; border: 0; border-radius: 0; background: transparent;
+}
+.wx-tile__label { grid-column: 1; font-size: 12px; }
+.wx-tile__unit { grid-column: 3; font-size: 11px; }
+.wx-tile .wx-step { grid-column: 2; height: 28px; }
+.wx-tile .wx-switch, .wx-tile .wx-font { grid-column: 2 / -1; height: 28px; }
