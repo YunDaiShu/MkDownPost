@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=5b176f2e';
-import { initShortcuts } from './shortcuts.js?v=5b176f2e';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=5b176f2e';
-import { initAutosave } from './autosave.js?v=5b176f2e';
-import { SAMPLE_MAIN } from './sample-main.js?v=5b176f2e';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=5b176f2e';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=5b176f2e';
-import { toast } from '../components/theme-switcher.js?v=5b176f2e';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=5b176f2e';
+import { initSplitPane } from './split-pane.js?v=0317072f';
+import { initShortcuts } from './shortcuts.js?v=0317072f';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=0317072f';
+import { initAutosave } from './autosave.js?v=0317072f';
+import { SAMPLE_MAIN } from './sample-main.js?v=0317072f';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=0317072f';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=0317072f';
+import { toast } from '../components/theme-switcher.js?v=0317072f';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=0317072f';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=5b176f2e'),
-      import('../markdown/renderer.js?v=5b176f2e')
+      import('../markdown/vendor-loader.js?v=0317072f'),
+      import('../markdown/renderer.js?v=0317072f')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=5b176f2e');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=0317072f');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=5b176f2e');
+  if (!_exportMod) _exportMod = await import('./export.js?v=0317072f');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=5b176f2e');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=0317072f');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=5b176f2e');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=0317072f');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=5b176f2e');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=0317072f');
   return _mathMod;
 };
 
@@ -211,36 +211,54 @@ export default function render(root) {
             <button class="btn btn--primary" id="wxCopy" type="button">复制到公众号</button>
           </div>
           <div class="wx-fine" id="wxFinePanel" hidden>
-            <div class="wx-chip-row">
-              <span class="wx-field-label">版式</span>
-              <button class="wx-opt" type="button" data-layout="" aria-pressed="true">标准</button>
-              <button class="wx-opt" type="button" data-layout="editorial" aria-pressed="false">评论</button>
-              <button class="wx-opt" type="button" data-layout="tech" aria-pressed="false">技术</button>
-              <button class="wx-opt" type="button" data-layout="event" aria-pressed="false">活动</button>
-              <button class="wx-opt" type="button" data-layout="release" aria-pressed="false">更新</button>
-            </div>
-            <div class="wx-chip-row">
-              <button class="wx-opt" type="button" data-wxopt="center" aria-pressed="false">标题居中</button>
-              <button class="wx-opt" type="button" data-wxopt="number" aria-pressed="false">标题序号</button>
-              <button class="wx-opt" type="button" data-wxopt="macwin" aria-pressed="false">代码窗口</button>
-              <button class="wx-opt" type="button" data-wxopt="lineno" aria-pressed="false">显示行号</button>
-              <button class="wx-opt" type="button" data-wxopt="footnote" id="wxFnChip" aria-pressed="false">外链引用</button>
-              <button class="wx-opt" type="button" data-wxopt="codeScroll" id="wxCsChip" aria-pressed="false">代码横滑</button>
-              <button class="wx-opt" type="button" id="wxDarkBtn" aria-pressed="false">微信暗色</button>
-            </div>
-            <div class="wx-fine__grid">
-              <div class="wx-field"><span>字号</span><div class="wx-step" data-key="fs" data-min="12" data-max="22" data-step="1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字号"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
-              <div class="wx-field"><span>行距</span><div class="wx-step" data-key="lh" data-min="1.3" data-max="2.6" data-step="0.05"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="行距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>倍</i></div>
-              <div class="wx-field"><span>段距</span><div class="wx-step" data-key="gap" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="段距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
-              <div class="wx-field"><span>字间距</span><div class="wx-step" data-key="ls" data-min="0" data-max="2" data-step="0.1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字间距"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
-              <div class="wx-field"><span>两侧留白</span><div class="wx-step" data-key="pad" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="两侧留白"><button type="button" data-d="1" aria-label="增加">+</button></div><i>px</i></div>
-              <button class="wx-switch" type="button" data-key="indent" aria-pressed="false">首行缩进 2em</button>
-            </div>
-            <div class="wx-fine__grid wx-fine__grid--fonts">
-              <div class="wx-field"><span>正文字体</span><button class="wx-font" type="button" data-fontkey="fontBody">默认 ▾</button></div>
-              <div class="wx-field"><span>标题字体</span><button class="wx-font" type="button" data-fontkey="fontHead">默认 ▾</button></div>
-              <div class="wx-field"><span>引用字体</span><button class="wx-font" type="button" data-fontkey="fontQuote">默认 ▾</button></div>
-            </div>
+            <section class="wx-sec">
+              <div class="wx-sec__head"><span class="wx-sec__title">版式</span><span class="wx-sec__hint">决定标题与表格的排版气质</span></div>
+              <div class="wx-chip-row">
+                <button class="wx-opt" type="button" data-layout="" aria-pressed="true">标准</button>
+                <button class="wx-opt" type="button" data-layout="editorial" aria-pressed="false">评论</button>
+                <button class="wx-opt" type="button" data-layout="tech" aria-pressed="false">技术</button>
+                <button class="wx-opt" type="button" data-layout="event" aria-pressed="false">活动</button>
+                <button class="wx-opt" type="button" data-layout="release" aria-pressed="false">更新</button>
+              </div>
+            </section>
+
+            <section class="wx-sec">
+              <div class="wx-sec__head"><span class="wx-sec__title">开关</span><span class="wx-sec__hint">影响预览与复制结果</span></div>
+              <div class="wx-chip-row">
+                <button class="wx-opt" type="button" data-wxopt="center" aria-pressed="false">标题居中</button>
+                <button class="wx-opt" type="button" data-wxopt="number" aria-pressed="false">标题序号</button>
+                <button class="wx-opt" type="button" data-wxopt="macwin" aria-pressed="false">代码窗口</button>
+                <button class="wx-opt" type="button" data-wxopt="lineno" aria-pressed="false">显示行号</button>
+                <button class="wx-opt" type="button" data-wxopt="footnote" aria-pressed="false">外链引用</button>
+                <button class="wx-opt" type="button" data-wxopt="codeScroll" aria-pressed="false">代码横滑</button>
+                <button class="wx-opt" type="button" id="wxDarkBtn" aria-pressed="false">微信暗色</button>
+              </div>
+            </section>
+
+            <section class="wx-sec">
+              <div class="wx-sec__head"><span class="wx-sec__title">数值</span><span class="wx-sec__hint">可直接输入，或用 − / + 微调</span></div>
+              <div class="wx-tiles">
+                <div class="wx-tile"><span class="wx-tile__label">字号</span><div class="wx-step" data-key="fs" data-min="12" data-max="22" data-step="1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字号"><button type="button" data-d="1" aria-label="增加">+</button></div><i class="wx-tile__unit">px</i></div>
+                <div class="wx-tile"><span class="wx-tile__label">行距</span><div class="wx-step" data-key="lh" data-min="1.3" data-max="2.6" data-step="0.05"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="行距"><button type="button" data-d="1" aria-label="增加">+</button></div><i class="wx-tile__unit">倍</i></div>
+                <div class="wx-tile"><span class="wx-tile__label">段距</span><div class="wx-step" data-key="gap" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="段距"><button type="button" data-d="1" aria-label="增加">+</button></div><i class="wx-tile__unit">px</i></div>
+                <div class="wx-tile"><span class="wx-tile__label">字间距</span><div class="wx-step" data-key="ls" data-min="0" data-max="2" data-step="0.1"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="字间距"><button type="button" data-d="1" aria-label="增加">+</button></div><i class="wx-tile__unit">px</i></div>
+                <div class="wx-tile"><span class="wx-tile__label">两侧留白</span><div class="wx-step" data-key="pad" data-min="0" data-max="40" data-step="2"><button type="button" data-d="-1" aria-label="减少">−</button><input type="text" inputmode="decimal" aria-label="两侧留白"><button type="button" data-d="1" aria-label="增加">+</button></div><i class="wx-tile__unit">px</i></div>
+                <div class="wx-tile wx-tile--switch">
+                  <span class="wx-tile__label">首行缩进</span>
+                  <button class="wx-switch" type="button" data-key="indent" aria-pressed="false">2em</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="wx-sec">
+              <div class="wx-sec__head"><span class="wx-sec__title">字体</span><span class="wx-sec__hint">霞鹜文楷 / 臻楷按需加载</span></div>
+              <div class="wx-tiles">
+                <div class="wx-tile"><span class="wx-tile__label">正文</span><button class="wx-font" type="button" data-fontkey="fontBody">默认 ▾</button></div>
+                <div class="wx-tile"><span class="wx-tile__label">标题</span><button class="wx-font" type="button" data-fontkey="fontHead">默认 ▾</button></div>
+                <div class="wx-tile"><span class="wx-tile__label">引用</span><button class="wx-font" type="button" data-fontkey="fontQuote">默认 ▾</button></div>
+              </div>
+            </section>
+
             <div class="editor__menu" id="fontMenu" role="menu" hidden>
               <button role="menuitem" type="button" data-fval=""><span class="editor__menu-name">默认</span><span class="editor__menu-hint">跟随当前主题字体</span></button>
               <button role="menuitem" type="button" data-fval="hei"><span class="editor__menu-name">系统黑体</span><span class="editor__menu-hint">苹方 / 微软雅黑</span></button>
@@ -249,11 +267,12 @@ export default function render(root) {
               <button role="menuitem" type="button" data-fval="zhenkai"><span class="editor__menu-name">霞鹜臻楷</span><span class="editor__menu-hint">LXGW ZhenKai · ZeoSeven</span></button>
               <button role="menuitem" type="button" data-fval="mono"><span class="editor__menu-name">等宽</span><span class="editor__menu-hint">代码风格</span></button>
             </div>
-            <div class="wx-chip-row">
+
+            <section class="wx-sec wx-sec--actions">
               <button class="wx-opt" type="button" id="lfReset">恢复默认</button>
               <button class="wx-opt" type="button" id="wxCheckBtn">排版自检</button>
               <button class="wx-opt" type="button" id="wxHistBtn">历史版本</button>
-            </div>
+            </section>
             <div class="wx-report" id="wxReport" hidden></div>
             <div class="wx-hist" id="wxHist" hidden></div>
           </div>
@@ -916,7 +935,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=5b176f2e');
+      const mod = await import('./export.js?v=0317072f');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {

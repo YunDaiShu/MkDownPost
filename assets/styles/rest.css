@@ -1662,6 +1662,60 @@ body:has(.editor) .app-footer { display: none; }
   font-size: 1.1em; letter-spacing: .02em; text-transform: uppercase;
 }
 
+/* ===== 排版设置面板：分区 + 卡片式网格（替换旧的松散布局） ===== */
+.wx-fine {
+  display: grid; grid-template-columns: 1fr;
+  gap: 14px; padding: 14px 16px 16px;
+  border-bottom: 1px solid var(--c-divider);
+  background: var(--c-surface-2);
+}
+.wx-sec { display: grid; gap: 8px; }
+.wx-sec__head { display: flex; align-items: baseline; gap: 8px; }
+.wx-sec__title { font-size: 12px; font-weight: 700; color: var(--c-text); letter-spacing: .02em; }
+.wx-sec__hint { font-size: 11px; color: var(--c-text-muted); }
+.wx-sec--actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; border-top: 1px dashed var(--c-divider); }
+
+/* chip 行更紧 */
+.wx-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.wx-chip-row .wx-opt { height: 30px; padding: 0 12px; border-radius: var(--r-2); }
+
+/* 卡片式网格：数值 / 字体 都是小方块，信息密度高但不挤 */
+.wx-tiles {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+.wx-tile {
+  display: grid; grid-template-columns: 1fr auto; column-gap: 6px; row-gap: 6px;
+  padding: 8px 10px; border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); min-width: 0;
+}
+.wx-tile__label { grid-column: 1; font-size: 11px; color: var(--c-text-muted); }
+
+.wx-tile__unit { grid-column: 2; font-style: normal; font-size: 11px; color: var(--c-text-muted); }
+
+.wx-tile .wx-step { width: 100%; border: 0; background: transparent; height: 24px; }
+.wx-tile .wx-step button { width: 22px; color: var(--c-text-secondary); }
+.wx-tile .wx-step input { width: 100%; text-align: left; font-size: 13px; color: var(--c-text); }
+.wx-tile .wx-switch, .wx-tile .wx-font { width: 100%; height: 26px; }
+.wx-tile--switch { align-content: space-between; }
+
+/* 兼容旧类名，避免历史样式干扰 */
+.wx-fine__grid, .wx-fine__row, .wx-field { display: none !important; }
+
+.wx-tile .wx-step, .wx-tile .wx-switch, .wx-tile .wx-font { grid-column: 1 / -1; }
+.wx-tiles { grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); }
+.wx-tile .wx-step { display: flex; align-items: center; gap: 2px; }
+.wx-tile .wx-step input { flex: 1 1 auto; text-align: center; }
+
+/* 面板密度收紧（让四块内容在一屏内看完） */
+.wx-fine { gap: 10px; padding: 12px 14px 14px; }
+.wx-sec { gap: 6px; }
+.wx-sec__hint { display: none; }
+.wx-chip-row .wx-opt { height: 28px; padding: 0 10px; font-size: 12px; }
+.wx-tile { padding: 6px 8px; row-gap: 4px; }
+.wx-tiles { gap: 6px; }
+.wx-sec--actions { padding-top: 8px; }
+
 /* ===== cc-fx.css ===== */
 /* cc-fx.css — Claude Code 风格动效 */
 .cc-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px;

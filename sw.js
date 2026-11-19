@@ -1,11 +1,11 @@
 /* sw.js — 离线缓存：HTML 走网络优先，静态资源（带版本戳）缓存优先 */
-const VERSION = 'v5b176f2e';
+const VERSION = 'v0317072f';
 const STATIC_CACHE = 'mdp-static-' + VERSION;
 const HTML_CACHE = 'mdp-html-' + VERSION;
 
 /* 首次安装时预热应用外壳（index + 关键 CSS + 入口模块），
    其余带版本戳的资源在首次被 SW 接管后的访问中进入缓存 */
-const PRECACHE = ['./', './index.html?v=5b176f2e', './assets/styles/critical.css?v=5b176f2e', './assets/styles/rest.css?v=5b176f2e', './src/main.js?v=5b176f2e', './src/router.js?v=5b176f2e'];
+const PRECACHE = ['./', './index.html?v=0317072f', './assets/styles/critical.css?v=0317072f', './assets/styles/rest.css?v=0317072f', './src/main.js?v=0317072f', './src/router.js?v=0317072f'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
@@ -46,7 +46,7 @@ self.addEventListener('fetch', (e) => {
         return fresh;
       } catch {
         const cache = await caches.open(HTML_CACHE);
-        return (await cache.match(req)) || (await cache.match('./index.html?v=5b176f2e')) || Response.error();
+        return (await cache.match(req)) || (await cache.match('./index.html?v=0317072f')) || Response.error();
       }
     })());
     return;

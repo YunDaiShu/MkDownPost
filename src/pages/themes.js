@@ -1,8 +1,8 @@
 /* src/pages/themes.js — 主题库页：100 套，分组筛选 + 搜索 + 点击即应用 + 复制变量 */
-import { THEMES } from '../../data/themes.js?v=5b176f2e';
-import { apply, get, exportCSS } from '../theme-manager.js?v=5b176f2e';
-import { toast } from '../components/theme-switcher.js?v=5b176f2e';
-import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=5b176f2e';
+import { THEMES } from '../../data/themes.js?v=0317072f';
+import { apply, get, exportCSS } from '../theme-manager.js?v=0317072f';
+import { toast } from '../components/theme-switcher.js?v=0317072f';
+import { derivePaletteCached as derivePalette } from '../theme-custom.js?v=0317072f';
 
 const GROUP_LABEL = {
   all: '全部',
