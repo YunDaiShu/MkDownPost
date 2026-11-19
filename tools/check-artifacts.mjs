@@ -16,12 +16,14 @@ const ROOT = process.cwd();
 const S = path.join(ROOT, 'assets/styles');
 const CRITICAL = ['tokens.css', 'base.css', 'layout.css', 'components.css'];
 const EDITOR = ['editor.css'];
-const REST = ['themes.css', 'themes.generated.css', 'markdown.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
+const THEMES_LAZY = ['themes.generated.css'];
+const REST = ['themes.css', 'markdown.css', 'pages.css', 'cc-fx.css', 'unify.css', 'design-styles.css', 'code-themes.css', 'vendor-code.css'];
 
 const read = (f) => '/* ===== ' + f + ' ===== */\n' + fs.readFileSync(path.join(S, f), 'utf8').trimEnd() + '\n';
 const expectCritical = CRITICAL.map(read).join('\n');
 const expectRest = REST.map(read).join('\n');
 const expectEditor = EDITOR.map(read).join('\n');
+const expectThemesLazy = THEMES_LAZY.map(read).join('\n');
 
 const problems = [];
 const same = (a, b) => a.replace(/\r\n/g, '\n').trim() === b.replace(/\r\n/g, '\n').trim();
@@ -29,6 +31,8 @@ const same = (a, b) => a.replace(/\r\n/g, '\n').trim() === b.replace(/\r\n/g, '\
 if (!fs.existsSync(path.join(S, 'critical.css'))) problems.push('缺少 critical.css');
 else if (!same(fs.readFileSync(path.join(S, 'critical.css'), 'utf8'), expectCritical)) problems.push('critical.css 与源文件不一致，请运行 node tools/bundle-css.mjs');
 
+if (!fs.existsSync(path.join(S, 'themes.lazy.css'))) problems.push('缺少 themes.lazy.css');
+else if (!same(fs.readFileSync(path.join(S, 'themes.lazy.css'), 'utf8'), expectThemesLazy)) problems.push('themes.lazy.css 与源文件不一致');
 if (!fs.existsSync(path.join(S, 'editor.lazy.css'))) problems.push('缺少 editor.lazy.css');
 else if (!same(fs.readFileSync(path.join(S, 'editor.lazy.css'), 'utf8'), expectEditor)) problems.push('editor.lazy.css 与源文件不一致');
 if (!fs.existsSync(path.join(S, 'rest.css'))) problems.push('缺少 rest.css');

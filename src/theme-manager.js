@@ -2,8 +2,8 @@
    优先级：?theme= → localStorage → 系统偏好；切换 200ms 过渡、不刷新、不闪屏。
    暴露 window.themes 便于控制台调试。 */
 
-import { THEMES, themeMeta } from '../data/themes.js?v=cf835142';
-import { clearCustom, reapplyCustomIfActive } from './theme-custom.js?v=cf835142';
+import { THEMES, themeMeta } from '../data/themes.js?v=8dbe5741';
+import { clearCustom, reapplyCustomIfActive } from './theme-custom.js?v=8dbe5741';
 
 const KEY_THEME = 'mdp:v1:theme';
 const KEY_MODE = 'mdp:v1:mode';
@@ -30,6 +30,14 @@ export function getMode() {
 
 /** 应用主题（不刷新页面） */
 export function apply(key, { silent = false } = {}) {
+  const key0 = typeof key === 'string' ? key : '';
+  const hand = window.__mdpHandTunedThemes;
+  if (key0 && hand && !hand.has(key0) && !document.getElementById('mdp-themes-css') && window.__mdpEnsureThemesCss) {
+    // 生成主题需要 145KB 变量表：先确保加载，加载完成后再应用一次颜色
+    window.__mdpEnsureThemesCss().then(function () {
+      document.documentElement.setAttribute('data-theme', key0);
+    });
+  }
   const k = ORDER.includes(key) ? key : 'deepseek';
   const html = document.documentElement;
 
