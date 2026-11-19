@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=f5bc559f';
-import { initShortcuts } from './shortcuts.js?v=f5bc559f';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=f5bc559f';
-import { initAutosave } from './autosave.js?v=f5bc559f';
-import { SAMPLE_MAIN } from './sample-main.js?v=f5bc559f';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=f5bc559f';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=f5bc559f';
-import { toast } from '../components/theme-switcher.js?v=f5bc559f';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=f5bc559f';
+import { initSplitPane } from './split-pane.js?v=464c15a3';
+import { initShortcuts } from './shortcuts.js?v=464c15a3';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=464c15a3';
+import { initAutosave } from './autosave.js?v=464c15a3';
+import { SAMPLE_MAIN } from './sample-main.js?v=464c15a3';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=464c15a3';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=464c15a3';
+import { toast } from '../components/theme-switcher.js?v=464c15a3';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=464c15a3';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=f5bc559f'),
-      import('../markdown/renderer.js?v=f5bc559f')
+      import('../markdown/vendor-loader.js?v=464c15a3'),
+      import('../markdown/renderer.js?v=464c15a3')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=f5bc559f');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=464c15a3');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=f5bc559f');
+  if (!_exportMod) _exportMod = await import('./export.js?v=464c15a3');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=f5bc559f');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=464c15a3');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=f5bc559f');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=464c15a3');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=f5bc559f');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=464c15a3');
   return _mathMod;
 };
 
@@ -250,12 +250,12 @@ export default function render(root) {
               </div>
             </section>
 
-            <section class="wx-sec wx-sec--fonts">
+            <section class="wx-sec">
               <div class="wx-sec__head"><span class="wx-sec__title">字体</span><span class="wx-sec__hint">霞鹜文楷 / 臻楷按需加载</span></div>
               <div class="wx-tiles">
-                <div class="wx-tile" title="正文字体"><span class="wx-tile__label">正</span><button class="wx-font" type="button" data-fontkey="fontBody">默认 ▾</button></div>
-                <div class="wx-tile" title="标题字体"><span class="wx-tile__label">标</span><button class="wx-font" type="button" data-fontkey="fontHead">默认 ▾</button></div>
-                <div class="wx-tile" title="引用字体"><span class="wx-tile__label">引</span><button class="wx-font" type="button" data-fontkey="fontQuote">默认 ▾</button></div>
+                <div class="wx-tile"><span class="wx-tile__label">正文</span><button class="wx-font" type="button" data-fontkey="fontBody">默认 ▾</button></div>
+                <div class="wx-tile"><span class="wx-tile__label">标题</span><button class="wx-font" type="button" data-fontkey="fontHead">默认 ▾</button></div>
+                <div class="wx-tile"><span class="wx-tile__label">引用</span><button class="wx-font" type="button" data-fontkey="fontQuote">默认 ▾</button></div>
               </div>
             </section>
 
@@ -956,7 +956,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=f5bc559f');
+      const mod = await import('./export.js?v=464c15a3');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {
