@@ -419,3 +419,11 @@ body:has(.editor) .app-footer { display: none; }
 /* 操作行内部：控件组不换行、不占满，导出跟随其后 */
 .editor__row--actions > .editor__controls { flex: 0 0 auto; flex-wrap: nowrap; min-width: 0; }
 .editor__row--actions > .editor__controls .editor__menu { position: fixed; }
+
+/* 工具栏压缩：同步滚动只留开关（文字进 tooltip），代码主题只留「代码 ▾」 */
+.editor__chk--icon .editor__chk-text {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.editor__chk--icon { gap: 0; }
+.editor__row--actions #codeBtn { min-width: 0; width: auto; padding-inline: var(--sp-3); }

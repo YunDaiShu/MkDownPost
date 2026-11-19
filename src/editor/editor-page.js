@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=e58d0b87';
-import { initShortcuts } from './shortcuts.js?v=e58d0b87';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=e58d0b87';
-import { initAutosave } from './autosave.js?v=e58d0b87';
-import { SAMPLE_MAIN } from './sample-main.js?v=e58d0b87';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=e58d0b87';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=e58d0b87';
-import { toast } from '../components/theme-switcher.js?v=e58d0b87';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=e58d0b87';
+import { initSplitPane } from './split-pane.js?v=c6c7b1a7';
+import { initShortcuts } from './shortcuts.js?v=c6c7b1a7';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=c6c7b1a7';
+import { initAutosave } from './autosave.js?v=c6c7b1a7';
+import { SAMPLE_MAIN } from './sample-main.js?v=c6c7b1a7';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=c6c7b1a7';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=c6c7b1a7';
+import { toast } from '../components/theme-switcher.js?v=c6c7b1a7';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=c6c7b1a7';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=e58d0b87'),
-      import('../markdown/renderer.js?v=e58d0b87')
+      import('../markdown/vendor-loader.js?v=c6c7b1a7'),
+      import('../markdown/renderer.js?v=c6c7b1a7')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=e58d0b87');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=c6c7b1a7');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=e58d0b87');
+  if (!_exportMod) _exportMod = await import('./export.js?v=c6c7b1a7');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=e58d0b87');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=c6c7b1a7');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=e58d0b87');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=c6c7b1a7');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=e58d0b87');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=c6c7b1a7');
   return _mathMod;
 };
 
@@ -126,7 +126,7 @@ export default function render(root) {
           <button class="seg__btn is-on" type="button" data-lw="680">标准</button>
           <button class="seg__btn" type="button" data-lw="820">宽</button>
         </div>
-        <label class="editor__chk"><input type="checkbox" id="syncScroll" checked aria-label="同步滚动" /><span class="editor__chk-text">同步滚动</span></label>
+        <label class="editor__chk editor__chk--icon" title="同步滚动"><input type="checkbox" id="syncScroll" checked aria-label="同步滚动" /><span class="editor__chk-text">同步滚动</span></label>
         <button class="btn" type="button" id="codeBtn" aria-haspopup="menu" aria-expanded="false">代码 · 默认 ▾</button>
           <div class="editor__menu" id="codeMenu" role="menu" hidden>
             <button role="menuitem" type="button" data-code=""><span class="editor__menu-name">跟随主题</span><span class="editor__menu-hint">用页面主题自带的代码配色</span></button>
@@ -850,7 +850,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=e58d0b87');
+      const mod = await import('./export.js?v=c6c7b1a7');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {
@@ -1187,7 +1187,11 @@ export default function render(root) {
   const CODE_LABEL = { '': '默认', 'github-light': 'GitHub Light', 'github-dark': 'GitHub Dark', monokai: 'Monokai', 'one-dark': 'One Dark', 'solarized-light': 'Solarized Light', dracula: 'Dracula', 'wechat-gray': '微信原生灰' };
   function paintCode() {
     const cur = localStorage.getItem('mdp:v1:code-theme') || '';
-    if (codeBtn) codeBtn.textContent = '代码 · ' + (CODE_LABEL[cur] || '默认') + ' ▾';
+    if (codeBtn) {
+      codeBtn.textContent = '代码 ▾';
+      codeBtn.setAttribute('title', '代码主题：' + (CODE_LABEL[cur] || '默认'));
+      codeBtn.setAttribute('aria-label', '代码主题：' + (CODE_LABEL[cur] || '默认'));
+    }
     if (codeMenu) codeMenu.querySelectorAll('[data-code]').forEach(function (b) {
       b.classList.toggle('is-on', (b.getAttribute('data-code') || '') === cur);
     });
