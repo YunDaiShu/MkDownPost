@@ -449,3 +449,14 @@ body:has(.editor) .app-footer { display: none; }
 }
 .editor__row--actions .seg__btn { border: 1px solid transparent; }
 .editor__row--actions .editor__chk { border: 1px solid var(--c-border); background: var(--c-surface); gap: 8px; }
+
+/* ===== 工具栏第三行：左排版控件 / 右主操作 + 文档状态 ===== */
+.editor__quickbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.editor__quickbar-right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-4); }
+.editor__quickbar-status .editor__status {
+  display: flex; align-items: center; gap: var(--sp-3);
+  font-size: var(--fs-12); color: var(--c-text-muted);
+  padding: 0; border: 0; background: transparent;
+}
+.editor__quickbar-status .editor__spacer { display: none; }
+.editor__bar-actions .btn { height: 32px; }

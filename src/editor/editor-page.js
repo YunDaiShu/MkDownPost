@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=c3ea014a';
-import { initShortcuts } from './shortcuts.js?v=c3ea014a';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=c3ea014a';
-import { initAutosave } from './autosave.js?v=c3ea014a';
-import { SAMPLE_MAIN } from './sample-main.js?v=c3ea014a';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=c3ea014a';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=c3ea014a';
-import { toast } from '../components/theme-switcher.js?v=c3ea014a';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=c3ea014a';
+import { initSplitPane } from './split-pane.js?v=ac666947';
+import { initShortcuts } from './shortcuts.js?v=ac666947';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=ac666947';
+import { initAutosave } from './autosave.js?v=ac666947';
+import { SAMPLE_MAIN } from './sample-main.js?v=ac666947';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=ac666947';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=ac666947';
+import { toast } from '../components/theme-switcher.js?v=ac666947';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=ac666947';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=c3ea014a'),
-      import('../markdown/renderer.js?v=c3ea014a')
+      import('../markdown/vendor-loader.js?v=ac666947'),
+      import('../markdown/renderer.js?v=ac666947')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=c3ea014a');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=ac666947');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=c3ea014a');
+  if (!_exportMod) _exportMod = await import('./export.js?v=ac666947');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=c3ea014a');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=ac666947');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=c3ea014a');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=ac666947');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=c3ea014a');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=ac666947');
   return _mathMod;
 };
 
@@ -352,6 +352,24 @@ export default function render(root) {
     bar.appendChild(quick);
   })();
 
+  // A+B：把「复制到公众号」（主操作）与文档状态条移进工具栏右侧，解决右侧大片空白
+  (function mountToolbarRight() {
+    const quick = root.querySelector('.editor__quickbar');
+    const copyBtn = root.querySelector('#wxCopy');
+    const status = root.querySelector('.editor__status');
+    if (!quick) return;
+    const right = document.createElement('div');
+    right.className = 'editor__quickbar-right';
+    const statusSlot = document.createElement('div');
+    statusSlot.className = 'editor__quickbar-status';
+    if (status) statusSlot.appendChild(status);
+    const actions = document.createElement('div');
+    actions.className = 'editor__bar-actions';
+    if (copyBtn) actions.appendChild(copyBtn);
+    right.append(statusSlot, actions);
+    quick.appendChild(right);
+  })();
+
   const ta = root.querySelector('#ta');
   const gutter = root.querySelector('#gutter');
   const preview = root.querySelector('#preview');
@@ -399,10 +417,10 @@ export default function render(root) {
 
   // ===== 右侧面板：预览 / 微信排版 =====
   const WX_PRESETS = {
-    standard: { fs: 16, lh: 1.75, ls: 0, gap: '1em' },
-    loose: { fs: 16, lh: 2.0, ls: 0.01, gap: '1.4em' },
-    compact: { fs: 15, lh: 1.62, ls: 0, gap: '0.8em' },
-    large: { fs: 18, lh: 1.85, ls: 0.01, gap: '1.2em' }
+    standard: { fs: 17, lh: 1.9, ls: 0, gap: '26px' },
+    loose: { fs: 17, lh: 2.05, ls: 0, gap: '32px' },
+    compact: { fs: 16, lh: 1.7, ls: 0, gap: '20px' },
+    large: { fs: 19, lh: 1.95, ls: 0, gap: '28px' }
   };
   const viewBtns = Array.from(root.querySelectorAll('[data-view]'));
   const wxWrap = root.querySelector('#wxWrap');
@@ -415,7 +433,7 @@ export default function render(root) {
 
   // ===== 排版精细参数 =====
   const WX_LAYOUT_KEY = 'mdp:v1:wxlayout';
-  const WX_LAYOUT_DEF = { layout: '', fs: 16, lh: 1.9, gap: 22, ls: 0, pad: 0, indent: false, fontBody: '', fontHead: '', fontQuote: '', footnote: false, codeScroll: false, dark: false };
+  const WX_LAYOUT_DEF = { layout: '', fs: 17, lh: 1.9, gap: 26, ls: 0, pad: 0, indent: false, fontBody: '', fontHead: '', fontQuote: '', footnote: false, codeScroll: false, dark: false };
   let wxLayout = Object.assign({}, WX_LAYOUT_DEF);
   try { wxLayout = Object.assign(wxLayout, JSON.parse(localStorage.getItem(WX_LAYOUT_KEY) || '{}')); } catch (e) {}
 
@@ -956,7 +974,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=c3ea014a');
+      const mod = await import('./export.js?v=ac666947');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {

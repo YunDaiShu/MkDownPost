@@ -1,8 +1,8 @@
 import { derivePaletteCached as derivePalette } from '../theme-custom.js';
-import { mountReactbitsFX } from '../fx/reactbits.js?v=c3ea014a';
+import { mountReactbitsFX } from '../fx/reactbits.js?v=ac666947';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=c3ea014a';
+import { THEMES } from '../../data/themes.js?v=ac666947';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -45,17 +45,49 @@ export default async function render(root) {
   const hero = el('section', 'hero');
   const h1 = el('h1', 'hero__title', '你只管写，');
   h1.appendChild(el('span', 'hero__accent', '排版交给它'));
-  hero.append(
-    h1,
-    el('p', 'hero__sub', '左边敲字，右边就是公众号里的样子。147 套主题、8 种设计风格，写完点一下复制，直接粘进后台草稿箱。')
-  );
+
+  // 首屏唯一的「亮元素」：用真实排版规则渲染一张公众号样例（DOM，不是插画）
+  const stage = el('div', 'hero__stage');
+  const device = el('div', 'hero__device');
+  const heroBar = el('div', 'hero__device-bar');
+  ['#FF5F57', '#FEBC2E', '#28C840'].forEach(function (c) {
+    const dot = el('i', 'hero__device-dot');
+    dot.style.background = c;
+    heroBar.appendChild(dot);
+  });
+  const deviceBody = el('div', 'hero__device-body');
+  const band = el('div', 'hero__band', '十一月线下分享会');
+  const lead = el('p', 'hero__device-lead', '时间与地点写清楚，读者一眼就能决定来不来。');
+  const heroTbl = el('table', 'hero__table');
+  const heroThead = el('thead');
+  const heroTrh = el('tr');
+  ['时间段', '环节', '嘉宾'].forEach(function (t) { heroTrh.appendChild(el('th', '', t)); });
+  heroThead.appendChild(heroTrh);
+  const heroTbody = el('tbody');
+  [['14:00', '开场与自我介绍', '主持'], ['14:20', '从 Markdown 到排版', '待定'], ['15:50', '圆桌讨论', '全体']].forEach(function (row) {
+    const tr = el('tr');
+    row.forEach(function (c) { tr.appendChild(el('td', '', c)); });
+    heroTbody.appendChild(tr);
+  });
+  heroTbl.append(heroThead, heroTbody);
+  deviceBody.append(band, lead, heroTbl);
+  device.append(heroBar, deviceBody);
+  stage.appendChild(device);
+
+  const heroInner = el('div', 'hero__inner');
+  const heroCopy = el('div', 'hero__copy');
+  heroCopy.append(h1, el('p', 'hero__sub', '左边敲字，右边就是公众号里的样子。147 套主题任选，写完点一下复制，直接粘进公众号后台。'));
+
   const cta = el('div', 'hero__cta');
   const start = el('a', 'btn btn--primary', '开始写作');
   start.href = '#/editor';
   const browse = el('a', 'btn', '浏览主题（' + THEMES.length + ' 套）');
   browse.href = '#/themes';
   cta.append(start, browse);
-  hero.append(cta, el('p', 'hero__note', '不使用任何 AI · 不上传你的内容 · 无账号系统'));
+  heroCopy.appendChild(cta);
+  heroCopy.appendChild(el('p', 'hero__note', '不使用任何 AI · 不上传你的内容 · 无账号系统'));
+  heroInner.append(heroCopy, stage);
+  hero.appendChild(heroInner);
 
   // 能力三栏
   const features = el('section', 'features');

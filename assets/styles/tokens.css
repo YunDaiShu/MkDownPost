@@ -21,7 +21,7 @@
   --c-code-bg: #F6F8FA;
   --c-code-bar: #EEF1F4;
   --c-quote-bar: #4A7CF7;
-  --c-link: #3A6AE0;
+  --c-link: var(--c-primary);
   --c-link-hover: #2453C4;
   --c-selection-bg: #D8E3FF;
   --c-focus-ring: #4A7CF7;
