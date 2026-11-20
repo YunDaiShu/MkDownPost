@@ -536,8 +536,12 @@ body:has(.editor) .app-footer { display: none; }
 
 /* ===== 面板与预览：纵向必须能滚，只禁横向 ===== */
 .editor__pane--preview { overflow-y: auto; overflow-x: hidden; }
-.editor__pane--edit { overflow-y: auto; overflow-x: hidden; }
+.editor__pane--edit { overflow: hidden; }
 .wx-fine, .wx__panel, .wx__side { max-height: none; overflow-y: visible; }
 @media (max-height: 760px) {
   .wx-fine { max-height: 46vh; overflow-y: auto; }
 }
+
+/* ===== 编辑区只有 textarea 一条滚动条（外层不再滚，避免双滚动条） ===== */
+.editor__pane--edit { overflow: hidden; }
+.editor__pane--edit #ta { overflow-y: auto; }
