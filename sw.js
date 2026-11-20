@@ -1,7 +1,8 @@
 /* sw.js — 离线缓存：HTML 走网络优先，静态资源（带版本戳）缓存优先 */
-const VERSION = 'v56907b75-nf';
-const STATIC_CACHE = 'mdp-static-' + VERSION;
-const HTML_CACHE = 'mdp-html-' + VERSION;
+const VERSION = 'v56907b75';
+const CACHE_VERSION = VERSION + '-nf1';        // 换 SW 策略时改这个后缀即可清空旧缓存
+const STATIC_CACHE = 'mdp-static-' + CACHE_VERSION;
+const HTML_CACHE = 'mdp-html-' + CACHE_VERSION;
 
 /* 首次安装时预热应用外壳（index + 关键 CSS + 入口模块），
    其余带版本戳的资源在首次被 SW 接管后的访问中进入缓存 */
@@ -24,7 +25,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => !k.endsWith(VERSION)).map((k) => caches.delete(k)));
+    await Promise.all(keys.filter((k) => !k.endsWith(CACHE_VERSION)).map((k) => caches.delete(k)));
     await self.clients.claim();
   })());
 });
