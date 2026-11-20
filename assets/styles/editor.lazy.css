@@ -545,3 +545,17 @@ body:has(.editor) .app-footer { display: none; }
 /* ===== 编辑区只有 textarea 一条滚动条（外层不再滚，避免双滚动条） ===== */
 .editor__pane--edit { overflow: hidden; }
 .editor__pane--edit #ta { overflow-y: auto; }
+
+/* ===== 同步滚动开关：把文字标签显示回来（之前被压成只读屏可见，用户看不出这是什么） ===== */
+.editor__bar label.editor__chk--icon { gap: 8px; }
+.editor__bar label.editor__chk--icon .editor__chk-text {
+  display: inline;
+  position: static;
+  width: auto; height: auto;
+  margin: 0; padding: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+  font-size: var(--fs-12);
+  color: var(--c-text-secondary);
+}
