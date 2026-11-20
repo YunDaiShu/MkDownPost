@@ -1,5 +1,5 @@
 /* sw.js — 离线缓存：HTML 走网络优先，静态资源（带版本戳）缓存优先 */
-const VERSION = 'v56907b75';
+const VERSION = 'v56907b75-nf';
 const STATIC_CACHE = 'mdp-static-' + VERSION;
 const HTML_CACHE = 'mdp-html-' + VERSION;
 
@@ -52,20 +52,30 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 静态资源（带 ?v= / ?c= 版本戳）：缓存优先，命中即返回
+  // 图片 / 字体：缓存优先（体积大、变化少）
+  if (/\.(png|jpe?g|webp|gif|svg|woff2?|ttf)$/i.test(url.pathname)) {
+    e.respondWith((async () => {
+      const cache = await caches.open(STATIC_CACHE);
+      const hit = await cache.match(req);
+      if (hit) return hit;
+      try {
+        const res = await fetch(req);
+        if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
+        return res;
+      } catch { return Response.error(); }
+    })());
+    return;
+  }
+
+  // 代码与样式：网络优先，失败才回退缓存。发版后刷新即拿新版，不用硬刷
   e.respondWith((async () => {
     const cache = await caches.open(STATIC_CACHE);
-    const hit = await cache.match(req);
-    if (hit) {
-      // 后台静默刷新，下一次访问即拿到新内容
-      fetch(req).then(function (res) { if (res && res.ok) cache.put(req, res.clone()); }).catch(function () {});
-      return hit;
-    }
     try {
-      const res = await fetch(req);
+      const res = await fetch(new Request(req, { cache: 'no-cache' }));
       if (res && (res.ok || res.type === 'opaque')) cache.put(req, res.clone());
       return res;
     } catch {
+      const hit = await cache.match(req);
       return hit || Response.error();
     }
   })());
