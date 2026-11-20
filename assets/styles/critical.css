@@ -3,6 +3,12 @@
    规则：组件样式只允许使用本文件定义的变量，禁止写死 hex / px 字号。 */
 
 :root {
+  /* 印刷层：纸、墨、细线。由主题色派生，换主题仍会跟着变 */
+  --paper: color-mix(in srgb, var(--c-bg) 92%, #EFE6D6);
+  --paper-raised: color-mix(in srgb, var(--c-surface) 95%, #EFE6D6);
+  --ink: var(--c-text);
+  --rule: color-mix(in srgb, var(--c-border) 78%, var(--c-text) 22%);
+  --font-serif: "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
   /* 界面字体：唯一来源，任何 font-family 都必须走这个令牌 */
   --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono: ui-monospace, Menlo, Consolas, monospace;

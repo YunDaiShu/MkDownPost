@@ -879,3 +879,76 @@ to { background-position: 220% 0; } }
 
 /* 显示级标题：允许文本平衡换行，避免末行孤字 */
 .hero__title, .section__title, .article__title, .markdown-body h1, .markdown-body h2 { text-wrap: balance; }
+
+/* ===== 铅字车间（Hallmark 方向 A）===== */
+.home-surface { background: var(--paper); }
+
+/* hero：纸面上的一整块，左侧文字右侧样机，1px 细线收边 */
+.hero {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: var(--sp-6) 0 var(--sp-5);
+}
+.hero__title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hero__accent { color: var(--c-primary); }
+.hero__sub {
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  line-height: 1.85;
+  color: var(--color-text-secondary, var(--c-text-secondary));
+  max-width: 34em;
+}
+.hero__note { font-size: var(--fs-12); color: var(--c-text-muted); }
+
+/* 样机：纸上的印张，无阴影只留细线 */
+.hero__device {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  box-shadow: none;
+}
+.hero__device-bar { border-bottom: 1px solid var(--rule); }
+.hero__band {
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-bottom: 2px solid var(--c-primary);
+  border-radius: 0;
+  text-align: left;
+  font-family: var(--font-serif);
+  padding: 0 0 8px;
+}
+.hero__table th { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.hero__table td { border-bottom: 1px solid var(--rule); }
+
+/* 三段（能力 / 步骤 / 同稿多主题）：细线分隔的栏目，不再是卡片墙 */
+.features, .flow3, .same, .demo { background: var(--paper); }
+.home__section { border-top: 1px solid var(--rule); padding-top: var(--sp-5); }
+.features { border-top: 1px solid var(--rule); }
+.feature, .flow3__item, .same__card, .demo__sheet {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 var(--sp-4) 0 0;
+}
+.features > * + *, .flow3__grid > * + *, .same__grid > * + * { border-left: 1px solid var(--rule); padding-left: var(--sp-4); }
+.feature__title, .flow3__title, .same__h, .section__title {
+  font-family: var(--font-serif);
+  color: var(--ink);
+}
+.section__title { font-weight: 600; letter-spacing: -0.01em; }
+.same__q { background: transparent; border-left: 2px solid var(--c-primary); }
+
+/* 动效：铅字车间只要 120ms 的淡入，不要位移与缩放 */
+.card, .flow3__item, .same__card, .theme-card {
+  transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease);
+}
+.card:hover, .theme-card:hover { transform: none; }
