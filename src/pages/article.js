@@ -1,9 +1,9 @@
 /* src/pages/article.js — 文章详情：Markdown 渲染 + 侧边 TOC + 阅读进度 + 上下篇 */
-import { ensureRenderers } from '../markdown/vendor-loader.js?v=03a907fa';
-import { renderMarkdown } from '../markdown/renderer.js?v=03a907fa';
-import { buildTOC } from '../markdown/toc.js?v=03a907fa';
-import { toast } from '../components/theme-switcher.js?v=03a907fa';
-import { streamReveal } from '../components/cc-fx.js?v=03a907fa';
+import { ensureRenderers } from '../markdown/vendor-loader.js?v=bb2500ce';
+import { renderMarkdown } from '../markdown/renderer.js?v=bb2500ce';
+import { buildTOC } from '../markdown/toc.js?v=bb2500ce';
+import { toast } from '../components/theme-switcher.js?v=bb2500ce';
+import { streamReveal } from '../components/cc-fx.js?v=bb2500ce';
 
 const __mdCache = new Map();   /* slug → markdown 文本（同一会话内不重复请求） */
 const __htmlCache = new Map();

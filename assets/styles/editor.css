@@ -497,3 +497,23 @@ body:has(.editor) .app-footer { display: none; }
   .editor__bar > .editor__row--actions,
   .editor__bar > .editor__quickbar { max-width: 100%; }
 }
+
+/* ===== 编辑器窄屏收口（第 2 版）：控件行真正的容器是
+   .editor__row--actions > .editor__controls，必须在它身上开滚动 ===== */
+.editor__row--actions > .editor__controls {
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .editor__row--actions { flex-wrap: wrap; }
+  .editor__row--actions > .editor__controls {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .editor__row--actions > .editor__controls > * { flex: 0 0 auto; }
+  .editor__quickbar, .editor__quickbar-right { max-width: 100%; }
+}

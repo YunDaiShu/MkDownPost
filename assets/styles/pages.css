@@ -1011,3 +1011,34 @@ to { background-position: 220% 0; } }
   .hero__inner { grid-template-columns: minmax(0, 1fr); }
   .features, .flow3__grid, .same__grid { grid-template-columns: minmax(0, 1fr) !important; }
 }
+
+/* ===== 主题页并入铅字车间：细线网格，不再是圆角卡墙 ===== */
+.tsw, .themes { background: var(--paper); }
+.theme-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) 0;
+}
+.theme-card.is-on, .theme-card[aria-current="true"] {
+  border: 0;
+  border-top: 2px solid var(--c-primary);
+  box-shadow: none;
+  background: transparent;
+}
+.theme-card__name, .theme-card__note, .theme-card__demo-h { font-family: var(--font-serif); color: var(--ink); }
+.theme-card__prev {
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--paper-raised);
+}
+.tsw__chip {
+  border: 0; border-radius: 0; background: transparent;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-serif);
+}
+.tsw__chip.is-on { border-bottom: 2px solid var(--c-primary); color: var(--c-primary); background: transparent; }
+.tsw__chip:hover { background: transparent; color: var(--c-primary); }
+.theme-card .btn, .theme-card .pcard__dots i { border-radius: 0; }
