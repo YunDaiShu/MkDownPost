@@ -1195,6 +1195,18 @@ to { background-position: 220% 0; } }
 .about-table tr:last-child td { border-bottom: 1px solid var(--ink); }
 .section.prose { font-family: var(--font-serif); line-height: 1.85; }
 
+/* ===== 窄屏收口：文章页单栏、编辑器控件换行 ===== */
+@media (max-width: 900px) {
+  .article { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
+  .article__side { order: 2; display: none; }   /* 窄屏隐藏侧栏 TOC，正文占满 */
+  .article__main, .article__body, .markdown-body { min-width: 0; max-width: 100%; }
+  .crumbs, .article__meta { flex-wrap: wrap; }
+}
+@media (max-width: 720px) {
+  .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .features, .flow3__grid, .same__grid { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
 /* ===== cc-fx.css ===== */
 /* cc-fx.css — Claude Code 风格动效 */
 .cc-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px;
@@ -1847,6 +1859,12 @@ footer nav a:focus-visible {
   /* 标题锚点是辅助功能，不参与 40px 目标要求 */
   .md-anchor { min-width: 24px !important; min-height: 24px !important; height: 24px !important; }
 }
+
+/* ===== 铅字车间：卡片不发光、hover 不变底色（只让标题变色） ===== */
+.home-surface .card::before,
+.home-surface .theme-card::before,
+.page .card::before { display: none !important; }
+.card:hover, .card:hover::before { background: transparent !important; }
 
 /* ===== design-styles.css ===== */
 /* assets/styles/design-styles.css — 设计风格层（世界设计史 + 科技公司设计语言）

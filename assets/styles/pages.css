@@ -999,3 +999,15 @@ to { background-position: 220% 0; } }
 .about-table td { padding: 8px 12px; border-bottom: 1px solid var(--rule); }
 .about-table tr:last-child td { border-bottom: 1px solid var(--ink); }
 .section.prose { font-family: var(--font-serif); line-height: 1.85; }
+
+/* ===== 窄屏收口：文章页单栏、编辑器控件换行 ===== */
+@media (max-width: 900px) {
+  .article { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
+  .article__side { order: 2; display: none; }   /* 窄屏隐藏侧栏 TOC，正文占满 */
+  .article__main, .article__body, .markdown-body { min-width: 0; max-width: 100%; }
+  .crumbs, .article__meta { flex-wrap: wrap; }
+}
+@media (max-width: 720px) {
+  .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .features, .flow3__grid, .same__grid { grid-template-columns: minmax(0, 1fr) !important; }
+}

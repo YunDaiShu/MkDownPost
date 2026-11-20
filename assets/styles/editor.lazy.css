@@ -460,3 +460,41 @@ body:has(.editor) .app-footer { display: none; }
 }
 .editor__quickbar-status .editor__spacer { display: none; }
 .editor__bar-actions .btn { height: 32px; }
+
+/* ===== 窄屏防溢出：所有弹性容器都允许收缩 ===== */
+.editor, .editor__split, .editor__pane, .editor__bar, .editor__row--actions,
+.editor__quickbar, .editor__quickbar-right, .editor__viewbar { min-width: 0; }
+.editor__preview, .editor__ta { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  .editor__split { display: block; }
+  .editor__pane--edit, .editor__pane--preview { width: 100%; }
+  .editor__splitter { display: none; }
+}
+
+/* ===== 窄屏：控件行允许换行，不再横向挤出容器 ===== */
+@media (max-width: 900px) {
+  .editor__row--actions { flex-wrap: wrap !important; }
+  .editor__controls { flex: 1 1 100%; overflow-x: auto; }
+  .editor__quickbar { flex-wrap: wrap; }
+  .editor__quickbar-right { margin-left: 0; flex-wrap: wrap; gap: var(--sp-2); }
+}
+@media (max-width: 720px) {
+  .editor__bar { padding-inline: var(--sp-2); }
+  .editor__tool { width: 36px; height: 36px; }
+}
+
+/* ===== 关键修复：窄屏下 .editor__controls 之前是 display:contents，
+   没有盒子就无法滚动，控件被直接裁掉。这里强制成真实 flex 容器。 ===== */
+@media (max-width: 900px) {
+  .editor__bar > .editor__controls {
+    display: flex !important;   /* 覆盖 display:contents */
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+  .editor__bar > .editor__row--actions,
+  .editor__bar > .editor__quickbar { max-width: 100%; }
+}

@@ -75,3 +75,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   .btn { min-height: 44px; }
 }
 
+
+/* ===== 横向永不滚动：任何越界元素都被裁掉而不是把页面推宽（Hallmark Floor 4） ===== */
+html, body { overflow-x: clip; }
+body { min-width: 0; }

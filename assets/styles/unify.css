@@ -525,3 +525,9 @@ footer nav a:focus-visible {
   /* 标题锚点是辅助功能，不参与 40px 目标要求 */
   .md-anchor { min-width: 24px !important; min-height: 24px !important; height: 24px !important; }
 }
+
+/* ===== 铅字车间：卡片不发光、hover 不变底色（只让标题变色） ===== */
+.home-surface .card::before,
+.home-surface .theme-card::before,
+.page .card::before { display: none !important; }
+.card:hover, .card:hover::before { background: transparent !important; }
