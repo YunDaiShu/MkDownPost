@@ -802,3 +802,20 @@
 .wx-tile .wx-step { grid-column: 2; height: 28px; }
 .wx-tile .wx-switch, .wx-tile .wx-font { grid-column: 2 / -1; height: 28px; }
 
+
+/* ===== 点击即时反馈（先动起来，再等结果） ===== */
+.btn:active, .icon-btn:active, .seg__btn:active, .tsw__chip:active,
+.theme-card .btn:active, .wx-opt:active, .code-theme:active, .wx-switch:active {
+  transform: translateY(1px) scale(.985);
+  transition-duration: 60ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn:active, .icon-btn:active, .seg__btn:active, .tsw__chip:active,
+  .theme-card .btn:active, .wx-opt:active, .code-theme:active, .wx-switch:active { transform: none; }
+}
+
+/* ===== 主题卡片：离屏不渲染，147 张不再拖累首屏 ===== */
+.theme-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 240px 260px;
+}
