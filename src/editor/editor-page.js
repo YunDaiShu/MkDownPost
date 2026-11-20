@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=14ad11a9';
-import { initShortcuts } from './shortcuts.js?v=14ad11a9';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=14ad11a9';
-import { initAutosave } from './autosave.js?v=14ad11a9';
-import { SAMPLE_MAIN } from './sample-main.js?v=14ad11a9';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=14ad11a9';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=14ad11a9';
-import { toast } from '../components/theme-switcher.js?v=14ad11a9';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=14ad11a9';
+import { initSplitPane } from './split-pane.js?v=0e7acb0d';
+import { initShortcuts } from './shortcuts.js?v=0e7acb0d';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=0e7acb0d';
+import { initAutosave } from './autosave.js?v=0e7acb0d';
+import { SAMPLE_MAIN } from './sample-main.js?v=0e7acb0d';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=0e7acb0d';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=0e7acb0d';
+import { toast } from '../components/theme-switcher.js?v=0e7acb0d';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=0e7acb0d';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=14ad11a9'),
-      import('../markdown/renderer.js?v=14ad11a9')
+      import('../markdown/vendor-loader.js?v=0e7acb0d'),
+      import('../markdown/renderer.js?v=0e7acb0d')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=14ad11a9');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=0e7acb0d');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=14ad11a9');
+  if (!_exportMod) _exportMod = await import('./export.js?v=0e7acb0d');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=14ad11a9');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=0e7acb0d');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=14ad11a9');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=0e7acb0d');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=14ad11a9');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=0e7acb0d');
   return _mathMod;
 };
 
@@ -329,41 +329,6 @@ export default function render(root) {
       row.appendChild(el);
     });
     bar.appendChild(row);
-  })();
-
-  // 工具栏快速排版条：把「版式」整段与「字号/行距」两个数值块搬进工具栏空位
-  (function mountQuickbar() {
-    const bar = root.querySelector('.editor__bar');
-    const panel = root.querySelector('#wxFinePanel');
-    if (!bar || !panel) return;
-    const quick = document.createElement('div');
-    quick.className = 'editor__quickbar';
-    quick.setAttribute('aria-label', '快速排版');
-
-    const layoutSec = [...panel.querySelectorAll('.wx-sec')].find(function (sec) { return /^版式/.test(sec.textContent.trim()); });
-    if (layoutSec) quick.appendChild(layoutSec);
-
-    // 字号 / 行距 留在「精细设置」面板内，工具栏不再搬走它们
-
-    bar.appendChild(quick);
-  })();
-
-  // A+B：把「复制到公众号」（主操作）与文档状态条移进工具栏右侧，解决右侧大片空白
-  (function mountToolbarRight() {
-    const quick = root.querySelector('.editor__quickbar');
-    const copyBtn = root.querySelector('#wxCopy');
-    const status = root.querySelector('.editor__status');
-    if (!quick) return;
-    const right = document.createElement('div');
-    right.className = 'editor__quickbar-right';
-    const statusSlot = document.createElement('div');
-    statusSlot.className = 'editor__quickbar-status';
-    if (status) statusSlot.appendChild(status);
-    const actions = document.createElement('div');
-    actions.className = 'editor__bar-actions';
-    if (copyBtn) actions.appendChild(copyBtn);
-    right.append(statusSlot, actions);
-    quick.appendChild(right);
   })();
 
   const ta = root.querySelector('#ta');
@@ -984,7 +949,7 @@ export default function render(root) {
   paintPreset();
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=14ad11a9');
+      const mod = await import('./export.js?v=0e7acb0d');
       const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
       const html = mod.exportInlineHTML(source, '公众号稿件');
       try {
