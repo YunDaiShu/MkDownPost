@@ -13,7 +13,8 @@
     "check:md": "node tools/smoke-md.mjs",
     "vendor:update": "node tools/vendor.mjs",
     "themes:gen": "node tools/gen-themes.mjs",
-    "lint:color": "node tools/lint-hardcoded-color.mjs"
+    "lint:color": "node tools/lint-hardcoded-color.mjs",
+    "test:editor": "node tools/test-editor.mjs"
   },
   "keywords": [
     "markdown",
