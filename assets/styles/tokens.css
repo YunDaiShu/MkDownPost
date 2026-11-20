@@ -2,6 +2,9 @@
    规则：组件样式只允许使用本文件定义的变量，禁止写死 hex / px 字号。 */
 
 :root {
+  /* 界面字体：唯一来源，任何 font-family 都必须走这个令牌 */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
   color-scheme: light;
 
   /* —— 颜色令牌（默认亮色） —— */

@@ -876,3 +876,6 @@ to { background-position: 220% 0; } }
   border-bottom: 1px solid var(--c-divider);
 }
 .hero__table tbody tr:last-child td { border-bottom: 1px solid var(--c-text); }
+
+/* 显示级标题：允许文本平衡换行，避免末行孤字 */
+.hero__title, .section__title, .article__title, .markdown-body h1, .markdown-body h2 { text-wrap: balance; }

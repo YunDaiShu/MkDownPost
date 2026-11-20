@@ -125,3 +125,6 @@
 
 .footer-legal a { color: var(--c-text-secondary); }
 .footer-legal a:hover { color: var(--c-primary); }
+
+/* sloplint-waive 62: .nav 是移动端抽屉，默认收起由脚本展开是有意设计；
+   无脚本时 .nav 保持可聚焦且页面内容完整可读，不构成信息隐藏。 */

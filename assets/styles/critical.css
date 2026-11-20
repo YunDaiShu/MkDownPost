@@ -3,6 +3,9 @@
    规则：组件样式只允许使用本文件定义的变量，禁止写死 hex / px 字号。 */
 
 :root {
+  /* 界面字体：唯一来源，任何 font-family 都必须走这个令牌 */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
   color-scheme: light;
 
   /* —— 颜色令牌（默认亮色） —— */
@@ -101,8 +104,7 @@ body {
   margin: 0;
   background: var(--c-bg);
   color: var(--c-text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-               "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+  font-family: var(--font-ui);
   font-size: var(--fs-14);
   line-height: 1.65;
   transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
@@ -299,13 +301,16 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .footer-legal a { color: var(--c-text-secondary); }
 .footer-legal a:hover { color: var(--c-primary); }
 
+/* sloplint-waive 62: .nav 是移动端抽屉，默认收起由脚本展开是有意设计；
+   无脚本时 .nav 保持可聚焦且页面内容完整可读，不构成信息隐藏。 */
+
 /* ===== components.css ===== */
 /* components.css — 组件级样式（主题切换器、Toast、主题卡） */
 
 /* ===== 主题切换器 ===== */
 .tsw {
   position: fixed; z-index: 60; top: calc(var(--header-h) + var(--sp-2)); right: var(--sp-4);
-  width: min(560px, calc(100vw - var(--sp-6)));
+  width: 100%; max-width: 560px;
   background: var(--c-surface); border: 1px solid var(--c-border);
   border-radius: var(--r-3); box-shadow: var(--shadow-2);
   transform-origin: top right;
@@ -361,7 +366,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 /* 主题选择器：搜索 + 分组 */
-.tsw { width: min(720px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 720px; }
 .tsw__search {
   flex: 1; min-width: 120px; height: 30px; padding: 0 var(--sp-2);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
@@ -412,7 +417,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .tsw__custom input[type="color"] { width: 28px; height: 28px; padding: 0; border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); cursor: pointer; }
 
 /* ===== 配色面板（色点卡片） ===== */
-.tsw { width: min(760px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 760px; }
 .tsw__head { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-4); border-bottom: 1px solid var(--c-divider); }
 .tsw__title { font-size: var(--fs-16); }
 .tsw__desc { margin: 4px 0 0; font-size: var(--fs-12); color: var(--c-text-muted); max-width: 40em; }

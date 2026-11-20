@@ -3,7 +3,7 @@
 /* ===== 主题切换器 ===== */
 .tsw {
   position: fixed; z-index: 60; top: calc(var(--header-h) + var(--sp-2)); right: var(--sp-4);
-  width: min(560px, calc(100vw - var(--sp-6)));
+  width: 100%; max-width: 560px;
   background: var(--c-surface); border: 1px solid var(--c-border);
   border-radius: var(--r-3); box-shadow: var(--shadow-2);
   transform-origin: top right;
@@ -59,7 +59,7 @@
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 /* 主题选择器：搜索 + 分组 */
-.tsw { width: min(720px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 720px; }
 .tsw__search {
   flex: 1; min-width: 120px; height: 30px; padding: 0 var(--sp-2);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
@@ -110,7 +110,7 @@
 .tsw__custom input[type="color"] { width: 28px; height: 28px; padding: 0; border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); cursor: pointer; }
 
 /* ===== 配色面板（色点卡片） ===== */
-.tsw { width: min(760px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 760px; }
 .tsw__head { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-4); border-bottom: 1px solid var(--c-divider); }
 .tsw__title { font-size: var(--fs-16); }
 .tsw__desc { margin: 4px 0 0; font-size: var(--fs-12); color: var(--c-text-muted); max-width: 40em; }
