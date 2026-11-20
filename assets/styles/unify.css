@@ -510,3 +510,18 @@ footer nav a:focus-visible {
   box-shadow: var(--ui-ring-strong) !important;
   text-decoration: none !important;
 }
+
+/* ===== 触屏（粗指针）：可点目标不小于 40px（可访问性下限，故用 !important 压过组件样式） ===== */
+@media (pointer: coarse) {
+  .icon-btn, .editor__tool, .seg__btn, .btn, .wx-opt, .editor__chk,
+  .editor__row--actions .btn, .editor__row--actions .seg__btn,
+  .editor__viewbar .seg__btn, .tabs__add, .theme-card .btn {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+  /* 正文内的小按钮：抬到 32（WCAG 2.5.8 下限 24，这里留余量） */
+  .md-copy, .md-mermaid__btn, .md-img__btn { min-width: 32px !important; min-height: 32px !important; height: 32px !important; }
+  /* 标题锚点是辅助功能，不参与 40px 目标要求 */
+  .md-anchor { min-width: 24px !important; min-height: 24px !important; height: 24px !important; }
+}

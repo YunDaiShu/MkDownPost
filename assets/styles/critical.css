@@ -12,7 +12,7 @@
   --c-primary-bg: #F2F6FF;
   --c-text: #1B1F24;
   --c-text-secondary: #4A5158;
-  --c-text-muted: #7C848C;
+  --c-text-muted: #666E76;
   --c-bg: #FBFCFD;
   --c-surface: #FFFFFF;
   --c-surface-2: #F4F6F8;
@@ -22,7 +22,7 @@
   --c-code-bg: #F6F8FA;
   --c-code-bar: #EEF1F4;
   --c-quote-bar: #4A7CF7;
-  --c-link: var(--c-primary);
+  --c-link: var(--c-primary-text);
   --c-link-hover: #2453C4;
   --c-selection-bg: #D8E3FF;
   --c-focus-ring: #4A7CF7;
