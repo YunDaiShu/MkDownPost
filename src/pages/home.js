@@ -1,8 +1,8 @@
 import { derivePaletteCached as derivePalette } from '../theme-custom.js';
-import { mountReactbitsFX } from '../fx/reactbits.js?v=525ea7af';
+import { mountReactbitsFX } from '../fx/reactbits.js?v=35661866';
 /* src/pages/home.js — 首页：定位 + 编辑器入口 + 精选内容 + 主题预览墙
    所有列表都用 DOM 构建（textContent 写入），避免字符串拼 HTML 造成的结构错乱与 XSS 风险。 */
-import { THEMES } from '../../data/themes.js?v=525ea7af';
+import { THEMES } from '../../data/themes.js?v=35661866';
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);

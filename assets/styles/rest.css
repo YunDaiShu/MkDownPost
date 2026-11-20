@@ -785,12 +785,9 @@ to { background-position: 220% 0; } }
 .wx__body pre code, .editor__preview pre code { font-size: calc(var(--wx-fs) * 0.86) !important; }
 
 /* ===== 面板展开 / 收纳动效（grid-rows 0fr ↔ 1fr，可动画到内容高度） ===== */
-@keyframes wxPanelIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: none; }
-}
+@keyframes wxPanelIn { from { opacity: 0; } to { opacity: 1; } }
 .wx-fine:not([hidden]) {
-  animation: wxPanelIn var(--dur-2, 180ms) var(--ease-out, ease-out) both;
+  animation: wxPanelIn var(--dur-2, 180ms) var(--ease-out, ease-out) forwards;
   transform-origin: top center;
 }
 /* 代码主题选中态 */
