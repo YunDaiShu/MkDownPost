@@ -1148,6 +1148,53 @@ to { background-position: 220% 0; } }
 }
 .card:hover, .theme-card:hover { transform: none; }
 
+/* ===== 印刷层：文章页 / 关于页 / 精选内容卡（与首页同属一张纸） ===== */
+.page .card,
+.article__main,
+.article__side,
+.about-table,
+.section.prose {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+/* 精选内容：细线分隔的三栏，不再是卡片 */
+.card {
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) 0;
+  border-top: 1px solid var(--rule);
+}
+.card__title, .card__desc, .card__meta { font-family: var(--font-serif); }
+.card__title { color: var(--ink); }
+.card__desc { line-height: 1.8; }
+.card:hover { transform: none; background: transparent; }
+.card:hover .card__title { color: var(--c-primary); }
+
+/* 文章页：纸面正文 + 细线栏头 */
+.article { background: var(--paper); }
+.article__title {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.article__meta, .crumbs { font-size: var(--fs-12); color: var(--c-text-muted); }
+.article__body { font-family: var(--font-serif); }
+.article__nav { border-top: 1px solid var(--rule); padding-top: var(--sp-4); }
+.article__side .toc { border-left: 1px solid var(--rule); padding-left: var(--sp-3); }
+.readbar { background: transparent; }
+.readbar__fill { background: var(--c-primary); }
+
+/* 关于页：表格用三线表，与排版样例一致 */
+.about-table { border-collapse: collapse; width: 100%; font-family: var(--font-serif); }
+.about-table th {
+  text-align: left; padding: 8px 12px;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+}
+.about-table td { padding: 8px 12px; border-bottom: 1px solid var(--rule); }
+.about-table tr:last-child td { border-bottom: 1px solid var(--ink); }
+.section.prose { font-family: var(--font-serif); line-height: 1.85; }
+
 /* ===== cc-fx.css ===== */
 /* cc-fx.css — Claude Code 风格动效 */
 .cc-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px;
