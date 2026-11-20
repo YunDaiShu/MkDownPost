@@ -517,3 +517,18 @@ body:has(.editor) .app-footer { display: none; }
   .editor__row--actions > .editor__controls > * { flex: 0 0 auto; }
   .editor__quickbar, .editor__quickbar-right { max-width: 100%; }
 }
+
+/* ===== 预览面板不许横向滚动：宽度自适应，内容居中 ===== */
+.editor__pane--preview { overflow: hidden; }
+.editor__preview {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  overflow: visible;
+  padding-inline: var(--sp-4);
+  box-sizing: border-box;
+}
+.editor__preview pre, .editor__preview table, .editor__preview img, .editor__preview .md-table-wrap {
+  max-width: 100%;
+}
+.editor__preview pre, .editor__preview .md-table-wrap { overflow-x: auto; }
