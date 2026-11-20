@@ -334,7 +334,7 @@ body:has(.editor) .app-footer { display: none; }
   /* MOBILE_BAR：图标一行可横滑 + 控件一行可横滑，整体不再叠成 5 行 */
   .editor__bar {
     flex-wrap: wrap; align-items: center; gap: 4px;
-    padding: 6px; overflow: visible;   /* 不能 hidden，否则绝对定位的下拉菜单会被裁掉 */
+    padding: 8px; overflow: visible;   /* 不能 hidden，否则绝对定位的下拉菜单会被裁掉 */
   }
   .editor__tools-wrap {
     display: flex; align-items: center; gap: 2px;
@@ -358,7 +358,7 @@ body:has(.editor) .app-footer { display: none; }
   .seg__btn { min-width: 32px; height: 32px; }
   .editor__chk { font-size: 12px; gap: 4px; white-space: nowrap; }
   .editor__chk-text { display: none; }        /* 移动端只留开关，省出宽度给「示例」 */
-  #sampleBtn { padding: 0 10px; height: 32px; font-size: 12px; }
+  #sampleBtn { padding: 0 12px; height: 32px; font-size: 12px; }
   /* EXPORT_PIN：导出是主操作，固定在行尾，不参与横向滚动 */
   .editor__bar > #exportBtn { flex: 0 0 auto; padding: 0 12px; height: 32px; font-size: 12px; }
 }
@@ -379,7 +379,7 @@ body:has(.editor) .app-footer { display: none; }
   border-bottom: 1px solid var(--c-divider);
 }
 .editor__bar > .editor__controls {
-  display: flex; flex-wrap: nowrap; align-items: center; gap: 6px;
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 8px;
   flex: 0 1 auto; min-width: 0;
   margin-left: 0;
 }
@@ -402,7 +402,7 @@ body:has(.editor) .app-footer { display: none; }
 .editor__bar { flex-wrap: wrap !important; }
 .editor__bar > .editor__tools-wrap { flex: 1 1 100% !important; padding-bottom: 8px; border-bottom: 1px solid var(--c-divider); }
 .editor__bar > .editor__bar-actions {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--sp-2);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px var(--sp-2);
   flex: 1 1 100%;
   justify-content: flex-start;
 }
@@ -412,7 +412,7 @@ body:has(.editor) .app-footer { display: none; }
 /* ===== 工具栏：两行结构（图标行 + 操作行），不再依赖 order 补丁 ===== */
 .editor__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
 .editor__bar > .editor__tools-wrap { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 2px; padding-bottom: 8px; border-bottom: 1px solid var(--c-divider); }
-.editor__bar > .editor__row--actions { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--sp-2); }
+.editor__bar > .editor__row--actions { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px var(--sp-2); }
 .editor__bar > .editor__row--actions > * { flex: 0 0 auto; }
 .editor__bar .editor__spacer { display: none; }
 
@@ -447,4 +447,4 @@ body:has(.editor) .app-footer { display: none; }
   box-sizing: border-box;
 }
 .editor__row--actions .seg__btn { border: 1px solid transparent; }
-.editor__row--actions .editor__chk { border: 1px solid var(--c-border); background: var(--c-surface); gap: 6px; }
+.editor__row--actions .editor__chk { border: 1px solid var(--c-border); background: var(--c-surface); gap: 8px; }

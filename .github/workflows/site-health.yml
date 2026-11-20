@@ -19,6 +19,9 @@ jobs:
         run: node tools/check-imports.mjs
       - name: 硬编码颜色 lint
         run: node tools/lint-hardcoded-color.mjs
+      - name: 设计尺度检查（字号 / 间距 / 圆角 / 字重）
+        run: node tools/check-scale.mjs
+
 
       - name: 主题数据校验（字段 / 枚举 / 色值格式）
         run: node tools/check-themes-schema.mjs

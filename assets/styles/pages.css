@@ -228,9 +228,9 @@
 .theme-card.is-on::after {
   content: '正在使用';
   position: absolute; top: 8px; right: 8px;
-  padding: 1px 6px; border-radius: 999px;
+  padding: 2px 8px; border-radius: 999px;
   background: var(--c-primary); color: var(--c-on-primary, #fff);
-  font-size: 10px; line-height: 16px; letter-spacing: .2px;
+  font-size: 12px; line-height: 16px; letter-spacing: .2px;
 }
 .theme-card.is-on .theme-card__note { display: none; }
 
@@ -383,15 +383,15 @@
 .wx-opt.is-on { border-color: var(--c-primary); background: var(--c-primary-bg); color: var(--c-primary); font-weight: 600; }
 
 /* 代码块 Mac 窗口（三个圆点） */
-.wx__body pre.wx-macwin { position: relative; padding-top: 34px; }
-.wx__body pre .wx-macbar { position: absolute; left: 12px; top: 11px; display: flex; gap: 6px; }
+.wx__body pre.wx-macwin { position: relative; padding-top: 36px; }
+.wx__body pre .wx-macbar { position: absolute; left: 12px; top: 11px; display: flex; gap: 8px; }
 .wx__body pre .wx-macbar i { width: 10px; height: 10px; border-radius: 50%; display: block; }
 .wx__body pre .wx-macbar i:nth-child(1) { background: var(--c-mac-red); }
 .wx__body pre .wx-macbar i:nth-child(2) { background: var(--c-mac-yellow); }
 .wx__body pre .wx-macbar i:nth-child(3) { background: var(--c-mac-green); }
 
 /* 代码行号 */
-.wx__body pre.wx-lineno { position: relative; padding-left: 46px; }
+.wx__body pre.wx-lineno { position: relative; padding-left: 48px; }
 .wx__body pre .wx-ln {
   position: absolute; left: 12px; top: 12px; white-space: pre; text-align: right;
   color: var(--c-text-muted); font-size: 12px; line-height: 1.7; user-select: none;
@@ -447,7 +447,7 @@
   border-bottom: 1px solid var(--c-divider);
   background: var(--c-surface-2);
 }
-.wx-field { display: flex; align-items: center; gap: 6px; font-size: var(--fs-12); color: var(--c-text-secondary); }
+.wx-field { display: flex; align-items: center; gap: 8px; font-size: var(--fs-12); color: var(--c-text-secondary); }
 .wx-field > span { min-width: 56px; }
 .wx-field > i { font-style: normal; color: var(--c-text-muted); }
 .wx-field input[type="number"] {
@@ -469,7 +469,7 @@
 .wx__body.wx-codescroll pre code { white-space: pre; }
 
 /* 外链角标与文末清单 */
-.wx__body .wx-fn { color: var(--c-primary); font-size: 10px; vertical-align: super; }
+.wx__body .wx-fn { color: var(--c-primary); font-size: 12px; vertical-align: super; }
 .wx__body .wx-refs { margin-top: var(--sp-5); padding-top: var(--sp-3); border-top: 1px solid var(--c-divider); font-size: 13px; color: var(--c-text-secondary); }
 .wx__body .wx-refs__title { font-weight: 600; margin-bottom: 6px; color: var(--c-text); }
 .wx__body .wx-refs__item { margin: 4px 0; word-break: break-all; }
@@ -490,7 +490,7 @@
   gap: var(--sp-2); padding-bottom: var(--sp-2); border-bottom: 1px solid var(--c-divider);
 }
 .wx-fine__row:last-of-type { border-bottom: 0; padding-bottom: 0; padding-top: var(--sp-2); }
-.wx-opts { display: flex; gap: 6px; flex-wrap: wrap; }
+.wx-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .wx-field > span { min-width: 52px; color: var(--c-text-muted); }
 
 /* 视图条：三件套，宽松排布 */
@@ -568,7 +568,7 @@
 .wx-field > span { flex: 0 0 auto; }
 
 /* 精细面板：字段对齐（标签 60 / 控件 118 / 单位） */
-.wx-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.wx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .wx-field { display: grid; grid-template-columns: 60px 118px auto; align-items: center; gap: 8px; min-width: 0; }
 .wx-field > span { color: var(--c-text-muted); font-size: var(--fs-12); white-space: nowrap; }
 .wx-field > i { font-style: normal; color: var(--c-text-muted); font-size: var(--fs-12); }
@@ -613,7 +613,7 @@
 /* ===== 参考 markdown.com.cn 排版语言 ===== */
 /* 1) 标题序号徽标：01 / 02 方块 */
 .wx__body .wx-num, .editor__preview .wx-num {
-  display: inline-block; min-width: 22px; padding: 1px 6px; margin-right: 8px;
+  display: inline-block; min-width: 22px; padding: 2px 8px; margin-right: 8px;
   border-radius: 5px; background: var(--c-primary); color: var(--c-on-primary);
   font-size: .68em; font-weight: 700; text-align: center; line-height: 1.5;
   vertical-align: .12em; letter-spacing: .02em;
@@ -640,11 +640,11 @@
 .wx__body table thead th, .editor__preview table thead th {
   border: 0 !important; border-bottom: 1px solid var(--c-text) !important;
   border-top: 1px solid var(--c-text) !important; background: transparent !important;
-  font-weight: 700; text-align: left; padding: 8px 10px;
+  font-weight: 700; text-align: left; padding: 8px 12px;
 }
 .wx__body table tbody td, .editor__preview table tbody td {
   border: 0 !important; border-bottom: 1px solid var(--c-divider) !important;
-  padding: 8px 10px; background: transparent !important;
+  padding: 8px 12px; background: transparent !important;
 }
 .wx__body table tbody tr:last-child td, .editor__preview table tbody tr:last-child td {
   border-bottom: 1px solid var(--c-text) !important;
@@ -688,8 +688,8 @@
 .demo__callout { border-left: 3px solid var(--c-primary); background: var(--c-surface-2); border-radius: var(--r-2); padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-4); }
 .demo__callout-title { font-size: 13px; font-weight: 700; color: var(--c-primary); margin-bottom: 6px; }
 .demo__table { width: 100%; border-collapse: collapse; font-size: var(--fs-13); }
-.demo__table th { text-align: left; padding: 8px 10px; border-top: 1px solid var(--c-text); border-bottom: 1px solid var(--c-text); }
-.demo__table td { padding: 8px 10px; border-bottom: 1px solid var(--c-divider); color: var(--c-text-secondary); }
+.demo__table th { text-align: left; padding: 8px 12px; border-top: 1px solid var(--c-text); border-bottom: 1px solid var(--c-text); }
+.demo__table td { padding: 8px 12px; border-bottom: 1px solid var(--c-divider); color: var(--c-text-secondary); }
 .demo__table tbody tr:last-child td { border-bottom: 1px solid var(--c-text); }
 
 /* ===== 示例模板四种气质（同一份 Markdown，排版不同） ===== */
@@ -724,18 +724,18 @@
 /* ===== 排版设置面板：分区 + 卡片式网格（替换旧的松散布局） ===== */
 .wx-fine {
   display: grid; grid-template-columns: 1fr;
-  gap: 14px; padding: 14px 16px 16px;
+  gap: 16px; padding: 16px;
   border-bottom: 1px solid var(--c-divider);
   background: var(--c-surface-2);
 }
 .wx-sec { display: grid; gap: 8px; }
 .wx-sec__head { display: flex; align-items: baseline; gap: 8px; }
 .wx-sec__title { font-size: 12px; font-weight: 700; color: var(--c-text); letter-spacing: .02em; }
-.wx-sec__hint { font-size: 11px; color: var(--c-text-muted); }
+.wx-sec__hint { font-size: 12px; color: var(--c-text-muted); }
 .wx-sec--actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; border-top: 1px dashed var(--c-divider); }
 
 /* chip 行更紧 */
-.wx-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.wx-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .wx-chip-row .wx-opt { height: 30px; padding: 0 12px; border-radius: var(--r-2); }
 
 /* 卡片式网格：数值 / 字体 都是小方块，信息密度高但不挤 */
@@ -744,13 +744,13 @@
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 .wx-tile {
-  display: grid; grid-template-columns: 1fr auto; column-gap: 6px; row-gap: 6px;
-  padding: 8px 10px; border: 1px solid var(--c-border); border-radius: var(--r-2);
+  display: grid; grid-template-columns: 1fr auto; column-gap: 8px; row-gap: 8px;
+  padding: 8px 12px; border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); min-width: 0;
 }
-.wx-tile__label { grid-column: 1; font-size: 11px; color: var(--c-text-muted); }
+.wx-tile__label { grid-column: 1; font-size: 12px; color: var(--c-text-muted); }
 
-.wx-tile__unit { grid-column: 2; font-style: normal; font-size: 11px; color: var(--c-text-muted); }
+.wx-tile__unit { grid-column: 2; font-style: normal; font-size: 12px; color: var(--c-text-muted); }
 
 .wx-tile .wx-step { width: 100%; border: 0; background: transparent; height: 24px; }
 .wx-tile .wx-step button { width: 22px; color: var(--c-text-secondary); }
@@ -767,38 +767,38 @@
 .wx-tile .wx-step input { flex: 1 1 auto; text-align: center; }
 
 /* 面板密度收紧（让四块内容在一屏内看完） */
-.wx-fine { gap: 10px; padding: 12px 14px 14px; }
-.wx-sec { gap: 6px; }
+.wx-fine { gap: 12px; padding: 12px 16px 16px; }
+.wx-sec { gap: 8px; }
 .wx-sec__hint { display: none; }
-.wx-chip-row .wx-opt { height: 28px; padding: 0 10px; font-size: 12px; }
-.wx-tile { padding: 6px 8px; row-gap: 4px; }
-.wx-tiles { gap: 6px; }
+.wx-chip-row .wx-opt { height: 28px; padding: 0 12px; font-size: 12px; }
+.wx-tile { padding: 8px; row-gap: 4px; }
+.wx-tiles { gap: 8px; }
 .wx-sec--actions { padding-top: 8px; }
 
 /* ===== 工具栏快速排版条（红框位置） ===== */
 .editor__quickbar {
   flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
-  padding: 6px 0 2px;
+  padding: 8px 0 4px;
 }
 .editor__quickbar .wx-sec { display: flex; align-items: center; gap: 8px; }
 .editor__quickbar .wx-sec__head { display: none; }
 .editor__quickbar .wx-tile {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 8px;
   padding: 0 8px; height: 30px; border: 1px solid var(--c-border);
   border-radius: var(--r-2); background: var(--c-surface);
 }
 .editor__quickbar .wx-tile__label { font-size: 12px; color: var(--c-text-muted); }
-.editor__quickbar .wx-tile__unit { font-size: 11px; color: var(--c-text-muted); }
+.editor__quickbar .wx-tile__unit { font-size: 12px; color: var(--c-text-muted); }
 .editor__quickbar .wx-step { width: 92px; height: 24px; border: 0; background: transparent; }
 
 /* ===== 面板里的数值：内联一行，不再用卡片 ===== */
-.wx-tiles { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 4px 18px; }
+.wx-tiles { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 4px 16px; }
 .wx-tile {
   display: grid; grid-template-columns: 56px 104px auto; align-items: center; gap: 8px;
   padding: 3px 0; border: 0; border-radius: 0; background: transparent;
 }
 .wx-tile__label { grid-column: 1; font-size: 12px; }
-.wx-tile__unit { grid-column: 3; font-size: 11px; }
+.wx-tile__unit { grid-column: 3; font-size: 12px; }
 .wx-tile .wx-step { grid-column: 2; height: 28px; }
 .wx-tile .wx-switch, .wx-tile .wx-font { grid-column: 2 / -1; height: 28px; }
 

@@ -122,7 +122,7 @@
 
 /* 工具栏里的风格选择器：与现有控件同规格 */
 .editor__style {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 8px;
   height: 32px; padding: 0 10px; border-radius: var(--r-2);
   border: 1px solid var(--c-border); background: var(--c-surface);
   color: var(--c-text-secondary); font-size: var(--fs-12);
