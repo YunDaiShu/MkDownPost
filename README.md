@@ -1,315 +1,175 @@
 # MkDownPost · 码稿
 
-写一份 Markdown，导出各平台可用的排版结果。
+写 Markdown，一键变成能直接粘进公众号后台的排版。零构建、纯前端、内容不上传。
 
-**当前版本能力**：147 套页面主题（9 个分类） · 6 套代码主题 · 8 种设计风格 · 微信排版（编辑器右栏）
+[![site-health](https://github.com/YunDaiShu/MkDownPost/actions/workflows/site-health.yml/badge.svg)](https://github.com/YunDaiShu/MkDownPost/actions/workflows/site-health.yml)
+[![在线使用](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E4%BD%BF%E7%94%A8-yundaishu.github.io-4A7CF7)](https://yundaishu.github.io/MkDownPost/)
+[![主题](https://img.shields.io/badge/%E4%B8%BB%E9%A2%98-147%20%E5%A5%97-14161A)](#主题)
+[![构建](https://img.shields.io/badge/%E6%9E%84%E5%BB%BA-%E9%9B%B6%E6%9E%84%E5%BB%BA-14161A)](#技术选择)
+[![license](https://img.shields.io/badge/license-MIT-14161A)](LICENSE)
 
-> 面向公众号 / 小黑盒 / TapTap 等平台创作者的 **Markdown 写作与排版工作台**：写一份 Markdown，导出各平台可用的排版结果。
+![首页](docs/images/home.png)
 
-- 线上站点：https://yundaishu.github.io/MkDownPost/
-- 技术栈：纯 HTML / CSS / JavaScript（ES Module），**零构建、无框架、无后端**
-- 数据：`content/*.md` + `content-index.json`；存储只用 `localStorage`（草稿 / 主题偏好 / 设置）
+---
 
-## 更新日志
+## 这是什么
 
-### 2026-11 · 排版与性能
-- **微信排版**：版式可选（标准 / 评论 / 技术 / 活动 / 更新）、精细参数（字号 / 行距 / 段距 / 字间距 / 留白 / 首行缩进）、三档字体（含霞鹜文楷 / 臻楷，按需加载）
-- **排版语言**：标题序号徽标、提示卡（`> **提示**`）、三线表、外链转文末引用、代码窗口 / 行号 / 横向滚动、微信暗色模拟
-- **工程化**：排版自检、本地历史版本（20 份快照）、状态栏参数摘要
-- **主题分层**：147 套页面主题（按 key 去重，清理 6 组重复）+ 7 套代码主题（新增「微信原生 · 公众号灰」）
-- **工具栏**：图标行 + 操作行两行结构；控件统一 32px；快速排版条（版式 + 字号 + 行距）；插入菜单（目录 / 表格 / 分割线 / 图片 / 提示卡 / 公式）
-- **示例模板**：9 份，四类模板各有排版气质（衬线 / 竖条 / 色带 / 紧凑）
-- **性能**：vendor 代码高亮 CSS 合并进 rest.css（少 2 个请求）；关键模块 `modulepreload`，消除 14 级 ES 模块瀑布；Service Worker 导航请求 `cache: no-store`，修掉「强刷也看不到新版」
-- **可验证性**：`tests/themes.test.mjs`（8 项 node:test）、`tools/check-themes-schema.mjs`（字段 / 枚举 / 色值 / 重复 key）；CI 全绿
-- **品牌**：favicon 渐变 + 高光折角；首页新增「三步走完一篇 / 同一段字三种气质 / 能做到的排版」
+左边写 Markdown，右边就是公众号里的样子。写完点一下「复制到公众号」，粘进后台草稿箱，样式跟着走。
 
-## 我们明确不做
+- **147 套主题** —— 品牌配色按明暗双色提供，所有元素随主题联动
+- **微信排版面板** —— 字号、行距、段距、字间距、两侧留白、首行缩进，全部可视化调
+- **多平台导出** —— 公众号全内联样式、小黑盒结构、TapTap 兼容降级
+- **不上传、无账号、无 AI** —— 稿子只存在你本机浏览器里
 
-| 不做 | 说明 |
+## 界面
+
+| 编辑器：左写右排 | 微信排版精细设置 |
 |---|---|
-| 任何 AI 功能 | 无对话、无润色、无摘要生成 |
-| 登录注册 / 用户系统 / 云端同步 | 没有服务器，没有账号 |
-| 调用第三方 API | 运行时不发任何外部请求；第三方库需本地 `vendor/` |
-| "一键发布" | 只做排版导出（公众号个人主体无公开发布接口） |
+| ![编辑器](docs/images/editor.png) | 见上图右侧面板 |
+
+| 主题库（147 套） | 文章页（长文阅读） |
+|---|---|
+| ![主题](docs/images/themes.png) | ![文章](docs/images/article.png) |
+
+## 快速开始
+
+**在线用**：<https://yundaishu.github.io/MkDownPost/>
+
+**本地跑**（ES Module 必须走 http，不能双击打开 index.html）：
+
+```bash
+npm run serve          # 起一个零依赖静态服务器
+# 然后打开终端提示的地址
+```
+
+没有 `npm install` —— 这个项目没有运行时依赖。
 
 ## 功能
 
-- 页面主题 147 套 + 代码主题 6 套，两层独立
-- 8 种设计风格，叠加在主题之上，整站生效
-- 编辑器右栏双视图：预览 / 微信排版（含一键复制）
-- 拖拽分栏（双击复位 50%）、软换行、行号按真实折行高度对齐
-
-- **编辑器**：多标签页（可重命名）/ 语法高亮（含围栏代码块）/ 公式实时预览 / 编辑历史时间线 / 可自定义快捷键（`?` 打开）/ 撤销重做置灰 / 自动保存 / 字号·行宽分段控件（持久化）/ 同步滚动
-- **渲染**：GFM 表格 / 任务列表 / 删除线 / 自动链接；代码块（**highlight.js 语法高亮** + 语言标签 + 复制 + >40 行滚动）；标题锚点；图片懒加载 + 骨架 + 兜底 + **灯箱**；**Mermaid 图表**与 **KaTeX 公式**（懒加载 + 失败降级为源码）；XSS 白名单净化
-- **主题**：**50 套**（8 套手调 + 42 套生成），每套含明暗两套完整变量；切换面板 + `T`/`Shift+T` 循环 + **复制当前主题 CSS 变量**
-- **导出（8 种）**：`.md` / 内联样式 HTML / **Word（.doc）** / **PDF（A4，html2canvas + jsPDF，无打印框）** / **PNG 长图** / 打印（主题色、极简双模板）/ 9 个平台适配导出
-- **平台适配器（9 个）**：公众号 / 小黑盒 / TapTap / 知乎 / 掘金 / CSDN / B 站专栏 / 简书 / GitHub README，统一接口 `transform(md) → {html, notes[]}`；编辑器「导出 → 平台适配导出…」可选平台、看处理说明、一键复制 HTML
-
-## 本地运行
-
-ES Module 必须走 http（不能双击 `index.html`）：
-
-```bash
-cd MkDownPost
-node tools/serve.mjs        # 零依赖静态服务器
-# 打开 http://localhost:5173
-```
-
-第三方库已随仓库提供（`vendor/`，共 27 个文件：marked / highlight.js / mermaid / KaTeX 含字体），**离线可用、运行时不联网**。
-
-如需重新拉取或升级：
-
-```bash
-node tools/vendor.mjs
-```
-
-## 响应式回归检查（自带，一条命令）
-
-```bash
-node tools/audit-responsive.mjs                     # 跑 5 档 × 5 页 = 25 项
-node tools/audit-responsive.mjs http://localhost:5173/
-node tools/audit-responsive.mjs https://… --shots=shots   # 同时存图
-```
-
-检查项：渲染是否成功 / 控制台报错 / 横向溢出 / 移动端点击区 ≥44px / 页头与内容左边缘对齐 / 栅格列数。
-**有失败时退出码为 1**，可直接接入 CI。
-
-单页截图工具：
-
-```bash
-node tools/shot.mjs "https://…/#/" 1920 1080 out.png '--waitFor=.card' '--eval=probe.js' [--full]
-```
-
-## 主题（147 套 · 9 个分类）
-
-主题分两层，互不干扰：
-
-| 层 | 数量 | 作用 | 落地位置 |
-|---|---|---|---|
-| **页面主题** | 147 套 / 9 类（AI、开发、工具、社交、媒体、系统、设计、浏览器、其他） | 换配色与整体观感 | `data/themes.js` + `themes.generated.css` |
-| **代码主题** | 6 套（GitHub Light/Dark、Monokai、One Dark、Solarized Light、Dracula） | 只换代码块配色 | `assets/styles/code-themes.css` |
-
-选择分别持久化在 `mdp:v1:theme` 与 `mdp:v1:code-theme`。
-
-## 设计风格（8 种，叠加在主题之上）
-
-风格只改「形式」（圆角 / 阴影 / 字距 / 字重 / 密度 / 边框粗细 / 动效节奏），不改配色，所以可以和任意主题组合：
-
-| 风格 | 特征 |
+| 功能 | 说明 |
 |---|---|
-| 默认 | 跟随主题令牌 |
-| 瑞士国际主义 | 0 圆角 · 无阴影 · 90ms 干脆动效 |
-| 苹果 | 大圆角 · 双层柔光 · 180ms 回弹 |
-| 宜家 | 方正小圆角 · 2px 硬边框 · 紧凑 |
-| 博朗 / 拉姆斯 | 克制中圆角 · 极浅阴影 · 精确字距 |
-| 包豪斯 | 硬边 · 实心位移投影 |
-| 无印良品 | 低对比 · 大留白 · 240ms 慢速 |
-| Material 3 | 12px 圆角 · 三层高度阴影 |
-| Linear | 小圆角 · 细边框 · 工具感 |
+| 实时预览 | 左编辑右渲染，同步滚动可开关 |
+| 主题 | 147 套，8 个分类（AI / 社交 / 媒体 / 开发 / 设计 / 工具 / 系统 / 浏览器），明暗双色 |
+| 设计风格 | 8 种叠加层（瑞士 / 苹果 / 宜家 / 博朗 / 包豪斯 / 无印 / Material / Linear），只改形式不动配色 |
+| 排版设置 | 字号 12–22、行距 1.3–2.6、段距、字间距、留白、首行缩进；5 档版式预设 |
+| 微信增强 | 标题居中、标题序号、代码块 Mac 窗口、行号、外链引用、代码横滑、微信暗色模拟 |
+| 导出 | Markdown / HTML / 长图 / 公众号剪贴板 |
+| 编辑器 | 20 个行内动作、6 个插入模板、示例模板、多标签页、本地历史（20 个快照） |
+| 隐私 | 全部数据在 `localStorage`，无后端、无统计、无 AI |
 
-定义在 `assets/styles/design-styles.css`，选择存 `mdp:v1:style`，启动时由 `src/main.js` 应用到整站。
+## 技术选择
 
-## 微信排版（编辑器右侧栏）
+| 决定 | 原因 |
+|---|---|
+| **零构建** | 没有打包器、没有 node_modules，改完刷新就生效，十年后还能跑 |
+| **纯 ES Module** | 浏览器原生模块，50 个文件按需加载，路由级懒加载 |
+| **localStorage** | 草稿、主题、排版参数都存在本机，不经过任何服务器 |
+| **CSS 令牌** | 颜色/间距/圆角/字号全部走 `:root` 变量，换主题只换变量 |
 
-编辑器右侧是双视图面板：
-
-- **预览**：按当前主题渲染的网页效果
-- **微信排版**：375px 手机框，4 档排版预设（标准 16/1.75 · 宽松 16/2.0 · 紧凑 15/1.62 · 大字 18/1.85）
-
-两个视图共用同一套排版预设，点「复制到公众号」会把**内联样式**的富文本写进剪贴板，粘到公众号编辑器不丢格式。
-
-| 批次 | 数量 | 来源 |
-|---|---|---|
-| 手调 | 8 | deepseek / wechat / taptap / heybox / bilibili / zhihu / xiaohongshu / github |
-| 生成 | 92 | vscode / notion / figma / linear / vercel / nextjs / tailwind / vite / rust / go / python / typescript / apple / material / bootstrap / discord / slack / telegram / youtube / netflix / spotify / steam / playstation / xbox / nintendo / miui / harmonyos / windows / chrome / firefox / safari / dribbble / behance / medium / substack / wordpress / ghost / juejin / csdn / oschina / gitee / cloudflare |
-
-> **色值为近似取色，非官方规范**，仅用于识别气质；替换只需改 `data/themes.js`（手调 8 套）或 `tools/gen-themes.mjs` 的 seeds（生成 42 套）后重跑。
-
-### 对比度自检
-
-- 生成脚本内置校验：42 套生成主题 **最低 4.61:1**（≥ AA 4.5）
-- 8 套手调主题实测（正文 / 标题 / 链接）：
-
-| 主题 | 亮色（正文/标题） | 暗色（正文/标题） |
-|---|---|---|
-| deepseek | 16.82 / 4.92 | 15.57 / 7.49 |
-| wechat | 16.82 / 4.91 | 15.57 / 10.45 |
-| taptap | 16.82 / 5.05 | 15.57 / 10.74 |
-| heybox | 16.82 / 5.05 | 15.57 / 7.95 |
-| bilibili | 16.82 / 4.68 | 15.57 / 8.71 |
-| zhihu | 16.82 / 4.79 | 15.57 / 7.44 |
-| xiaohongshu | 16.82 / 4.91 | 15.57 / 6.21 |
-| github | 16.82 / 5.05 | 15.57 / 9.58 |
-
-- 打开 `tools/check-contrast.html` 可现场重算全部 50 套 × 明暗。
-
-## 如何新增主题
-
-1. **改手调主题**：编辑 `data/themes.js` 的 `brand`，再按同算法补 `assets/styles/themes.css` 对应块（或迁到生成器）
-2. **加生成主题**：在 `tools/gen-themes.mjs` 的 `SEEDS` 里加一行 `['key','显示名','分组','#亮色主色','#暗色主色']`，运行 `node tools/gen-themes.mjs`
-3. 校验：`node tools/lint-hardcoded-color.mjs` 必须 PASS；对比度看 `tools/check-contrast.html`
-
-## 如何新增文章
-
-1. 在 `content/` 放一个 `.md`
-2. 在 `content-index.json` 加一条：`{ "slug": "与文件名一致", "title": "...", "tags": ["..."], "featured": true, "date": "2026-10-27", "readingTime": 4, "excerpt": "..." }`
-3. 刷新即出现在首页「精选内容」与 `#/article/<slug>`
-
-## 目录结构
+## 项目结构
 
 ```
 MkDownPost/
-├── index.html
-├── assets/styles/    tokens / base / layout / components / themes / themes.generated / markdown / editor / pages
-├── content/              81 篇 Markdown（7 组：入门 / 语法 / 进阶 / 主题 / 方法 / 平台 / 本站）
-├── content-index.json
-├── data/             themes.js（50 套元数据）/ themes.generated.js
+├── index.html              单页外壳（内联首屏 CSS + 预加载清单）
+├── sw.js                   Service Worker（导航/代码网络优先，图片字体缓存优先）
 ├── src/
-│   ├── main.js  router.js  theme-manager.js
-│   ├── markdown/     renderer / builtin-md / sanitize / heading-anchors / code-blocks / toc / images / mermaid / katex
-│   ├── editor/       editor-page / split-pane / shortcuts / autosave / export
-│   ├── components/   theme-switcher / lightbox
-│   ├── adapters/     index / wechat / xiaoheihe / taptap
-│   └── pages/        home / article / themes / about / notfound / editor
-├── tools/            serve.mjs / vendor.mjs / gen-themes.mjs / check-contrast.html / lint-hardcoded-color.mjs / smoke-md.mjs
-└── vendor/           可选：marked / highlight.js / mermaid / katex
+│   ├── main.js              启动、主题恢复、路由挂载
+│   ├── router.js            hash 路由（#/ #/editor #/themes #/about #/article/:slug）
+│   ├── theme-manager.js     主题应用（CSS 变量注入）
+│   ├── theme-custom.js      自定义主色
+│   ├── editor/              编辑器（editor-page.js / keymap.js）
+│   ├── markdown/            Markdown 解析与渲染（自研解析器 + 可选第三方渲染）
+│   ├── pages/               页面（首页 / 主题页 / 关于 / 文章）
+│   ├── components/          组件（主题切换器、快捷键面板…）
+│   ├── adapters/            平台适配（公众号 / 小黑盒 / TapTap）
+│   └── fx/                  装饰动效
+├── data/
+│   ├── themes.js            主题入口（手写 8 套 + 生成 139 套 = 147）
+│   └── themes.generated.js  由 tools/gen-themes.mjs 生成，勿手改
+├── assets/styles/           19 个 CSS 源文件 + 构建产物（critical / rest / *.lazy）
+├── content/                 文章源（Markdown）
+├── docs/images/             README 截图与图标
+├── tests/                   node:test 单测
+└── tools/                   41 个零依赖脚本（见下表）
 ```
 
-## 动效规范
+## 工具脚本（`tools/`）
 
-全站动效只有 **两档来源**：CSS 令牌（零体积）与三个可复用效果（按需加载）。新增动效请先读这一节。
+这些脚本全部零依赖，用 Node 直接跑。**CI 会跑其中一部分**，本地跑一遍就能复现 CI 结果。
 
-### 1. 时长分档（`assets/styles/tokens.css`）
+| 脚本 | 干什么 |
+|---|---|
+| `serve.mjs` | 本地静态服务器（`npm run serve`） |
+| `build-seo.mjs` | 生成静态文章页、sitemap、结构化数据 |
+| `bundle-css.mjs` | 拆 critical（内联）+ rest（非阻塞）+ 编辑器/主题懒加载包 |
+| `stamp-version.mjs` | 内容哈希版本戳，缓存击穿 + SW 更新（`--check` 供 CI 校验） |
+| `gen-modulepreload.mjs` | 按静态依赖图生成 `<link rel="modulepreload">` |
+| `check-artifacts.mjs` | 校验构建产物与源文件一致 |
+| `check-imports.mjs` | 校验所有相对 import 指向真实文件 |
+| `check-interaction.mjs` | 交互规范（层叠顺序 / hover / 焦点 / 图标配平 / 明暗对比度） |
+| `check-scale.mjs` | 设计尺度（字号档位 / 4px 间距栅格 / 圆角 / 字重） |
+| `check-themes-schema.mjs` | 主题数据结构与重复 key |
+| `lint-hardcoded-color.mjs` | 组件样式里不许出现硬编码颜色 |
+| `test-editor.mjs` | **编辑器功能冒烟测试**（无头 Edge 真点 33 项） |
+| `smoke-md.mjs` | Markdown 解析冒烟 |
+| `audit-responsive.mjs` | 多分辨率回归 |
+| `shot.mjs` | 任意视口截图（自带无头 Edge + CDP） |
+| `gen-themes.mjs` | 生成扩展主题 |
+| `vendor.mjs` | 一次性下载第三方库到 `vendor/`（运行时不联网） |
 
-| 令牌 | 值 | 用在哪 | 例子 |
-| --- | --- | --- | --- |
-| `--dur-1` | 120ms | 微交互：hover、焦点、按下 | 图标按钮、链接、导航项 |
-| `--dur-2` | 180ms | 控件状态变化 | 复选框、主题卡位移、toast |
-| `--dur-3` | 240ms | 卡片与浮层进出 | 卡片入场、抽屉、消息流 |
-| `--dur-4` | 320ms | 面板与页面级 | 编辑器浮层、路由转场 |
-
-> 例外：阅读进度条 `.readbar__fill` 保留 `80ms linear` —— 进度必须线性且跟手。
-
-### 2. 缓动语义
-
-| 令牌 | 曲线 | 语义 |
-| --- | --- | --- |
-| `--ease-out` | `cubic-bezier(.16,1,.3,1)` | **进入**：元素出现、面板展开 |
-| `--ease-in` | `cubic-bezier(.4,0,1,1)` | **退出**：元素消失、旧页面淡出 |
-| `--ease-spring` | `cubic-bezier(.34,1.56,.64,1)` | **强调**：toast 回弹、箭头翻转 |
-
-选择原则：**出现用 out、消失用 in、需要手感才用 spring**。弹跳感滥用会让界面显得廉价。
-
-### 3. 三个可复用效果
-
-| 效果 | 文件 | 成本 | 用法 |
-| --- | --- | --- | --- |
-| 导出确认（光环 + 粒子） | `src/fx/confirm.js` | 光环 0KB（CSS）；粒子 41KB 懒加载 | `confirmFlash(anchor)` |
-| 卡片 / 代码块光斑 | `src/fx/spotlight.js` | **1.4KB** | 自动挂载，匹配 `.card` `.pcard` `.theme-card` `.md-codeblock` |
-| 标题扫光 | `assets/styles/unify.css` | 0KB | 类名 `.hero__accent` |
-
-**确认动效是渐进增强的**：光环由 CSS keyframes 当帧出现（不等任何下载），anime.js 只在浏览器空闲时预取，到位后才补粒子；拿不到就只留光环。
-
-### 4. 降级规则（四条，缺一不可）
-
-| 场景 | 处理 | 位置 |
-| --- | --- | --- |
-| `prefers-reduced-motion: reduce` | 全站 animation/transition 压到 `.001ms`；转场与光斑额外单独关闭 | `base.css` 全局守卫 + 各效果内判断 |
-| 触屏 / 无精确指针 | 光斑不挂监听，伪元素 `display: none` | `spotlight.js` + `unify.css` |
-| 浏览器不支持 View Transitions | 直接挂载页面，不转场 | `router.js` 的 `useVT` 判断 |
-| 离线 / 动态 import 失败 | 静默跳过硬效果，功能不受影响 | `confirm.js` 的 `catch` |
-
-### 5. 禁止事项
-
-- ❌ **不引入需要构建或框架的动画方案**（React/Vue 组件库、需要 Vite 的插件）—— 它会把零构建架构拉垮。参考案例：`react-bits` 依赖 React 19 + Tailwind + GSAP + three.js，**不可直接安装**，只能把单个效果移植成原生实现。
-- ❌ **不做会触发布局的动画**：只动 `transform` / `opacity`，不动 `width/height/top/left`（进度条除外）。
-- ❌ **不写魔法数字**：新增时长一律用 `--dur-*`，缓动一律用 `--ease-*`。
-- ❌ **不给同一元素叠两套入场动画**：走 View Transitions 时页面容器加 `.page--vt` 关闭自身 `pageIn`。
-
-### 6. CI 会挡住的回归（`tools/check-interaction.mjs`）
-
-| 断言 | 意义 |
-| --- | --- |
-| `<style id="critical">` 早于 `rest.css` | 层叠顺序反了会出现「改了半天不生效」 |
-| 边框族 hover = 边框主色 + 前景加深 | 防止两种 hover 语言混用 |
-| 组内族 hover = `--c-hover-bg` + 前景加深 | 同上 |
-| 关键元素都有 `2px var(--c-focus-ring)` 焦点框 | 键盘可访问性 |
-| 顶栏图标 `stroke-width` = 1.8 / 2.2 / 2 | 光学重量配平（覆盖率差 ≤2%） |
-| 明暗两套令牌对比度下限 | hover 底 ≥1.15 / 1.35、hover 边框与焦点环 ≥3:1、正文 ≥7:1 |
+常用组合：
 
 ```bash
-node tools/check-interaction.mjs   # 本地自查，CI 每个 PR 都跑
+npm run check          # 导入完整性
+npm run test           # 主题数据单测
+npm run test:editor    # 编辑器 33 项冒烟
+npm run lint:color     # 硬编码颜色
+npm run audit          # 多分辨率回归
 ```
 
-## 已知限制
+## 主题
 
-| 限制 | 原因 | 替代方案 |
-|---|---|---|
-| Mermaid 体积较大（3.3MB） | 需要完整图表能力 | 已懒加载：只在图表进入视口时才加载，不影响首屏 |
-| 无云端同步 | 硬性排除用户系统/后端 | 编辑器「导出 → 下载 .md」自行备份 |
-| 公众号导出后仍可能被编辑器转存图片 | 公众号编辑器行为，非本地可控 | 粘贴后人工确认图片 |
-| **PDF 为图片型**（文字不可选中/搜索） | 客户端生成"中文可搜索 PDF"需嵌入 CJK 字体并逐字排版：jsPDF 不写 ToUnicode（复制是乱码），pdf-lib + fontkit 在浏览器里解析 1~2MB 中文字体会卡死（实测 3883 字仍超时）。当前用离屏全宽克隆 + 分页截图，视觉 100% 正确 | 需要可搜索 PDF 时：先用「导出内联样式 HTML」再在浏览器打印为 PDF，或把内容贴到 Word 另存 PDF |
-| TapTap 适配为实验状态 | 平台表格/任务列表支持不稳定 | 已自动降级为文本，粘贴后人工检查 |
-| 主题色为近似取色 | 官方无公开色值规范 | 改 `data/themes.js` 一处即可替换 |
+147 套，8 个分类，每套提供 light/dark 两个 brand 色。手写 8 套 + `tools/gen-themes.mjs` 生成 139 套；生成的清单不要手改。
 
-## 许可证
+数据结构与校验：
 
-MIT，见 `LICENSE`。
+```bash
+npm run check:themes
+```
 
-## 贡献
+## 数据存储
 
-见 `CONTRIBUTING.md`。
+全部在浏览器本地，键名以 `mdp:v1:` 开头：
 
-## 免责声明
-
-- 本项目是**个人非官方工具**，与腾讯、微信、小黑盒、TapTap、知乎、掘金、CSDN、哔哩哔哩、简书、GitHub 等平台**无任何隶属或合作关系**。
-- 所有平台名称、标识、商标归各自权利人所有；本项目仅在说明「导出适配对象」时提及。
-- **主题配色为近似取色**，不代表任何官方品牌规范（例如小黑盒采用其官网近黑 + 冷灰观感，微信采用 #07C160，均为方便识别而取近似值）。
-- 导出结果是排版转换，**不保证**在目标平台的最终呈现完全一致；发布前请自行核对。
-- 本项目**不提供**发布、上传、代发服务；导出内容及由此产生的后果由使用者自负。
-- 内容仅存于使用者本机浏览器（localStorage），本项目不做云端备份。
-- 如权利人认为某项内容侵犯权益，请在仓库提 issue，核实后会调整或移除。
-
-## 与官方配色的说明
-
-| 主题 | 参考 | 说明 |
-|---|---|---|
-| wechat | #07C160 | 微信常见品牌绿 |
-| taptap | #15C5CE | TapTap 常见品牌青 |
-| heybox | 近黑 #22262B + 冷灰 | 依其官网（白底、近黑按钮、等级蓝）取近似，**非橙色** |
-| bilibili | #FB7299 | B 站粉 |
-| zhihu | #0084FF | 知乎蓝 |
-| xiaohongshu | #FF2442 | 小红书珊瑚红 |
-| github | #0969DA | GitHub 蓝 |
-
-## 仓库自检与自动化
-
-无需安装任何依赖（零构建），但仓库自带 7 个检查脚本：
-
-| 命令 | 作用 |
+| 键 | 内容 |
 |---|---|
-| `npm run check` | 校验 42 个模块的相对导入全部有效（防白屏） |
-| `npm run lint:color` | 扫组件样式里是否残留硬编码颜色 |
-| `npm run check:md` | Markdown 解析器冒烟测试（14 项断言） |
-| `npm run audit` | 5 档分辨率 × 5 个页面的响应式回归（25 项） |
-| `npm run shot -- <url> 1920 1080 out.png` | 任意视口截图 + 页内取数 |
-| `npm run themes:gen` | 重新生成 92 套派生主题（含 AA 对比度校验） |
-| `npm run serve` | 本地静态服务器（`http://localhost:5173`） |
+| `mdp:v1:draft` | 当前草稿 |
+| `mdp:v1:theme` / `mdp:v1:style` / `mdp:v1:code-theme` | 主题、设计风格、代码配色 |
+| `mdp:v1:wxlayout` / `mdp:v1:wxopts` / `mdp:v1:wxp` | 微信排版参数 |
+| `mdp:v1:wxhist` | 排版历史（20 个快照） |
+| `mdp:v1:tabs` | 多标签页 |
+| `mdp:v1:split` | 分栏比例（默认 42/58） |
 
-**GitHub Actions**（`.github/workflows/site-health.yml`）：
-- 每次 push 到 main 跑离线三项检查（导入完整性 / 颜色 lint / 解析冒烟）
-- 每天定时检查线上 5 个路由是否 200 且未出现「页面加载失败」
+清除方法：浏览器设置里删掉本站数据，或在控制台执行 `localStorage.clear()`。
 
-## 仓库结构速览
+## 常见问题
 
-```
-index.html            单页外壳（所有 CSS 链接带 ?v= 版本戳，避免缓存）
-src/                  42 个 ES 模块（router / 页面 / 编辑器 / 渲染管线 / 适配器）
-assets/styles/        10 个 CSS（令牌 → 主题 → 布局 → 组件 → 页面）
-assets/img/demo.svg   唯一图片（其余全部文字/渐变绘制）
-content/        81 篇 Markdown（7 组）
-data/                 100 套主题元数据（8 手调 + 92 生成）
-tools/                8 个零依赖脚本（serve / shot / audit / vendor / gen-themes / lint / smoke / check-imports）
-vendor/               本地第三方库（运行时不联网）
-.github/workflows/    自动化检查
-```
+**刷新后界面还是旧的？**
+Service Worker 已改成代码/样式网络优先，普通刷新即可；极端情况按 `Ctrl+Shift+R`。
+
+**复制到公众号后样式丢了？**
+公众号会过滤 class，所以导出的 HTML 是**全内联样式**。粘贴时请用「保留格式」而不是纯文本。
+
+**能不能处理图片？**
+支持图片语法与图床链接；公众号对图片有尺寸和格式要求，导出时会给出提示。
+
+**为什么没有 AI 功能？**
+刻意的。这个工具只做排版，不替你写，也不联网。
+
+## 许可
+
+MIT，见 [LICENSE](LICENSE)。非官方工具，与各平台无隶属关系。
+
+---
+
+如果这个工具省了你的时间，给个 Star 就够了。
