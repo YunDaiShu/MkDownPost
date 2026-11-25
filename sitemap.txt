@@ -80,3 +80,8 @@ https://yundaishu.github.io/MkDownPost/a/write-review-checklist.html
 https://yundaishu.github.io/MkDownPost/a/write-series.html
 https://yundaishu.github.io/MkDownPost/a/write-titles.html
 https://yundaishu.github.io/MkDownPost/a/write-voice-tone.html
+https://yundaishu.github.io/MkDownPost/a/markdown-to-wechat.html
+https://yundaishu.github.io/MkDownPost/a/wechat-format-tool-choice.html
+https://yundaishu.github.io/MkDownPost/a/wechat-code-block.html
+https://yundaishu.github.io/MkDownPost/a/wechat-theme-templates.html
+https://yundaishu.github.io/MkDownPost/a/markdown-editor-online.html

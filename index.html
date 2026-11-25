@@ -48,16 +48,16 @@
   
   
     <!-- modulepreload:start -->
-  <link rel="modulepreload" href="./src/main.js?v=56907b75">
-  <link rel="modulepreload" href="./data/themes.generated.js?v=56907b75">
-  <link rel="modulepreload" href="./data/themes.js?v=56907b75">
-  <link rel="modulepreload" href="./src/components/shortcut-sheet.js?v=56907b75">
-  <link rel="modulepreload" href="./src/components/theme-switcher.js?v=56907b75">
-  <link rel="modulepreload" href="./src/editor/keymap.js?v=56907b75">
-  <link rel="modulepreload" href="./src/fx/spotlight.js?v=56907b75">
-  <link rel="modulepreload" href="./src/router.js?v=56907b75">
-  <link rel="modulepreload" href="./src/theme-custom.js?v=56907b75">
-  <link rel="modulepreload" href="./src/theme-manager.js?v=56907b75">
+  <link rel="modulepreload" href="./src/main.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./data/themes.generated.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./data/themes.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/components/shortcut-sheet.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/components/theme-switcher.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/editor/keymap.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/fx/spotlight.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/router.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/theme-custom.js?v=19c2ac0b">
+  <link rel="modulepreload" href="./src/theme-manager.js?v=19c2ac0b">
   <!-- modulepreload:end -->
   <style id="critical">
 /* ===== tokens.css ===== */
@@ -518,7 +518,8 @@ body { min-width: 0; }
 .pcard__dots i + i { margin-left: -8px; }
 .pcard__dots i:last-child { box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 3px var(--c-border); }
 </style>
-  <link rel="stylesheet" href="./assets/styles/rest.css?v=56907b75" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="./assets/styles/rest.css?v=19c2ac0b" media="print" onload="this.media='all'">
+  
   
   
   
@@ -727,6 +728,35 @@ body { min-width: 0; }
 
     <main class="app-main" id="app" tabindex="-1"></main>
 
+    <section class="site-intro" id="siteIntro" aria-labelledby="siteIntroTitle">
+      <h2 class="site-intro__title" id="siteIntroTitle">关于 MkDownPost · 码稿</h2>
+      <p>MkDownPost 是一个在浏览器里把 Markdown 渲染成各平台可用排版的工具。你在左边写 Markdown，右边实时看到公众号里的样子，点一下复制，粘进后台就有样式。整个过程不上传内容、不需要账号、不联网也能用。</p>
+      <p>它解决的是一个很具体的问题：公众号后台只认富文本。你把 Markdown 粘进去，标题会变成两个井号，表格会变成一堆竖线，代码块会变成普通正文。重新手工排版一篇 3000 字的文章要花 40 分钟以上，而人一旦排过一遍，就再也不想写第二篇。</p>
+      <p>所以这里做的是把中间那一步自动化：Markdown 解析、样式内联、主题套用、一键复制。目前提供 147 套主题、8 种代码配色，覆盖公众号、小黑盒、TapTap、知乎等平台的导出格式。字号、行距、段间距三个参数可以单独调，而不是只能整套换。</p>
+
+      <h2 class="site-intro__title">常见问题</h2>
+      <dl class="site-faq">
+        <dt>需要注册账号吗？</dt>
+        <dd>不需要。没有账号系统，没有登录，也没有云端同步。</dd>
+        <dt>我的文章会被上传吗？</dt>
+        <dd>不会。解析、渲染、主题套用全部在你的浏览器里完成；断网之后编辑器仍然可用，可以作为验证。</dd>
+        <dt>免费吗？</dt>
+        <dd>免费，也没有付费版本或功能限制。项目源码以 MIT 许可公开在 GitHub 上。</dd>
+        <dt>能直接粘进公众号后台吗？</dt>
+        <dd>能。复制的是富文本，在公众号正文区粘贴即可，标题、列表、引用、表格、代码块的样式都会跟过去。图片需要先上传到公众号素材库，这是公众号的防盗链限制。</dd>
+        <dt>支持公式和表格吗？</dt>
+        <dd>支持 GFM 表格与 KaTeX 公式。但公众号对公式支持有限，正式发布前建议渲染成图片。</dd>
+        <dt>草稿存在哪里？</dt>
+        <dd>存在你自己浏览器的 localStorage 里，换浏览器或清缓存会丢，请用「导出」保存成文件。</dd>
+      </dl>
+
+      <h2 class="site-intro__title">全部文章</h2>
+      <p class="site-intro__note">共 <span id="archiveCount">86</span> 篇。按主题分为入门、公众号排版、Markdown 语法、主题与样式、工程与发布几类。</p>
+      <!-- archive:start -->
+<div class="archive"><div class="archive__group"><h3 class="archive__tag">入门</h3><ul class="archive__list"><li><a href="/MkDownPost/a/start-in-3-minutes.html">3 分钟上手：写出第一篇能直接发布的稿子</a></li><li><a href="/MkDownPost/a/what-this-site-does.html">这个网站能做什么、不能做什么</a></li><li><a href="/MkDownPost/a/getting-started.html">从零写第一篇公众号排版</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">速查</h3><ul class="archive__list"><li><a href="/MkDownPost/a/markdown-cheatsheet.html">Markdown 速查（含任务列表与表格）</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">公众号</h3><ul class="archive__list"><li><a href="/MkDownPost/a/wechat-publishing-guide.html">公众号排版实战：从草稿到发布</a></li><li><a href="/MkDownPost/a/markdown-to-wechat.html">Markdown 转公众号排版：一次粘贴，直接发布</a></li><li><a href="/MkDownPost/a/wechat-format-tool-choice.html">公众号排版工具怎么选：先看它要不要你上传文章</a></li><li><a href="/MkDownPost/a/wechat-code-block.html">公众号里代码块怎么排版才不难看</a></li><li><a href="/MkDownPost/a/wechat-theme-templates.html">公众号排版模板哪里找：147 套免费主题的实测结论</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">方法</h3><ul class="archive__list"><li><a href="/MkDownPost/a/writing-workflow.html">写作工作流：从灵感到发布的一条流水线</a></li><li><a href="/MkDownPost/a/write-archive-system.html">归档系统：三个月后还能找到</a></li><li><a href="/MkDownPost/a/write-draft-fast.html">一气呵成写初稿：不许回头改</a></li><li><a href="/MkDownPost/a/write-edit-cuts.html">删减：好文章是改出来的</a></li><li><a href="/MkDownPost/a/write-examples.html">例子与数据：让抽象落地</a></li><li><a href="/MkDownPost/a/write-inbox.html">灵感收集：写不出来时该做什么</a></li><li><a href="/MkDownPost/a/write-opinion.html">写观点：结论先行，理由跟上</a></li><li><a href="/MkDownPost/a/write-outline-first.html">先写提纲：把&quot;想不清&quot;挡在动笔之前</a></li><li><a href="/MkDownPost/a/write-reader-question.html">回答读者提问：把一次答疑变成一篇文章</a></li><li><a href="/MkDownPost/a/write-review-checklist.html">发布前自检清单：二十项逐条打勾</a></li><li><a href="/MkDownPost/a/write-series.html">系列文章：把一个主题拆成可持续的产量</a></li><li><a href="/MkDownPost/a/write-titles.html">标题写法：让人在两秒内决定点开</a></li><li><a href="/MkDownPost/a/write-voice-tone.html">语气：写给&quot;一个人&quot;看</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">导出</h3><ul class="archive__list"><li><a href="/MkDownPost/a/export-to-platforms.html">三个平台的导出差异（附对照）</a></li><li><a href="/MkDownPost/a/export-batch-workflow.html">批量发布：一份稿子发四个平台的流程</a></li><li><a href="/MkDownPost/a/export-inline-html.html">导出内联样式 HTML：粘贴即用的关键</a></li><li><a href="/MkDownPost/a/export-markdown-file.html">导出 .md 文件：把源码带走</a></li><li><a href="/MkDownPost/a/export-pdf-limits.html">导出的 PDF：能做什么、有什么限制</a></li><li><a href="/MkDownPost/a/export-png.html">导出 PNG 长图：一张图发完一篇文章</a></li><li><a href="/MkDownPost/a/export-print.html">打印与另存为 PDF：两个模板</a></li><li><a href="/MkDownPost/a/export-troubleshoot.html">导出排错：九种现象与对应原因</a></li><li><a href="/MkDownPost/a/export-word.html">导出 Word：交付与二次编辑</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">图片</h3><ul class="archive__list"><li><a href="/MkDownPost/a/image-rules-by-platform.html">各平台图片规则实测对照</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">概念</h3><ul class="archive__list"><li><a href="/MkDownPost/a/markdown-what-is.html">Markdown 是什么：定义、起源与设计哲学</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">进阶</h3><ul class="archive__list"><li><a href="/MkDownPost/a/commonmark-edge-cases.html">CommonMark 规范里最坑的 12 个边界案例</a></li><li><a href="/MkDownPost/a/md-badges-shields.html">徽章（badges）：README 的门面</a></li><li><a href="/MkDownPost/a/md-definition-lists.html">定义列表与术语表：Markdown 没有，但可以模拟</a></li><li><a href="/MkDownPost/a/md-emoji-symbols.html">符号与 emoji：克制、一致、跨平台</a></li><li><a href="/MkDownPost/a/md-footnotes.html">脚注：语法、平台差异与替代方案</a></li><li><a href="/MkDownPost/a/md-html-in-markdown.html">在 Markdown 里混写 HTML：能做什么、别做什么</a></li><li><a href="/MkDownPost/a/md-line-length.html">行长控制：为什么左右都别太满</a></li><li><a href="/MkDownPost/a/md-math-katex.html">数学公式：行内、块级与 KaTeX 渲染</a></li><li><a href="/MkDownPost/a/md-mermaid-diagrams.html">用 Mermaid 画流程图与时序图</a></li><li><a href="/MkDownPost/a/md-nesting-limits.html">嵌套的边界：多深算过深</a></li><li><a href="/MkDownPost/a/md-toc-anchors.html">目录与锚点：让长文可跳读</a></li><li><a href="/MkDownPost/a/md-whitespace-tabs.html">Tab 与空格：看不见的排版杀手</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">隐私</h3><ul class="archive__list"><li><a href="/MkDownPost/a/local-first.html">本地优先：你的稿子不上传</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">生态</h3><ul class="archive__list"><li><a href="/MkDownPost/a/markdown-ecosystem.html">Markdown 生态：标准、方言与发布路径</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">语法</h3><ul class="archive__list"><li><a href="/MkDownPost/a/markdown-syntax-guide.html">Markdown 语法全解（含示例与坑）</a></li><li><a href="/MkDownPost/a/md-blockquote-usage.html">引用块：不只是摘抄</a></li><li><a href="/MkDownPost/a/md-code-blocks.html">代码块：语言标记、行内代码与高亮</a></li><li><a href="/MkDownPost/a/md-emphasis-rules.html">强调：加粗、斜体、删除线的正确用法</a></li><li><a href="/MkDownPost/a/md-heading-levels.html">标题的层级与用法：从 h1 到 h6</a></li><li><a href="/MkDownPost/a/md-hr-escape.html">分隔线与转义：小符号，大坑</a></li><li><a href="/MkDownPost/a/md-inline-vs-block.html">行内元素与块级元素：为什么排版会错位</a></li><li><a href="/MkDownPost/a/md-links-images.html">链接与图片：行内式、参考式与路径陷阱</a></li><li><a href="/MkDownPost/a/md-lists-mastery.html">列表：无序、有序、嵌套与任务列表</a></li><li><a href="/MkDownPost/a/md-paragraph-breaks.html">段落、换行与空白：最容易被忽略的规则</a></li><li><a href="/MkDownPost/a/md-tables-guide.html">表格：语法、对齐与降级</a></li><li><a href="/MkDownPost/a/md-task-list-faq.html">任务列表：各平台表现与替代方案</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">原理</h3><ul class="archive__list"><li><a href="/MkDownPost/a/md-commonmark-why.html">为什么需要 CommonMark：把边界情况定死</a></li><li><a href="/MkDownPost/a/md-gfm-vs-cm.html">GFM 与 CommonMark 的差别：一张表说清</a></li><li><a href="/MkDownPost/a/md-parser-how.html">解析器是怎么把 Markdown 变成 HTML 的</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">FAQ</h3><ul class="archive__list"><li><a href="/MkDownPost/a/md-faq-top20.html">Markdown 常见问题 20 问</a></li><li><a href="/MkDownPost/a/md-glossary.html">术语表：Markdown 写作常用词</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">图表</h3><ul class="archive__list"><li><a href="/MkDownPost/a/mermaid-and-math.html">图表与公式：Mermaid 和 KaTeX</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">平台</h3><ul class="archive__list"><li><a href="/MkDownPost/a/platform-taptap.html">TapTap 发布：容器窄，结构要降级</a></li><li><a href="/MkDownPost/a/platform-wechat.html">公众号发布：从粘贴到自检</a></li><li><a href="/MkDownPost/a/platform-xiaoheihe.html">小黑盒发布：标题层级与图片规则</a></li><li><a href="/MkDownPost/a/platform-zhihu-juejin-csdn.html">知乎、掘金、CSDN：技术平台的差异</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">本站</h3><ul class="archive__list"><li><a href="/MkDownPost/a/site-a11y.html">无障碍：让键盘与读屏也能用</a></li><li><a href="/MkDownPost/a/site-architecture.html">本站结构：零构建静态站是怎么组织的</a></li><li><a href="/MkDownPost/a/site-perf-budget.html">性能预算：首屏该在多少毫秒内出内容</a></li><li><a href="/MkDownPost/a/site-storage-local-first.html">本地优先：草稿存在哪、什么时候会丢</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">主题</h3><ul class="archive__list"><li><a href="/MkDownPost/a/theme-100-how.html">100 套主题是怎么来的</a></li><li><a href="/MkDownPost/a/theme-anatomy.html">一套主题的解剖：23 个颜色令牌</a></li><li><a href="/MkDownPost/a/theme-code-style.html">代码块样式：底色、语言条与复制按钮</a></li><li><a href="/MkDownPost/a/theme-colors-aa.html">对比度与可读性：4.5 比 1 这条线</a></li><li><a href="/MkDownPost/a/theme-custom-color.html">自定义主色：换一个颜色，全站跟着变</a></li><li><a href="/MkDownPost/a/theme-export-consistency.html">导出后为什么看着不一样：六类差异来源</a></li><li><a href="/MkDownPost/a/theme-light-dark.html">明暗双色：一套主题的两个面孔</a></li><li><a href="/MkDownPost/a/theme-quote-style.html">引用样式：左侧竖条与浅底的分工</a></li><li><a href="/MkDownPost/a/theme-spacing-rhythm.html">间距节奏：让页面呼吸一致</a></li><li><a href="/MkDownPost/a/theme-system.html">主题系统是怎么做到一键换色的</a></li><li><a href="/MkDownPost/a/theme-table-style.html">表格样式：表头、斑马纹与限宽</a></li><li><a href="/MkDownPost/a/theme-typography-cn.html">中文排版：字号、行高与字距</a></li></ul></div><div class="archive__group"><h3 class="archive__tag">编辑器</h3><ul class="archive__list"><li><a href="/MkDownPost/a/markdown-editor-online.html">不用登录的在线 Markdown 编辑器有哪些</a></li></ul></div></div>
+      <!-- archive:end -->
+    </section>
+
     <footer class="app-footer">
       <p>MkDownPost · 码稿：写 Markdown，导出各平台可用排版。</p>
       <p class="muted">不使用任何 AI、不上传你的内容、无账号系统。内容仅保存在本机浏览器。</p>
@@ -739,6 +769,6 @@ body { min-width: 0; }
   <!-- 本地依赖（node tools/vendor.mjs 下载；缺失时自动降级） -->
         <!-- modulepreload:start -->
   <!-- modulepreload:end -->
-  <script type="module" src="./src/main.js?v=56907b75"></script>
+  <script type="module" src="./src/main.js?v=19c2ac0b"></script>
 </body>
 </html>

@@ -883,3 +883,49 @@ to { background-position: 220% 0; } }
 .hero__sub, .article__body, .markdown-body, .about-table, .section.prose, .card__desc { font-family: var(--font-serif); }
 .hero__title { letter-spacing: -0.01em; text-wrap: balance; }
 .article__title { letter-spacing: -0.01em; text-wrap: balance; }
+
+/* ── 首页静态内容区（爬虫可读，也给人看） ── */
+.site-intro {
+  max-width: 72ch;
+  margin: var(--sp-6) auto 0;
+  padding: var(--sp-5) var(--sp-4);
+  border-top: 1px solid var(--c-divider);
+  color: var(--c-text-secondary);
+  font-size: var(--fs-14);
+  line-height: 1.85;
+}
+.site-intro__title {
+  margin: var(--sp-5) 0 var(--sp-3);
+  color: var(--c-text);
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  font-weight: 600;
+}
+.site-intro__title:first-child { margin-top: 0; }
+.site-intro p { margin: 0 0 var(--sp-3); }
+.site-intro__note { color: var(--c-text-muted); font-size: var(--fs-12); }
+.site-faq { margin: 0; }
+.site-faq dt {
+  margin-top: var(--sp-3);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: var(--fs-13);
+}
+.site-faq dd { margin: 4px 0 0; color: var(--c-text-muted); font-size: var(--fs-13); }
+.archive { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.archive__tag {
+  margin: 0 0 var(--sp-2);
+  color: var(--c-text);
+  font-size: var(--fs-12);
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+.archive__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.archive__list a {
+  color: var(--c-text-muted);
+  font-size: var(--fs-12);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color var(--dur-1) var(--ease);
+}
+.archive__list a:hover { color: var(--c-primary); text-decoration: underline; }

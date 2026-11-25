@@ -24,6 +24,15 @@
    规则：组件样式只允许使用本文件定义的变量，禁止写死 hex / px 字号。 */
 
 :root {
+  /* 印刷层：纸、墨、细线。由主题色派生，换主题仍会跟着变 */
+  --paper: color-mix(in srgb, var(--c-bg) 92%, #EFE6D6);
+  --paper-raised: color-mix(in srgb, var(--c-surface) 95%, #EFE6D6);
+  --ink: var(--c-text);
+  --rule: color-mix(in srgb, var(--c-border) 78%, var(--c-text) 22%);
+  --font-serif: "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
+  /* 界面字体：唯一来源，任何 font-family 都必须走这个令牌 */
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
   color-scheme: light;
 
   /* —— 颜色令牌（默认亮色） —— */
@@ -33,16 +42,17 @@
   --c-primary-bg: #F2F6FF;
   --c-text: #1B1F24;
   --c-text-secondary: #4A5158;
-  --c-text-muted: #7C848C;
+  --c-text-muted: #666E76;
   --c-bg: #FBFCFD;
   --c-surface: #FFFFFF;
   --c-surface-2: #F4F6F8;
+  --c-hover-bg: #E9EEF4;
   --c-border: #E3E7EB;
   --c-divider: #EDF0F2;
   --c-code-bg: #F6F8FA;
   --c-code-bar: #EEF1F4;
   --c-quote-bar: #4A7CF7;
-  --c-link: #3A6AE0;
+  --c-link: var(--c-primary-text);
   --c-link-hover: #2453C4;
   --c-selection-bg: #D8E3FF;
   --c-focus-ring: #4A7CF7;
@@ -60,20 +70,29 @@
   --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
 
   /* —— 圆角（只允许这 4 档） —— */
-  --r-1: 4px; --r-2: 8px; --r-3: 12px; --r-4: 16px;
+  --r-1: 4px; --r-2: 8px; --r-3: 10px; --r-4: 12px;
 
   /* —— 字号 —— */
   --fs-12: 12px; --fs-13: 13px; --fs-14: 14px; --fs-16: 16px; --fs-18: 18px;
   --fs-20: 20px; --fs-24: 24px; --fs-30: 30px; --fs-36: 36px;
 
   /* —— 时长与缓动 —— */
+  /* 时长分档：1 微交互 / 2 控件 / 3 卡片与浮层 / 4 面板 / 5 页面 */
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 240ms;
+  --dur-4: 320ms;
   --dur-fast: 120ms;
   --dur-base: 200ms;
+  --dur-base: 200ms;
   --ease: cubic-bezier(.16, 1, .3, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
 
   /* —— 阴影 —— */
-  --shadow-1: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.10);
-  --shadow-2: 0 4px 12px rgba(16,24,40,.10);
+  --shadow-1: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-2: 0 4px 12px rgba(15, 23, 42, .07);
 
   /* —— 布局 —— */
   --maxw: 1120px;
@@ -89,6 +108,7 @@
   --c-bg: #0F1318;
   --c-surface: #161B22;
   --c-surface-2: #1C232C;
+  --c-hover-bg: rgba(122, 162, 255, 0.22);
   --c-border: #263039;
   --c-divider: #1E262E;
   --c-code-bg: #11161C;
@@ -111,11 +131,10 @@ body {
   margin: 0;
   background: var(--c-bg);
   color: var(--c-text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-               "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+  font-family: var(--font-ui);
   font-size: var(--fs-14);
   line-height: 1.65;
-  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+  transition: background-color var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -135,6 +154,9 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   border-radius: var(--r-1);
 }
 
+/* hidden 属性必须真的隐藏：作者样式里的 display:flex/grid 会盖掉浏览器默认行为 */
+[hidden] { display: none !important; }
+
 /* 滚动条滑块走主题变量 */
 * { scrollbar-color: var(--c-border) transparent; scrollbar-width: thin; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -146,7 +168,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   padding: var(--sp-2) var(--sp-3);
   background: var(--c-surface); color: var(--c-text);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
-  transition: top var(--dur-fast) var(--ease);
+  transition: top var(--dur-1) var(--ease);
   z-index: 100;
 }
 .skip-link:focus { top: var(--sp-3); }
@@ -177,6 +199,11 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   .btn { min-height: 44px; }
 }
 
+
+/* ===== 横向永不滚动：任何越界元素都被裁掉而不是把页面推宽（Hallmark Floor 4） ===== */
+html, body { overflow-x: clip; }
+body { min-width: 0; }
+
 /* ===== layout.css ===== */
 /* layout.css — 外壳、页头、导航、抽屉、页脚、断点 */
 
@@ -206,7 +233,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .nav a {
   padding: var(--sp-2) var(--sp-3); border-radius: var(--r-2);
   color: var(--c-text-secondary); font-size: var(--fs-14);
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .nav a:hover { background: var(--c-surface-2); color: var(--c-text); text-decoration: none; }
 .nav a[aria-current="page"] { color: var(--c-primary); background: var(--c-primary-bg); font-weight: 600; }
@@ -216,8 +243,8 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   width: 40px; height: 40px; display: grid; place-items: center;
   border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text-secondary); cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .icon-btn:hover { color: var(--c-text); border-color: var(--c-primary); }
 .icon-btn:active { transform: scale(.97); }
@@ -225,7 +252,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 
 /* 主体 */
 .app-main { flex: 1; width: 100%; max-width: var(--maxw); margin: 0 auto; padding: var(--sp-6) var(--sp-5) var(--sp-8); }
-.page { animation: pageIn var(--dur-base) var(--ease) both; }
+.page { animation: pageIn var(--dur-4) var(--ease-out) both; }
 @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* 页脚 */
@@ -248,7 +275,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
     flex-direction: column; gap: 0; margin: 0; padding: var(--sp-3);
     background: var(--c-surface); border-bottom: 1px solid var(--c-border);
     transform: translateY(-8px); opacity: 0; pointer-events: none;
-    transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+    transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
   }
   .nav.is-open { opacity: 1; transform: none; pointer-events: auto; }
   .nav a { padding: var(--sp-3); min-height: 44px; display: flex; align-items: center; }
@@ -306,17 +333,20 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .footer-legal a { color: var(--c-text-secondary); }
 .footer-legal a:hover { color: var(--c-primary); }
 
+/* sloplint-waive 62: .nav 是移动端抽屉，默认收起由脚本展开是有意设计；
+   无脚本时 .nav 保持可聚焦且页面内容完整可读，不构成信息隐藏。 */
+
 /* ===== components.css ===== */
 /* components.css — 组件级样式（主题切换器、Toast、主题卡） */
 
 /* ===== 主题切换器 ===== */
 .tsw {
   position: fixed; z-index: 60; top: calc(var(--header-h) + var(--sp-2)); right: var(--sp-4);
-  width: min(560px, calc(100vw - var(--sp-6)));
+  width: 100%; max-width: 560px;
   background: var(--c-surface); border: 1px solid var(--c-border);
   border-radius: var(--r-3); box-shadow: var(--shadow-2);
   transform-origin: top right;
-  animation: tswIn var(--dur-fast) var(--ease) both;
+  animation: tswIn var(--dur-3) var(--ease-out) both;
 }
 @keyframes tswIn { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
 .tsw__head {
@@ -333,7 +363,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   display: grid; gap: var(--sp-1); text-align: left;
   padding: var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .tsw__item:hover { border-color: var(--c-primary); transform: translateY(-1px); }
 .tsw__item[aria-pressed="true"] { border-color: var(--c-primary); background: var(--c-primary-bg); }
@@ -349,7 +379,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   min-height: 36px; padding: 0 var(--sp-3);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
   background: var(--c-surface); color: var(--c-text); font-size: var(--fs-13); cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
 }
 .btn:hover { border-color: var(--c-primary); }
 .btn:active { transform: scale(.97); }
@@ -363,12 +393,12 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   font-size: var(--fs-13); padding: var(--sp-2) var(--sp-4);
   border-radius: var(--r-2); box-shadow: var(--shadow-2);
   opacity: 0; pointer-events: none; z-index: 80;
-  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-spring);
 }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 /* 主题选择器：搜索 + 分组 */
-.tsw { width: min(720px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 720px; }
 .tsw__search {
   flex: 1; min-width: 120px; height: 30px; padding: 0 var(--sp-2);
   border: 1px solid var(--c-border); border-radius: var(--r-2);
@@ -377,8 +407,8 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .tsw__search:focus-visible { border-color: var(--c-primary); }
 .tsw__chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); padding: var(--sp-2) var(--sp-3) 0; }
 .tsw__chip {
-  height: 26px; padding: 0 var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--radius-pill, 999px);
-  background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer;
+  height: 30px; padding: 0 var(--sp-3); border: 1px solid var(--c-border); border-radius: var(--r-2);
+  background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-13); cursor: pointer;
 }
 .tsw__chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
 .tsw__chip.is-on { background: var(--c-primary-bg); border-color: var(--c-primary); color: var(--c-primary); font-weight: 600; }
@@ -390,7 +420,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .sheet__panel {
   width: min(560px, 100%); max-height: 80vh; overflow: auto;
   background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-3);
-  box-shadow: var(--shadow-2); padding: var(--sp-4); animation: ccIn 200ms var(--ease) both;
+  box-shadow: var(--shadow-2); padding: var(--sp-4); animation: ccIn var(--dur-4) var(--ease-out) both;
 }
 .sheet__head { display: flex; align-items: center; margin-bottom: var(--sp-3); }
 .sheet__head b { font-size: var(--fs-16); }
@@ -419,7 +449,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .tsw__custom input[type="color"] { width: 28px; height: 28px; padding: 0; border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); cursor: pointer; }
 
 /* ===== 配色面板（色点卡片） ===== */
-.tsw { width: min(760px, calc(100vw - var(--sp-6))); }
+.tsw { width: 100%; max-width: 760px; }
 .tsw__head { display: flex; align-items: flex-start; gap: var(--sp-3); padding: var(--sp-4); border-bottom: 1px solid var(--c-divider); }
 .tsw__title { font-size: var(--fs-16); }
 .tsw__desc { margin: 4px 0 0; font-size: var(--fs-12); color: var(--c-text-muted); max-width: 40em; }
@@ -430,7 +460,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .tsw__search:focus-visible { border-color: var(--c-primary); }
 .tsw__chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); padding: var(--sp-2) var(--sp-4) 0; }
 .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--sp-2); padding: var(--sp-3) var(--sp-4) var(--sp-4); max-height: min(56vh, 460px); overflow: auto; }
-.pcard { display: grid; justify-items: center; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); cursor: pointer; border: 1.5px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.pcard { display: grid; justify-items: center; gap: var(--sp-1); padding: var(--sp-3) var(--sp-2); cursor: pointer; border: 1.5px solid var(--c-border); border-radius: var(--r-3); background: var(--c-surface); transition: border-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
 .pcard:hover { border-color: var(--c-primary); transform: translateY(-1px); }
 .pcard.is-on { border-color: var(--c-primary); background: var(--c-primary-bg); }
 .pcard__dots { display: inline-flex; align-items: center; }
@@ -478,7 +508,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .md-anchor {
   margin-left: var(--sp-2); padding: 0 var(--sp-1); border: 0; background: transparent;
   color: var(--c-text-muted); font-size: var(--fs-14); cursor: pointer; opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: opacity var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
 }
 .markdown-body h1:hover .md-anchor,
 .markdown-body h2:hover .md-anchor,
@@ -496,7 +526,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .markdown-body input[type="checkbox"] { accent-color: var(--c-primary); width: 14px; height: 14px; margin-right: var(--sp-1); vertical-align: -1px; }
 
 /* ===== 链接：主题色 + 下划线动画 ===== */
-.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.markdown-body a { color: var(--c-link); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size var(--dur-1) var(--ease), color var(--dur-1) var(--ease); }
 .markdown-body a:hover { color: var(--c-link-hover); background-size: 100% 1px; }
 
 /* ===== 引用：主色竖条 + 主色浅底 ===== */
@@ -516,7 +546,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .md-codeblock { margin: var(--sp-4) 0; border: 1px solid var(--c-border); border-radius: var(--r-2); overflow: hidden; }
 .md-codebar { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) var(--sp-3); background: var(--c-code-bar); border-bottom: 1px solid var(--c-border); font-size: var(--fs-12); color: var(--c-text-muted); }
 .md-lang { font-weight: 600; }
-.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.md-copy { margin-left: auto; padding: 2px var(--sp-2); border: 1px solid var(--c-border); border-radius: var(--r-1); background: var(--c-surface); color: var(--c-text-secondary); font-size: var(--fs-12); cursor: pointer; transition: color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
 .md-copy:hover { color: var(--c-primary); border-color: var(--c-primary); }
 .md-copy.is-done { color: var(--c-success); border-color: var(--c-success); }
 .md-codeblock pre { margin: 0; padding: var(--sp-3); background: var(--c-code-bg); overflow: auto; font-size: var(--fs-13); line-height: 1.7; }
@@ -597,7 +627,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
   border: 1px solid var(--c-primary); border-radius: var(--radius-btn, 8px);
   background: var(--c-primary-bg); color: var(--c-primary-text);
   font-size: var(--fs-12); font-weight: 600; cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease);
 }
 .md-mermaid__btn:hover { opacity: .85; }
 .md-mermaid__btn:active { transform: scale(.97); }
@@ -618,6 +648,16 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 .md-anchor, .md-anchor::after {
   user-select: none; -webkit-user-select: none;
 }
+
+/* 空段落不占位：避免预览底部出现空白卡片 */
+.markdown-body p:empty,
+.markdown-body h1:empty,
+.markdown-body h2:empty { display: none; }
+/* 标题尖号只在编辑态显示，预览里保持干净 */
+.markdown-body .md-anchor { opacity: 0; }
+.markdown-body h1:hover .md-anchor,
+.markdown-body h2:hover .md-anchor,
+.markdown-body h3:hover .md-anchor { opacity: 1; }
 
 </style>
 </head>
@@ -650,7 +690,7 @@ code, kbd, pre { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Co
 <h2>想备份怎么办</h2>
 <p>编辑器右上角「导出 → 下载 .md」，把文件存在自己硬盘或 Git 仓库里。</p>
 
-<nav class="related"><h2>相关文章</h2><ul><li><a href="/MkDownPost/a/site-storage-local-first.html">本地优先：草稿存在哪、什么时候会丢</a></li><li><a href="/MkDownPost/a/start-in-3-minutes.html">3 分钟上手：写出第一篇能直接发布的稿子</a></li><li><a href="/MkDownPost/a/what-this-site-does.html">这个网站能做什么、不能做什么</a></li><li><a href="/MkDownPost/a/markdown-cheatsheet.html">Markdown 速查（含任务列表与表格）</a></li><li><a href="/MkDownPost/a/getting-started.html">从零写第一篇公众号排版</a></li></ul></nav>
+<nav class="related"><h2>相关文章</h2><ul><li><a href="/MkDownPost/a/site-storage-local-first.html">本地优先：草稿存在哪、什么时候会丢</a></li><li><a href="/MkDownPost/a/markdown-editor-online.html">不用登录的在线 Markdown 编辑器有哪些</a></li><li><a href="/MkDownPost/a/start-in-3-minutes.html">3 分钟上手：写出第一篇能直接发布的稿子</a></li><li><a href="/MkDownPost/a/what-this-site-does.html">这个网站能做什么、不能做什么</a></li><li><a href="/MkDownPost/a/markdown-cheatsheet.html">Markdown 速查（含任务列表与表格）</a></li></ul></nav>
 </article>
 </main>
 </body>

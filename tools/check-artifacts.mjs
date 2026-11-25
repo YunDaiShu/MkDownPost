@@ -68,6 +68,21 @@ else {
   if (lines.length !== index.length + 1) problems.push('sitemap.txt 行数 ' + lines.length + '，应为 ' + (index.length + 1));
 }
 
+const homeHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const archiveBlock = homeHtml.split('<!-- archive:start -->')[1] || '';
+const archiveLinks = (archiveBlock.split('<!-- archive:end -->')[0].match(/class="archive__list"/g) || []).length;
+const archiveItems = (archiveBlock.split('<!-- archive:end -->')[0].match(/<li><a href="\/MkDownPost\/a\//g) || []).length;
+if (!archiveBlock) problems.push('index.html 缺少 archive 标记，请运行 node tools/gen-archive.mjs');
+else if (archiveItems !== index.length) problems.push('首页归档链接 ' + archiveItems + ' 个，与文章数 ' + index.length + ' 不符，请运行 node tools/gen-archive.mjs');
+
+const homeStaticText = homeHtml.slice(homeHtml.indexOf('<body'))
+  .replace(/<script[\s\S]*?<\/script>/g, ' ')
+  .replace(/<style[\s\S]*?<\/style>/g, ' ')
+  .replace(/<!--[\s\S]*?-->/g, ' ')
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/\s+/g, ' ').trim();
+if (homeStaticText.length < 1200) problems.push('首页静态正文只有 ' + homeStaticText.length + ' 字，搜索引擎读到的是空页（应 >= 1200）');
+
 if (problems.length) {
   problems.forEach((p) => console.log('✗ ' + p));
   console.log('产物校验失败（' + problems.length + ' 项）');

@@ -1002,5 +1002,70 @@
     "date": "2026-08-10",
     "order": 81,
     "featured": false
+  },
+  {
+    "slug": "markdown-to-wechat",
+    "title": "Markdown 转公众号排版：一次粘贴，直接发布",
+    "excerpt": "公众号后台不认 Markdown。这篇讲清楚为什么、三条可行路径的代价，以及代码块、表格、公式、图片四个最容易翻车的地方。",
+    "tags": [
+      "公众号",
+      "教程"
+    ],
+    "readingTime": 6,
+    "date": "2026-11-22",
+    "order": 82,
+    "featured": true
+  },
+  {
+    "slug": "wechat-format-tool-choice",
+    "title": "公众号排版工具怎么选：先看它要不要你上传文章",
+    "excerpt": "不推荐产品，给一套能当场验证的判断方法：断网渲染测试、备忘录粘贴测试、代码块测试，三步看出一套工具的真实底细。",
+    "tags": [
+      "公众号",
+      "对比"
+    ],
+    "readingTime": 5,
+    "date": "2026-11-22",
+    "order": 83,
+    "featured": false
+  },
+  {
+    "slug": "wechat-code-block",
+    "title": "公众号里代码块怎么排版才不难看",
+    "excerpt": "公众号没有代码块，粘进去就是普通正文。三种做法（截图、等宽纯文本、内联样式）的代价对比，以及内联样式的最小集合与行长控制。",
+    "tags": [
+      "公众号",
+      "代码"
+    ],
+    "readingTime": 6,
+    "date": "2026-11-22",
+    "order": 84,
+    "featured": false
+  },
+  {
+    "slug": "wechat-theme-templates",
+    "title": "公众号排版模板哪里找：147 套免费主题的实测结论",
+    "excerpt": "决定观感的只有字号、行距、段间距三个数。这篇给判断模板好坏的三个标准，以及五套可以直接照着用的参数组合。",
+    "tags": [
+      "公众号",
+      "主题"
+    ],
+    "readingTime": 6,
+    "date": "2026-11-22",
+    "order": 85,
+    "featured": false
+  },
+  {
+    "slug": "markdown-editor-online",
+    "title": "不用登录的在线 Markdown 编辑器有哪些",
+    "excerpt": "三步验证一个在线编辑器是不是真的在本地处理你的文字：断网测试、Network 面板、查草稿存在哪。附本地存储的两个风险与应对。",
+    "tags": [
+      "编辑器",
+      "隐私"
+    ],
+    "readingTime": 5,
+    "date": "2026-11-22",
+    "order": 86,
+    "featured": false
   }
 ]
