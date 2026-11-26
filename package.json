@@ -14,7 +14,9 @@
     "vendor:update": "node tools/vendor.mjs",
     "themes:gen": "node tools/gen-themes.mjs",
     "lint:color": "node tools/lint-hardcoded-color.mjs",
-    "test:editor": "node tools/test-editor.mjs"
+    "test:editor": "node tools/test-editor.mjs",
+    "ping": "node tools/ping-indexnow.mjs",
+    "ping:dry": "node tools/ping-indexnow.mjs --dry"
   },
   "keywords": [
     "markdown",
