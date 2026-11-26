@@ -52,11 +52,14 @@
   white-space: pre-wrap; word-break: break-word; overflow-x: hidden;
 }
 
-/* 与 textarea 同字号/行高/内边距的隐藏镜像，只用来量每一逻辑行的真实高度 */
+/* 隐藏镜像：只用来量每一逻辑行折行后的真实高度。
+   折行规则必须与 textarea 完全一致，否则长段落之后的行号会整体错位，
+   表现为「点第 N 行却在第 N+1 行落光标」。 */
 .editor__mirror {
   position: absolute; left: 44px; right: 0; top: 0; padding: var(--sp-3);
+  box-sizing: border-box;
   font: var(--fs-15, 15px)/1.7 ui-monospace, Menlo, Consolas, monospace;
-  white-space: pre-wrap; word-break: break-word; tab-size: 2;
+  white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; tab-size: 2;
   visibility: hidden; pointer-events: none; z-index: -1; overflow: hidden;
 }
 .editor__mirror > div { margin: 0; }
@@ -147,13 +150,6 @@
   left: 44px;              /* 让开行号槽 */
 }
 .editor__ta--hl { position: relative; z-index: 1; background: transparent; color: transparent; caret-color: var(--c-text); }
-.editor__ta--hl::selection {
-  /* 文字必须保持透明：可见的字由底层高亮层提供。
-     之前在这里把字重新染回深色，两层同时显示就出现了重影。 */
-  background: color-mix(in srgb, var(--c-selection-bg) 55%, transparent);
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
 .editor__gutter { position: relative; z-index: 2; }
 
 /* token 配色：只允许改颜色。任何影响字形宽度或行高的属性（font-weight / font-style /
@@ -260,12 +256,14 @@
 .seg__btn:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 1px; }
 @media (max-width: 639px) { .seg__btn { height: 32px; min-width: 40px; } }
 
-/* SELECTION_VISIBLE：高亮层存在时的选区必须可读 */
+/* 选区：文字必须保持透明，可见的字由底层高亮层提供。
+   若在这里把文字重新染回深色，textarea 与高亮层会同时显示同一段字，
+   一旦两层有 1px 级偏移，就会出现"重影"。色带用半透明，底层文字透得出来。 */
 .editor__ta--hl::selection,
 .editor__ta--hl::-moz-selection {
-  background: var(--c-selection-bg);
-  color: var(--c-text);
-  -webkit-text-fill-color: var(--c-text);
+  background: color-mix(in srgb, var(--c-selection-bg) 55%, transparent);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 /* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、同软换行规则 */

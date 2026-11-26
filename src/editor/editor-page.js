@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=88cd3796';
-import { initShortcuts } from './shortcuts.js?v=88cd3796';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=88cd3796';
-import { initAutosave } from './autosave.js?v=88cd3796';
-import { SAMPLE_MAIN } from './sample-main.js?v=88cd3796';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=88cd3796';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=88cd3796';
-import { toast } from '../components/theme-switcher.js?v=88cd3796';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=88cd3796';
+import { initSplitPane } from './split-pane.js?v=66b7bb0b';
+import { initShortcuts } from './shortcuts.js?v=66b7bb0b';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=66b7bb0b';
+import { initAutosave } from './autosave.js?v=66b7bb0b';
+import { SAMPLE_MAIN } from './sample-main.js?v=66b7bb0b';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=66b7bb0b';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=66b7bb0b';
+import { toast } from '../components/theme-switcher.js?v=66b7bb0b';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=66b7bb0b';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=88cd3796'),
-      import('../markdown/renderer.js?v=88cd3796')
+      import('../markdown/vendor-loader.js?v=66b7bb0b'),
+      import('../markdown/renderer.js?v=66b7bb0b')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=88cd3796');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=66b7bb0b');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=88cd3796');
+  if (!_exportMod) _exportMod = await import('./export.js?v=66b7bb0b');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=88cd3796');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=66b7bb0b');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=88cd3796');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=66b7bb0b');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=88cd3796');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=66b7bb0b');
   return _mathMod;
 };
 
@@ -1112,9 +1112,10 @@ export default function render(root) {
       mirror.style.fontSize = ta.style.fontSize || '';
       // 宽度必须等于 textarea 的"内容宽"（已扣掉左右内边距与滚动条），否则折行位置会差一个词
       const mcs = getComputedStyle(ta);
-      const padL = parseFloat(mcs.paddingLeft) || 0;
-      const padR = parseFloat(mcs.paddingRight) || 0;
-      mirror.style.width = Math.max(0, ta.clientWidth - padL - padR) + 'px';
+      // border-box：clientWidth 已含左右内边距，再扣一次会让镜像比文本框窄两倍内边距，
+      // 折行提前 → 行号整体错位。这里直接给 clientWidth。
+      mirror.style.width = ta.clientWidth + 'px';
+      mirror.style.lineHeight = mcs.lineHeight;
       // 每行一个 div，空行用零宽空格占位，保证高度不塌陷
       mirror.innerHTML = '';
       lines.forEach((line) => {

@@ -17,7 +17,8 @@
     "test:editor": "node tools/test-editor.mjs",
     "ping": "node tools/ping-indexnow.mjs",
     "ping:dry": "node tools/ping-indexnow.mjs --dry",
-    "test:copy": "node tools/test-copy.mjs"
+    "test:copy": "node tools/test-copy.mjs",
+    "test:gutter": "node tools/test-gutter.mjs"
   },
   "keywords": [
     "markdown",
