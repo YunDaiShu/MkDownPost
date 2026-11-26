@@ -65,13 +65,13 @@ export function mountHighlight(ta, host, initialFontSize) {
   };
   const schedule = () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; paint(); }); };
 
-  // 字号必须与 textarea 完全一致，否则两层错位（文字被"切块"）
-  const setFontSize = (px) => {
-    const v = (px || 16) + 'px';
-    pre.style.fontSize = v;
-    pre.style.lineHeight = '1.7';   // 与 .editor__ta 保持一致，避免逐行错位
+  // 字号与行高都必须与 textarea 完全一致，否则两层逐行错位
+  const setFontSize = (px, lineHeight) => {
+    pre.style.fontSize = (px || 16) + 'px';
+    const lh = Number(lineHeight) || parseFloat(getComputedStyle(ta).lineHeight) || 0;
+    if (lh) pre.style.lineHeight = lh + 'px';
   };
-  setFontSize(initialFontSize);
+  setFontSize(initialFontSize, 0);
   ta.classList.add('editor__ta--hl');
   ta.addEventListener('input', schedule);
   ta.addEventListener('scroll', () => { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; });

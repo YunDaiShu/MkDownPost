@@ -148,31 +148,34 @@
 }
 .editor__ta--hl { position: relative; z-index: 1; background: transparent; color: transparent; caret-color: var(--c-text); }
 .editor__ta--hl::selection {
-  background: var(--c-selection-bg);
-  color: var(--c-text);
-  -webkit-text-fill-color: var(--c-text);   /* 选中时恢复可见，避免"只有色块没有字" */
+  /* 文字必须保持透明：可见的字由底层高亮层提供。
+     之前在这里把字重新染回深色，两层同时显示就出现了重影。 */
+  background: color-mix(in srgb, var(--c-selection-bg) 55%, transparent);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 .editor__gutter { position: relative; z-index: 2; }
 
-/* token 配色（沿用主题令牌，保证 100 套主题都好看） */
-.editor__hl .tok-h { color: var(--c-primary-text); font-weight: 700; }
-.editor__hl .tok-code { background: var(--c-code-bg); border-radius: var(--r-1); color: var(--c-warning); }
-.editor__hl .tok-bold { color: var(--c-text); font-weight: 700; }
-.editor__hl .tok-em { color: var(--c-text-secondary); font-style: italic; }
+/* token 配色：只允许改颜色。任何影响字形宽度或行高的属性（font-weight / font-style /
+   padding / border / display / width）都会让高亮层与 textarea 的字位错开，
+   选中文字时两层同时可见就会出现"重影"。这条规则由 tools/check-hl-metrics.mjs 守住。 */
+.editor__hl .tok-h { color: var(--c-primary-text); }
+.editor__hl .tok-code { color: var(--c-warning); background: var(--c-code-bg); border-radius: var(--r-1); }
+.editor__hl .tok-bold { color: var(--c-text); }
+.editor__hl .tok-em { color: var(--c-text-secondary); }
 .editor__hl .tok-del { color: var(--c-text-muted); text-decoration: line-through; }
 .editor__hl .tok-link { color: var(--c-link); text-decoration: underline; }
 .editor__hl .tok-url { color: var(--c-text-muted); }
-.editor__hl .tok-quote { color: var(--c-text-secondary); border-left: 2px solid var(--c-primary-soft); padding-left: 6px; display: inline-block; }
 .editor__hl .tok-list { color: var(--c-text-secondary); }
 .editor__hl .tok-hr { color: var(--c-border); }
 .editor__hl .tok-table { color: var(--c-success); }
-@media (max-width: 639px) { .editor__hl { font-size: 16px; left: 0; } }
-
-.editor__hl .tok-codeblock {
-  color: var(--c-warning);
-  background: color-mix(in srgb, var(--c-code-bg) 70%, transparent);
-  display: inline-block; width: 100%;
+.editor__hl .tok-quote { color: var(--c-text-secondary); position: relative; }
+.editor__hl .tok-quote::before {
+  content: ''; position: absolute; left: -8px; top: 0; bottom: 0; width: 2px;
+  background: var(--c-primary-soft); border-radius: 1px;
 }
+@media (max-width: 639px) { .editor__hl { font-size: 16px; left: 0; } }
+.editor__hl .tok-codeblock { color: var(--c-warning); background: color-mix(in srgb, var(--c-code-bg) 70%, transparent); }
 
 /* ===== 公式实时预览卡片 ===== */
 .math-preview {

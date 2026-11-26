@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=198bec9b';
-import { initShortcuts } from './shortcuts.js?v=198bec9b';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=198bec9b';
-import { initAutosave } from './autosave.js?v=198bec9b';
-import { SAMPLE_MAIN } from './sample-main.js?v=198bec9b';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=198bec9b';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=198bec9b';
-import { toast } from '../components/theme-switcher.js?v=198bec9b';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=198bec9b';
+import { initSplitPane } from './split-pane.js?v=88cd3796';
+import { initShortcuts } from './shortcuts.js?v=88cd3796';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=88cd3796';
+import { initAutosave } from './autosave.js?v=88cd3796';
+import { SAMPLE_MAIN } from './sample-main.js?v=88cd3796';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=88cd3796';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=88cd3796';
+import { toast } from '../components/theme-switcher.js?v=88cd3796';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=88cd3796';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=198bec9b'),
-      import('../markdown/renderer.js?v=198bec9b')
+      import('../markdown/vendor-loader.js?v=88cd3796'),
+      import('../markdown/renderer.js?v=88cd3796')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=198bec9b');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=88cd3796');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=198bec9b');
+  if (!_exportMod) _exportMod = await import('./export.js?v=88cd3796');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=198bec9b');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=88cd3796');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=198bec9b');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=88cd3796');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=198bec9b');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=88cd3796');
   return _mathMod;
 };
 
@@ -1166,7 +1166,7 @@ export default function render(root) {
     if (hl) return;
     const { mountHighlight } = await loadHighlight();
     hl = mountHighlight(ta, ta.parentElement, (() => { try { return (JSON.parse(localStorage.getItem(HL_KEY) || '{}').fontSize) || 16; } catch { return 16; } })());
-    if (hl && hl.setFontSize) hl.setFontSize(prefs.fontSize || 16);
+    if (hl && hl.setFontSize) hl.setFontSize(prefs.fontSize || 16, parseFloat(getComputedStyle(ta).lineHeight));
     setHlButton(true);
   }
   function disableHighlight() {
@@ -1492,7 +1492,12 @@ export default function render(root) {
   const fsBtns = [...root.querySelectorAll('[data-fs]')];
   const lwBtns = [...root.querySelectorAll('[data-lw]')];
 
-  const applyFontSize = (v) => { ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px'; if (mirror) mirror.style.fontSize = v + 'px'; syncGutter(); if (hl && hl.setFontSize) hl.setFontSize(v); };
+  const applyFontSize = (v) => {
+    ta.style.fontSize = v + 'px'; preview.style.fontSize = v + 'px';
+    if (mirror) mirror.style.fontSize = v + 'px';
+    syncGutter();
+    if (hl && hl.setFontSize) hl.setFontSize(v, parseFloat(getComputedStyle(ta).lineHeight));
+  };
   const applyLineWidth = (v) => { preview.style.maxWidth = v + 'px'; preview.style.margin = '0 auto'; };
   const mark = (btns, attr, val) => btns.forEach((b) => {
     const on = String(b.getAttribute(attr)) === String(val);
@@ -1501,7 +1506,7 @@ export default function render(root) {
   });
 
   const fsInit = prefs.fontSize || 16;
-  if (hl && hl.setFontSize) hl.setFontSize(fsInit);
+  if (hl && hl.setFontSize) hl.setFontSize(fsInit, parseFloat(getComputedStyle(ta).lineHeight));
   const lwInit = prefs.lineWidth || 680;
   applyFontSize(fsInit); mark(fsBtns, 'data-fs', fsInit);
   applyLineWidth(lwInit); mark(lwBtns, 'data-lw', lwInit);

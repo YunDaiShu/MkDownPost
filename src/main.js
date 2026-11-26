@@ -11,10 +11,10 @@
 /* src/main.js — 启动：注册路由、初始化明暗模式、绑定页头交互 */
 
 import { defineRoute, setNotFound, startRouter , prefetchRoute } from './router.js';
-import * as Themes from './theme-manager.js?v=198bec9b';
-import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=198bec9b';
-import { bindShortcutSheet } from './components/shortcut-sheet.js?v=198bec9b';
-import { cycle as cycleTheme } from './theme-manager.js?v=198bec9b';
+import * as Themes from './theme-manager.js?v=88cd3796';
+import { toggle as toggleThemePanel, bindShortcuts as bindThemeShortcuts } from './components/theme-switcher.js?v=88cd3796';
+import { bindShortcutSheet } from './components/shortcut-sheet.js?v=88cd3796';
+import { cycle as cycleTheme } from './theme-manager.js?v=88cd3796';
 
 const STORE_MODE = 'mdp:v1:mode';
 
@@ -35,7 +35,7 @@ function applyMode(pref) {
 }
 
 /* ---------- 路由表（页面模块在 M6 补全，当前为占位） ---------- */
-defineRoute('/', () => import('./pages/home.js?v=198bec9b'), () => 'MkDownPost · 码稿');
+defineRoute('/', () => import('./pages/home.js?v=88cd3796'), () => 'MkDownPost · 码稿');
 // 主题变量表按需加载：默认主题不需要；有存储主题或切换时才拉 145KB
 let themesCssPromise = null;
 const HAND_TUNED_THEMES = new Set(['deepseek', 'wechat', 'taptap', 'heybox', 'bilibili', 'zhihu', 'xiaohongshu', 'github']);
@@ -74,14 +74,14 @@ function ensureEditorCss() {
   link.href = './assets/styles/editor.lazy.css' + (v ? '?v=' + v[1] : '');
   document.head.appendChild(link);
 }
-  defineRoute('/editor', () => { ensureEditorCss(); return import('./pages/editor.js?v=198bec9b'); }, () => '编辑器 · MkDownPost');
-defineRoute('/article/:slug', () => import('./pages/article.js?v=198bec9b'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
+  defineRoute('/editor', () => { ensureEditorCss(); return import('./pages/editor.js?v=88cd3796'); }, () => '编辑器 · MkDownPost');
+defineRoute('/article/:slug', () => import('./pages/article.js?v=88cd3796'), (p) => (p.slug ? p.slug + ' · MkDownPost' : '文章 · MkDownPost'));
 // /wechat 已并入编辑器右栏（预览 / 微信排版），路由保留兼容直达
-  defineRoute('/wechat', () => import('./pages/editor.js?v=198bec9b'), () => '编辑器 · MkDownPost');
-defineRoute('/themes', () => import('./pages/themes.js?v=198bec9b'), () => '主题库 · MkDownPost');
-defineRoute('/articles', () => import('./pages/articles.js?v=198bec9b'), () => '全部内容 · MkDownPost');
-defineRoute('/about', () => import('./pages/about.js?v=198bec9b'), () => '关于 · MkDownPost');
-setNotFound(() => import('./pages/notfound.js?v=198bec9b'), '页面不存在 · MkDownPost');
+  defineRoute('/wechat', () => import('./pages/editor.js?v=88cd3796'), () => '编辑器 · MkDownPost');
+defineRoute('/themes', () => import('./pages/themes.js?v=88cd3796'), () => '主题库 · MkDownPost');
+defineRoute('/articles', () => import('./pages/articles.js?v=88cd3796'), () => '全部内容 · MkDownPost');
+defineRoute('/about', () => import('./pages/about.js?v=88cd3796'), () => '关于 · MkDownPost');
+setNotFound(() => import('./pages/notfound.js?v=88cd3796'), '页面不存在 · MkDownPost');
 
 /* ---------- 启动 ---------- */
 function boot() {
@@ -159,7 +159,7 @@ idle(() => {
 });
 
 /* ---------- Service Worker：离线与秒开（第二次访问起静态资源走本地缓存） ---------- */
-import { initSpotlight } from './fx/spotlight.js?v=198bec9b';
+import { initSpotlight } from './fx/spotlight.js?v=88cd3796';
 
 const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 if (!isDev && 'serviceWorker' in navigator && location.protocol === 'https:') {
