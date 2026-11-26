@@ -1,13 +1,13 @@
 /* src/editor/editor-page.js — 编辑器：工具栏 / 分栏 / 行号 / 预览 / 状态栏 / 导出（无任何 AI 功能） */
-import { initSplitPane } from './split-pane.js?v=19c2ac0b';
-import { initShortcuts } from './shortcuts.js?v=19c2ac0b';
-import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=19c2ac0b';
-import { initAutosave } from './autosave.js?v=19c2ac0b';
-import { SAMPLE_MAIN } from './sample-main.js?v=19c2ac0b';
-import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=19c2ac0b';
-import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=19c2ac0b';
-import { toast } from '../components/theme-switcher.js?v=19c2ac0b';
-import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=19c2ac0b';
+import { initSplitPane } from './split-pane.js?v=198bec9b';
+import { initShortcuts } from './shortcuts.js?v=198bec9b';
+import { bindShortcutSheet, toggleSheet } from '../components/shortcut-sheet.js?v=198bec9b';
+import { initAutosave } from './autosave.js?v=198bec9b';
+import { SAMPLE_MAIN } from './sample-main.js?v=198bec9b';
+import { confirmFlash, prewarmConfirmFx } from '../fx/confirm.js?v=198bec9b';
+import { initTabs, saveAll, addTab, closeTab, renameTab, updateText } from './tabs.js?v=198bec9b';
+import { toast } from '../components/theme-switcher.js?v=198bec9b';
+import { streamReveal, thinking, noteCards } from '../components/cc-fx.js?v=198bec9b';
 
 const S = (d, extra = '') => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + extra + '</svg>';
 
@@ -51,8 +51,8 @@ let _renderMarkdown = null;
 const loadMarkdownRenderer = async () => {
   if (!_renderMarkdown) {
     const [{ ensureRenderers }, mod] = await Promise.all([
-      import('../markdown/vendor-loader.js?v=19c2ac0b'),
-      import('../markdown/renderer.js?v=19c2ac0b')
+      import('../markdown/vendor-loader.js?v=198bec9b'),
+      import('../markdown/renderer.js?v=198bec9b')
     ]);
     await ensureRenderers();
     _renderMarkdown = mod.renderMarkdown;
@@ -61,28 +61,28 @@ const loadMarkdownRenderer = async () => {
 };
 let _Adapters = null;
 const loadAdapters = async () => {
-  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=19c2ac0b');
+  if (!_Adapters) _Adapters = await import('../adapters/index.js?v=198bec9b');
   return _Adapters;
 };
 
 let _exportMod = null;
 const loadExport = async () => {
-  if (!_exportMod) _exportMod = await import('./export.js?v=19c2ac0b');
+  if (!_exportMod) _exportMod = await import('./export.js?v=198bec9b');
   return _exportMod;
 };
 let _samplesMod = null;
 const loadSamples = async () => {
-  if (!_samplesMod) _samplesMod = await import('./samples.js?v=19c2ac0b');
+  if (!_samplesMod) _samplesMod = await import('./samples.js?v=198bec9b');
   return _samplesMod;
 };
 let _highlightMod = null;
 const loadHighlight = async () => {
-  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=19c2ac0b');
+  if (!_highlightMod) _highlightMod = await import('./highlight-layer.js?v=198bec9b');
   return _highlightMod;
 };
 let _mathMod = null;
 const loadMathPreview = async () => {
-  if (!_mathMod) _mathMod = await import('./math-preview.js?v=19c2ac0b');
+  if (!_mathMod) _mathMod = await import('./math-preview.js?v=198bec9b');
   return _mathMod;
 };
 
@@ -947,26 +947,40 @@ export default function render(root) {
   });
   try { const savedPreset = localStorage.getItem('mdp:v1:wxp'); if (savedPreset) presetKey = savedPreset; } catch (e) {}
   paintPreset();
+  // 复制到公众号：可见面板靠 getClientRects 判断（祖先 hidden 时 .hidden 属性仍是 false）
+  // 之前用 wxPreview.hidden 判断，宽屏视图下会选中隐藏的微信面板，剪贴板里塞进一个空壳
+  function paneVisible(el) { return !!el && el.getClientRects().length > 0; }
+  loadExport();                        // 提前预热导出模块，点击时同步就绪
+
   if (wxCopyBtn) {
     wxCopyBtn.addEventListener('click', async function () {
-      const mod = await import('./export.js?v=19c2ac0b');
-      const source = wxPreview.hidden ? preview : wxPreview;   // 哪个视图可见就复制哪个
-      const html = mod.exportInlineHTML(source, '公众号稿件');
+      const mod = await loadExport();
+      const source = paneVisible(wxPreview) ? wxPreview : preview;
+      const parts = mod.inlineHTMLParts(source, '公众号稿件');
+      const text = parts.text;
+
+      if (!text || text.length < 2) {
+        showToast('当前视图没有内容，未写入剪贴板', true);
+        return;
+      }
+
+      let copied = false;
       try {
         if (navigator.clipboard && window.ClipboardItem) {
-          await navigator.clipboard.write([new ClipboardItem({
-            'text/html': new Blob([html], { type: 'text/html' }),
-            'text/plain': new Blob([source.innerText], { type: 'text/plain' })
-          })]);
-        } else {
-          const r = document.createRange(); r.selectNodeContents(source);
-          const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
-          document.execCommand('copy'); sel.removeAllRanges();
+          const items = {
+            'text/html': new Blob([parts.body], { type: 'text/html' }),
+            'text/plain': new Blob([text], { type: 'text/plain' })
+          };
+          await navigator.clipboard.write([new ClipboardItem(items)]);
+          copied = true;
         }
-        showToast('已复制 ' + html.length + ' 字符，去公众号 Ctrl+V');
       } catch (e2) {
-        showToast('复制失败：' + (e2 && e2.message ? e2.message : '浏览器不支持'), true);
+        copied = false;
       }
+      if (!copied) copied = mod.copyRichFallback(parts.body, text);
+
+      if (copied) showToast('已复制 ' + text.length + ' 字，去公众号 Ctrl+V');
+      else showToast('复制失败：浏览器拒绝了剪贴板写入，请手动全选预览区复制', true);
     });
   }
 

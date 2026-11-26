@@ -3,7 +3,7 @@
    只借鉴参考站的"左编辑 + 右手机预览 + 一键复制"结构，配色/圆角/动效全部用本站。
 */
 import { renderMarkdown } from '../markdown/renderer.js';
-import { exportInlineHTML } from '../editor/export.js';
+import { exportInlineHTML, inlineHTMLParts as exportInlineHTMLParts, copyRichFallback } from '../editor/export.js';
 
 const PRESETS = {
   standard: { label: '标准', fs: 16, lh: 1.75, ls: 0, gap: '1em' },
@@ -117,26 +117,30 @@ export default function renderWechat(root) {
   presetSel.addEventListener('change', function () { applyPreset(presetSel.value); render(); });
 
   copyBtn.addEventListener('click', async function () {
-    const html = exportInlineHTML(preview, '公众号稿件');
-    const text = preview.innerText;
+    const parts = exportInlineHTMLParts(preview, '公众号稿件');
+    const text = parts.text;
+    if (!text || text.length < 2) {
+      msg.textContent = '当前没有内容';
+      msg.classList.remove('is-ok');
+      return;
+    }
+    let copied = false;
     try {
       if (navigator.clipboard && window.ClipboardItem) {
         await navigator.clipboard.write([new ClipboardItem({
-          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/html': new Blob([parts.body], { type: 'text/html' }),
           'text/plain': new Blob([text], { type: 'text/plain' })
         })]);
-      } else {
-        const range = document.createRange();
-        range.selectNodeContents(preview);
-        const sel = window.getSelection();
-        sel.removeAllRanges(); sel.addRange(range);
-        document.execCommand('copy');
-        sel.removeAllRanges();
+        copied = true;
       }
-      msg.textContent = '已复制 ' + html.length + ' 字符，去公众号 Ctrl+V';
+    } catch (e) { copied = false; }
+    if (!copied) copied = copyRichFallback(parts.body, text);
+
+    if (copied) {
+      msg.textContent = '已复制 ' + text.length + ' 字，去公众号 Ctrl+V';
       msg.classList.add('is-ok');
-    } catch (e) {
-      msg.textContent = '复制失败：' + (e && e.message ? e.message : '浏览器不支持');
+    } else {
+      msg.textContent = '复制失败：浏览器拒绝了剪贴板写入';
       msg.classList.remove('is-ok');
     }
     setTimeout(function () { msg.textContent = '样式内联导出，粘贴不丢格式'; msg.classList.remove('is-ok'); }, 4000);

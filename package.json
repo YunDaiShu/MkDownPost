@@ -16,7 +16,8 @@
     "lint:color": "node tools/lint-hardcoded-color.mjs",
     "test:editor": "node tools/test-editor.mjs",
     "ping": "node tools/ping-indexnow.mjs",
-    "ping:dry": "node tools/ping-indexnow.mjs --dry"
+    "ping:dry": "node tools/ping-indexnow.mjs --dry",
+    "test:copy": "node tools/test-copy.mjs"
   },
   "keywords": [
     "markdown",

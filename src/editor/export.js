@@ -12,8 +12,9 @@ export function exportMarkdown(md, name = 'draft') {
   download(name + '.md', md);
 }
 
-/** 全内联样式：把当前主题色写进每个元素，便于粘贴到公众号编辑器 */
-export function exportInlineHTML(container, title = '未命名') {
+/** 全内联样式：把当前主题色写进每个元素，便于粘贴到公众号编辑器
+    返回三份东西：body（可粘进 contenteditable 的片段）、text（纯文本，供记事本等）、full（独立 .html 文件） */
+export function inlineHTMLParts(container, title = '未命名') {
   const cs = getComputedStyle(document.documentElement);
   const v = (k) => cs.getPropertyValue(k).trim();
   const base = 'font-size:16px;line-height:1.8;color:' + v('--c-text') + ';';
@@ -51,7 +52,55 @@ export function exportInlineHTML(container, title = '未命名') {
   const wrap = document.createElement('div');
   wrap.setAttribute('style', 'max-width:680px;margin:0 auto;' + base);
   wrap.innerHTML = clone.innerHTML;
-  return '<!doctype html><meta charset="utf-8"><title>' + title + '</title>' + wrap.outerHTML;
+
+  const body = wrap.outerHTML;
+  const full = '<!doctype html><meta charset="utf-8"><title>' + title + '</title>' + body;
+  return { body, text: htmlToPlainText(clone), full };
+}
+
+/** 从已渲染的节点取纯文本：块级元素之间补换行，压缩多余空白
+    注意：不要用 innerText —— 元素被 display:none 包裹时它返回空字符串 */
+export function htmlToPlainText(container) {
+  const clone = container.cloneNode(true);
+  clone.querySelectorAll('.md-anchor, .md-copy, .md-codebar').forEach((n) => n.remove());
+  clone.querySelectorAll('br').forEach((n) => n.replaceWith('\n'));
+  clone.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,tr,blockquote,pre,div,section').forEach((n) => n.append('\n'));
+  return clone.textContent
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+/** 兜底：走 execCommand，同时写入 text/html 与 text/plain（clipboard API 不可用时） */
+export function copyRichFallback(bodyHtml, text) {
+  const host = document.createElement('div');
+  host.setAttribute('contenteditable', 'true');
+  host.style.cssText = 'position:fixed;left:-9999px;top:0;width:680px;';
+  host.innerHTML = bodyHtml;
+  document.body.appendChild(host);
+  const range = document.createRange();
+  range.selectNodeContents(host);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  function onCopy(e) {
+    e.clipboardData.setData('text/html', bodyHtml);
+    e.clipboardData.setData('text/plain', text);
+    e.preventDefault();
+  }
+  document.addEventListener('copy', onCopy, true);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.removeEventListener('copy', onCopy, true);
+  sel.removeAllRanges();
+  host.remove();
+  return ok;
+}
+
+/** 兼容旧调用：返回完整 HTML 文档字符串 */
+export function exportInlineHTML(container, title = '未命名') {
+  return inlineHTMLParts(container, title).full;
 }
 
 export function exportInlineHTMLFile(container, name = 'draft', title = '未命名') {
