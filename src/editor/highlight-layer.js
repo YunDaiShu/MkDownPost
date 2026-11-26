@@ -57,6 +57,27 @@ export function mountHighlight(ta, host, initialFontSize) {
   pre.appendChild(code);
   host.insertBefore(pre, ta);
 
+  // 几何必须与 textarea 的内容盒逐像素一致：
+  // 之前用 CSS 的 left:44px + right:0，宽度里多出一条滚动条槽（scrollbar-gutter: stable），
+  // 导致折行位置与光标判定都对不上——点第 30 个字却落在第 33 个字。
+  const syncGeometry = () => {
+    const cs = getComputedStyle(ta);
+    const hostBox = host.getBoundingClientRect();
+    const box = ta.getBoundingClientRect();
+    pre.style.left = (box.left - hostBox.left) + 'px';
+    pre.style.top = (box.top - hostBox.top) + 'px';
+    pre.style.width = ta.clientWidth + 'px';
+    pre.style.height = ta.clientHeight + 'px';
+    pre.style.padding = cs.padding;
+    pre.style.boxSizing = 'border-box';
+    pre.style.fontFamily = cs.fontFamily;
+    pre.style.letterSpacing = cs.letterSpacing;
+    code.style.fontFamily = cs.fontFamily;
+    code.style.fontSize = cs.fontSize;
+    code.style.lineHeight = cs.lineHeight;
+    code.style.letterSpacing = cs.letterSpacing;
+  };
+
   let raf = 0;
   const paint = () => {
     code.innerHTML = highlightMarkdown(ta.value);
@@ -70,12 +91,21 @@ export function mountHighlight(ta, host, initialFontSize) {
     pre.style.fontSize = (px || 16) + 'px';
     const lh = Number(lineHeight) || parseFloat(getComputedStyle(ta).lineHeight) || 0;
     if (lh) pre.style.lineHeight = lh + 'px';
+    syncGeometry();
   };
   setFontSize(initialFontSize, 0);
+  syncGeometry();
+  if (window.ResizeObserver) new ResizeObserver(syncGeometry).observe(ta);
+  window.addEventListener('resize', syncGeometry);
   ta.classList.add('editor__ta--hl');
   ta.addEventListener('input', schedule);
   ta.addEventListener('scroll', () => { pre.scrollTop = ta.scrollTop; pre.scrollLeft = ta.scrollLeft; });
   paint();
 
-  return { update: schedule, setFontSize, destroy: () => { ta.classList.remove('editor__ta--hl'); pre.remove(); } };
+  return {
+    update: schedule,
+    setFontSize,
+    syncGeometry,
+    destroy: () => { ta.classList.remove('editor__ta--hl'); pre.remove(); },
+  };
 }

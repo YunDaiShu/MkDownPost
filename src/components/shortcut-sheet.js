@@ -1,5 +1,5 @@
 /* src/components/shortcut-sheet.js — 快捷键帮助 + 自定义改键（? 打开，Esc 关闭） */
-import { list, setCombo, resetAll, conflict, isCustom, comboOf } from '../editor/keymap.js?v=66b7bb0b';
+import { list, setCombo, resetAll, conflict, isCustom, comboOf } from '../editor/keymap.js?v=6d702f83';
 
 let host = null;
 let lastFocus = null;

@@ -140,10 +140,12 @@
 /* ===== 编辑器语法高亮层 ===== */
 .editor__pane--edit { position: relative; }
 .editor__hl {
-  position: absolute; inset: 0; margin: 0; padding: var(--sp-3);
-  overflow: hidden; pointer-events: none; z-index: 0;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
-  font-size: 16px;   /* 由 JS 同步为当前字号 */
+  /* left/top/width/height/padding 由 highlight-layer.js 从 textarea 实测写入，
+     这里不再用 inset/right 推导宽度（会多出滚动条槽的宽度导致错位） */
+  position: absolute; left: 0; top: 0; margin: 0; padding: var(--sp-3);
+  box-sizing: border-box; overflow: hidden; pointer-events: none; z-index: 0;
+  /* font-family / font-size 由 JS 从 textarea 同步，避免两处写法漂移 */
+  font-size: 16px;
   line-height: 1.7;
   white-space: pre-wrap; word-break: break-word; tab-size: 2;
   color: var(--c-text); background: transparent;
@@ -269,7 +271,7 @@
 /* HL_ALIGN：高亮层与 textarea 必须像素级对齐 —— 同字体、同行高、同内边距、同软换行规则 */
 .editor__ta,
 .editor__hl {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  /* 字体族以 JS 同步到 .editor__hl 的内联样式为准，这里只约束 textarea */
   line-height: 1.7;
   letter-spacing: 0;
   tab-size: 2;
